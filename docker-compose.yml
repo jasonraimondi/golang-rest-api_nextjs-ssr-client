@@ -1,0 +1,18 @@
+version: "3.7"
+
+volumes:
+  postgres_data: {}
+
+services:
+  app:
+    build: .
+    volumes:
+      - ./web:/app/web
+
+#  pg:
+#    image: postgres:latest
+#    volumes:
+#      - postgres_data:/var/lib/postgres/data
+#    ports:
+#      - "5432:5432"
+#
