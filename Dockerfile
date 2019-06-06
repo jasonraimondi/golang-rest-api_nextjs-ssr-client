@@ -9,7 +9,7 @@ COPY . $API_PATH/
 
 #RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app src/main.go
 #RUN chmod +x app
-CMD ["go", "test"]
+CMD ["go", "test", "./..."]
 
 #FROM scratch
 #LABEL maintainer="Jason Raimondi <jason@raimondi.us>"

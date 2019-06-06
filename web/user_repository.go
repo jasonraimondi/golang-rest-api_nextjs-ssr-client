@@ -12,5 +12,4 @@ type UserRepository struct {
 }
 
 func (r UserRepository) create(u User) {
-	r.db.MustExec()
 }
