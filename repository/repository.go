@@ -1,8 +1,7 @@
 package repository
 
 import (
-	"database/sql"
-	"git.jasonraimondi.com/jason/learn-with-tests/models"
+	"git.jasonraimondi.com/jason/jasontest/models"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -28,9 +27,11 @@ func (r RepositoryFactory) Seed() (err error) {
 	tx.MustExec("INSERT INTO place (country, telcode) VALUES ($1, $2)", "Hong Kong", "852")
 	tx.MustExec("INSERT INTO place (country, telcode) VALUES ($1, $2)", "Singapore", "65")
 	// Named queries can use structs, so if you have an existing struct (i.e. person := &Person{}) that you have populated, you can pass it in as &person
+	firstName := "Jane"
+	lastName := "Citizen"
 	person := &models.Person{
-		FirstName: sql.NullString{"Jane", true},
-		LastName: sql.NullString{"Citizen", true},
+		FirstName: &firstName,
+		LastName: &lastName,
 		Email: "jane.citzen@example.com",
 	}
 	_, err = tx.NamedExec("INSERT INTO person (first_name, last_name, email) VALUES (:first_name, :last_name, :email)", person)

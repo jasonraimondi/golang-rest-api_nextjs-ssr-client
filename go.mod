@@ -1,4 +1,4 @@
-module git.jasonraimondi.com/jason/learn-with-tests
+module git.jasonraimondi.com/jason/jasontest
 
 go 1.12
 

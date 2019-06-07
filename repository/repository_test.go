@@ -2,8 +2,8 @@ package repository_test
 
 import (
 	"database/sql"
-	"git.jasonraimondi.com/jason/learn-with-tests/models"
-	"git.jasonraimondi.com/jason/learn-with-tests/repository"
+	"git.jasonraimondi.com/jason/jasontest/models"
+	"git.jasonraimondi.com/jason/jasontest/repository"
 	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -49,5 +49,5 @@ func TestGetConnection(t *testing.T) {
 	places := []models.Place{}
 	err = db.Select(&places, "SELECT * FROM place ORDER BY telcode ASC")
 	assert.Nil(t, err)
-	assert.Equal(t, jason.)
+	assert.Equal(t, jason.FirstName, "Jason")
 }
