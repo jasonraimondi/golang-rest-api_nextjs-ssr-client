@@ -1,26 +1,58 @@
 package repository
 
 import (
+	"database/sql"
 	"git.jasonraimondi.com/jason/jasontest/models"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/jmoiron/sqlx"
+
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type RepositoryFactory struct {
-	DB *sqlx.DB
+func Initialize() (r *RepositoryFactory, err error) {
+	driver, err := ConnectToSQL()
+	if err != nil {
+		return nil, err
+	}
+	r = &RepositoryFactory{DB: driver}
+	if err := MigrateNow(r.DB.DB); err != nil {
+		return nil, err
+	}
+	return r, nil
 }
 
-func (r RepositoryFactory) User() *PersonRepository {
-	return &PersonRepository{db: r.DB}
+func ConnectToSQL() (driver *sqlx.DB, err error) {
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		return nil, err
+	}
+	driver = sqlx.NewDb(db, "sqlite3")
+	return driver, nil
 }
 
-func (r RepositoryFactory) Migrate(schema string) error {
-	_ = r.DB.MustExec(schema)
+func MigrateNow(db *sql.DB) error {
+	m, err := Migrate(db)
+	if err != nil {
+		return err
+	}
+	if err = m.Up(); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (r RepositoryFactory) Seed() (err error) {
-	u := models.NewSimplePerson("jason@raimondi.us")
-	_, err = r.User().create(u)
+func Migrate(db *sql.DB) (*migrate.Migrate, error) {
+	driver, err := sqlite3.WithInstance(db, &sqlite3.Config{})
+	if err != nil {
+		return nil, err
+	}
+	return migrate.NewWithDatabaseInstance("file://../migrations", "ql", driver)
+}
+
+func Seed(r RepositoryFactory) (err error) {
+	p := models.NewPerson("jason@raimondi.us")
+	_, err = r.Person().create(p)
 	return err
 }
