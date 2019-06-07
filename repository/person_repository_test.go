@@ -12,5 +12,9 @@ func TestUserRepository(t *testing.T) {
 	assert.NoError(t, err)
 	p := models.NewPerson("jason@raimondi.us")
 	err = r.Person().Create(p)
+	assert.NoError(t, err)
+	pe, err := r.Person().GetById(p.Id)
+	assert.NoError(t, err)
 	assert.Equal(t, "jason@raimondi.us", p.Email)
+	assert.Equal(t, "jason@raimondi.us", pe.Email)
 }
