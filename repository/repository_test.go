@@ -6,17 +6,7 @@ import (
 	"testing"
 )
 
-
-
-func TestGetConnection(t *testing.T) {
-	r, err := repository.Initialize()
+func TestInitialize(t *testing.T) {
+	_, err := repository.Initialize()
 	assert.NoError(t, err)
-
-	u := r.Person()
-	assert.NoError(t, err)
-	assert.NotNil(t, u)
-
-	assert.True(t, true)
-	//jason := models.Person{}
-	//err = driver.Get(&jason, "SELECT * FROM person WHERE first_name=$1", "Jason")
 }

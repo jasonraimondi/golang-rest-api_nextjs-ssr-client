@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"git.jasonraimondi.com/jason/jasontest/models"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/jmoiron/sqlx"
@@ -49,10 +48,4 @@ func Migrate(db *sql.DB) (*migrate.Migrate, error) {
 		return nil, err
 	}
 	return migrate.NewWithDatabaseInstance("file://../migrations", "ql", driver)
-}
-
-func Seed(r RepositoryFactory) (err error) {
-	p := models.NewPerson("jason@raimondi.us")
-	_, err = r.Person().create(p)
-	return err
 }
