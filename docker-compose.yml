@@ -7,7 +7,7 @@ services:
   app:
     build: .
     volumes:
-      - ./web:/app/web
+      - ./repository:/app/repository
 
 #  pg:
 #    image: postgres:latest

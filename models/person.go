@@ -10,12 +10,10 @@ type Person struct {
 	Email     string
 }
 
-func NewPerson(email string) (p Person) {
+func NewSimplePerson(email string) (p Person) {
 	return Person{
-		Email: email,
+		Email:     email,
+		FirstName: ToNullString(""),
+		LastName:  ToNullString(""),
 	}
-}
-
-func NewNullString(s string) sql.NullString {
-	return sql.NullString{String: s, Valid: s != ""}
 }

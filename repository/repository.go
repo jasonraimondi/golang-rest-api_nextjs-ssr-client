@@ -1,4 +1,4 @@
-package web
+package repository
 
 import (
 	"database/sql"
