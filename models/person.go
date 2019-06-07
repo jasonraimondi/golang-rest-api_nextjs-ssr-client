@@ -1,15 +1,22 @@
 package models
 
+import (
+	"database/sql"
+	"github.com/satori/go.uuid"
+)
+
 type Person struct {
-	FirstName *string `db:"first_name"`
-	LastName  *string `db:"last_name"`
-	Email     string
+	ID        string         `db:"id"`
+	FirstName sql.NullString `db:"first_name"`
+	LastName  sql.NullString `db:"last_name"`
+	Email     string         `db:"email"`
 }
 
 func NewSimplePerson(email string) (p Person) {
 	return Person{
+		ID:        uuid.NewV4().String(),
 		Email:     email,
-		FirstName: nil,
-		LastName:  nil,
+		FirstName: ToNullString(""),
+		LastName:  ToNullString(""),
 	}
 }

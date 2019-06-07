@@ -30,16 +30,8 @@ func TestGetConnection(t *testing.T) {
 	err = r.Seed()
 	u := r.User()
 
-
-
-
-
 	assert.Nil(t, err)
-	assert.True(t, u != nil)
-	assert.True(t, true)
-
-
-
+	assert.NotNil(t, u)
 
 	// You can also get a single result, a la QueryRow
 	jason := models.Person{}
@@ -49,5 +41,5 @@ func TestGetConnection(t *testing.T) {
 	places := []models.Place{}
 	err = db.Select(&places, "SELECT * FROM place ORDER BY telcode ASC")
 	assert.Nil(t, err)
-	assert.Equal(t, jason.FirstName, "Jason")
+	assert.Equal(t, "Jason", jason.FirstName.String)
 }
