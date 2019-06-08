@@ -9,13 +9,13 @@ type PersonRepository struct {
 	db *sqlx.DB
 }
 
-func (r PersonRepository) GetById(id string) (p *models.Person, err error) {
+func (r *PersonRepository) GetById(id string) (p *models.Person, err error) {
 	p = &models.Person{}
 	err = r.db.Get(p, `SELECT * FROM persons WHERE id=$1`, id)
 	return p, err
 }
 
-func (r PersonRepository) Create(p models.Person) (err error) {
+func (r *PersonRepository) Create(p models.Person) (err error) {
 	_, err = r.db.NamedExec(`
 		INSERT INTO persons (id, first_name, last_name, email, created_at, modified_at) 
 		VALUES (:id, :first_name, :last_name, :email, :created_at, :modified_at)

@@ -7,8 +7,9 @@ import (
 )
 
 func TestNewNullString(t *testing.T) {
-	isNullString := models.ToNullString("")
-	isValidString := models.ToNullString("jason")
-	assert.False(t, isNullString.Valid)
-	assert.True(t, isValidString.Valid)
+	invalid := models.ToNullString("")
+	valid := models.ToNullString("jason")
+
+	assert.False(t, invalid.Valid)
+	assert.True(t, valid.Valid)
 }

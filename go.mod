@@ -37,14 +37,14 @@ require (
 	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/xanzy/go-gitlab v0.18.0 // indirect
 	go.opencensus.io v0.22.0 // indirect
-	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5 // indirect
+	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5
 	golang.org/x/exp v0.0.0-20190510132918-efd6b22b2522 // indirect
 	golang.org/x/image v0.0.0-20190523035834-f03afa92d3ff // indirect
 	golang.org/x/mobile v0.0.0-20190509164839-32b2708ab171 // indirect
 	golang.org/x/mod v0.1.0 // indirect
-	golang.org/x/net v0.0.0-20190606173856-1492cefac77f // indirect
+	golang.org/x/net v0.0.0-20190607181551-461777fb6f67 // indirect
 	golang.org/x/sys v0.0.0-20190606203320-7fc4e5ec1444 // indirect
-	golang.org/x/tools v0.0.0-20190606174628-0139d5756a7d // indirect
+	golang.org/x/tools v0.0.0-20190607135518-5aed7825b13e // indirect
 	google.golang.org/api v0.6.0 // indirect
 	google.golang.org/appengine v1.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20190605220351-eb0b1bdb6ae6 // indirect
