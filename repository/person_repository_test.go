@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestUserRepository(t *testing.T) {
+func TestUserRepository_GetById(t *testing.T) {
 	r, err := repository.Initialize()
 	assert.NoError(t, err)
 	p := models.NewPerson("jason@raimondi.us")
