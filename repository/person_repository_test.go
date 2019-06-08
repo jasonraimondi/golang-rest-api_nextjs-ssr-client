@@ -11,10 +11,14 @@ func TestUserRepository_GetById(t *testing.T) {
 	r, err := repository.Initialize()
 	assert.NoError(t, err)
 	p := models.NewPerson("jason@raimondi.us")
+	p.FirstName = models.ToNullString("Jason")
+	p.LastName = models.ToNullString("Raimondi")
 	err = r.Person().Create(p)
 	assert.NoError(t, err)
-	pe, err := r.Person().GetById(p.Id)
+
+	sut, err := r.Person().GetById(p.Id)
 	assert.NoError(t, err)
-	assert.Equal(t, "jason@raimondi.us", p.Email)
-	assert.Equal(t, "jason@raimondi.us", pe.Email)
+	assert.Equal(t, "jason@raimondi.us", sut.Email)
+	assert.Equal(t, "Jason", sut.FirstName.String)
+	assert.Equal(t, "Raimondi", sut.LastName.String)
 }

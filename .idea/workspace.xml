@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cb7b1d4-a163-4446-a203-2df701e45157" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/000001_create-persons-table.up.sql" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/000001_create-persons-table.up.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/person_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/person_repository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/person_repository_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/person_repository_test.go" afterDir="false" />
     </list>
@@ -53,8 +51,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/repository/person_repository_test.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+            <state relative-caret-position="255">
+              <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+              <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/repository/person_repository.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+              <folding>
+                <element signature="e#20#105#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -114,8 +125,8 @@
         <option value="$PROJECT_DIR$/models/person.go" />
         <option value="$PROJECT_DIR$/repository/factory.go" />
         <option value="$PROJECT_DIR$/repository/repository.go" />
-        <option value="$PROJECT_DIR$/repository/person_repository.go" />
         <option value="$PROJECT_DIR$/migrations/000001_create-persons-table.up.sql" />
+        <option value="$PROJECT_DIR$/repository/person_repository.go" />
         <option value="$PROJECT_DIR$/repository/person_repository_test.go" />
       </list>
     </option>
@@ -200,7 +211,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Test.TestUserRepository in git.jasonraimondi.com/jason/jasontest/repository">
+  <component name="RunManager" selected="Go Test.TestUserRepository_GetById in git.jasonraimondi.com/jason/jasontest/repository">
     <configuration name="TestUserRepository in git.jasonraimondi.com/jason/jasontest/repository" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="learn-with-tests" />
       <working_directory value="$PROJECT_DIR$/repository" />
@@ -212,16 +223,25 @@
       <pattern value="^TestUserRepository$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestUserRepository_GetById in git.jasonraimondi.com/jason/jasontest/repository" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="learn-with-tests" />
+      <working_directory value="$PROJECT_DIR$/repository" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="git.jasonraimondi.com/jason/jasontest/repository" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <pattern value="^TestUserRepository_GetById$" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestUserRepository_GetById in git.jasonraimondi.com/jason/jasontest/repository" />
         <item itemvalue="Go Test.TestUserRepository in git.jasonraimondi.com/jason/jasontest/repository" />
       </list>
     </recent_temporary>
   </component>
   <component name="TestHistory">
-    <history-entry file="go_test_jasontest - 2019.06.06 at 23h 11m 20s.xml">
-      <configuration name="go test jasontest" configurationId="GoTestRunConfiguration" />
-    </history-entry>
     <history-entry file="go_test_jasontest - 2019.06.06 at 23h 12m 54s.xml">
       <configuration name="go test jasontest" configurationId="GoTestRunConfiguration" />
     </history-entry>
@@ -249,17 +269,20 @@
     <history-entry file="TestUserRepository_in_git_jasonraimondi_com_jason_jasontest_repository - 2019.06.07 at 09h 55m 43s.xml">
       <configuration name="TestUserRepository in git.jasonraimondi.com/jason/jasontest/repository" configurationId="GoTestRunConfiguration" />
     </history-entry>
+    <history-entry file="TestUserRepository_GetById_in_git_jasonraimondi_com_jason_jasontest_repository - 2019.06.07 at 10h 00m 50s.xml">
+      <configuration name="TestUserRepository_GetById in git.jasonraimondi.com/jason/jasontest/repository" configurationId="GoTestRunConfiguration" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1996337" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1996337" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.5561497" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5561497" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -451,13 +474,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/person.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/Cellar/go/1.12.5/libexec/src/database/sql/sql.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -469,23 +485,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
           <caret line="313" column="63" selection-start-line="313" selection-start-column="63" selection-end-line="313" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/migrations/000001_create-persons-table.up.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/repository/person_repository.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="11" column="33" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="33" />
-          <folding>
-            <element signature="e#20#105#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -513,10 +512,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/models/person.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/repository/person_repository.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="e#20#105#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/migrations/000001_create-persons-table.up.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/repository/person_repository_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
+        <state relative-caret-position="255">
+          <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+          <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
         </state>
       </provider>
     </entry>

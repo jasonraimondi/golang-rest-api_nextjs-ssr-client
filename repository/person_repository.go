@@ -11,7 +11,7 @@ type PersonRepository struct {
 
 func (r PersonRepository) GetById(id string) (p *models.Person, err error) {
 	p = &models.Person{}
-	err = r.db.Get(p, "SELECT * FROM persons WHERE id=$1", id)
+	err = r.db.Get(p, `SELECT * FROM persons WHERE id=$1`, id)
 	return p, err
 }
 
