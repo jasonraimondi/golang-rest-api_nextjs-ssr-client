@@ -16,10 +16,8 @@ func Initialize() (r *RepositoryFactory, err error) {
 		return nil, err
 	}
 	r = &RepositoryFactory{DB: driver}
-	if err := MigrateNow(r.DB.DB); err != nil {
-		return nil, err
-	}
-	return r, nil
+	err = MigrateNow(driver.DB)
+	return r, err
 }
 
 func ConnectToSQL() (driver *sqlx.DB, err error) {
@@ -36,10 +34,7 @@ func MigrateNow(db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-	if err = m.Up(); err != nil {
-		return err
-	}
-	return nil
+	return m.Up()
 }
 
 func Migrate(db *sql.DB) (*migrate.Migrate, error) {
