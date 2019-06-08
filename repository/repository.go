@@ -13,7 +13,7 @@ import (
 
 type Application struct {
 	dbx    *sqlx.DB
-	driver database.Driver
+	driver *database.Driver
 }
 
 func (a *Application) RepositoryFactory() *RepositoryFactory {
@@ -23,7 +23,7 @@ func (a *Application) RepositoryFactory() *RepositoryFactory {
 }
 
 func (a *Application) MigrateNow() error {
-	m, err := a.Migrate(a.driver)
+	m, err := a.Migrate(*a.driver)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (a *Application) Migrate(databaseInstance database.Driver) (*migrate.Migrat
 	return migrate.NewWithDatabaseInstance("file://../migrations", "ql", databaseInstance)
 }
 
-func NewApplication(dbx *sqlx.DB, driver database.Driver) *Application {
+func NewApplication(dbx *sqlx.DB, driver *database.Driver) *Application {
 	return &Application{dbx: dbx, driver: driver}
 }
 
@@ -48,7 +48,7 @@ func NewTestApplication() (a *Application) {
 	if err != nil {
 		panic(err)
 	}
-	a = NewApplication(dbx, databaseInstance)
+	a = NewApplication(dbx, &databaseInstance)
 	if err = a.MigrateNow(); err != nil {
 		panic(err)
 	}
