@@ -8,7 +8,7 @@ import (
 )
 
 type Person struct {
-	Id           string         `db:"id"`
+	ID           string         `db:"id"`
 	FirstName    sql.NullString `db:"first_name"`
 	LastName     sql.NullString `db:"last_name"`
 	Email        string         `db:"email"`
@@ -20,7 +20,7 @@ type Person struct {
 
 func NewPerson(email string) (p Person) {
 	return Person{
-		Id:           uuid.NewV4().String(),
+		ID:           uuid.NewV4().String(),
 		FirstName:    ToNullString(""),
 		LastName:     ToNullString(""),
 		Email:        email,
