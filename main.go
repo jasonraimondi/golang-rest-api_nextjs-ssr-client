@@ -1,16 +1,11 @@
 package main
 
-import (
-	"database/sql"
-	"github.com/jmoiron/sqlx"
-)
-
 func main()  {
-	db, err := sql.Open("sqlite3", ":memory:")
-	if err != nil {
-		panic(err)
-	} else if err = db.Ping(); err != nil {
-		panic(err)
-	}
-	_ = sqlx.NewDb(db, "sqlite3")
+	//db, err := sql.Open("sqlite3", ":memory:")
+	//if err != nil {
+	//	panic(err)
+	//} else if err = db.Ping(); err != nil {
+	//	panic(err)
+	//}
+	//_ = sqlx.NewDb(db, "sqlite3")
 }
