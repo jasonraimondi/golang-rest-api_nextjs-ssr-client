@@ -1,13 +1,15 @@
 package repository
 
 import (
+	"fmt"
 	"github.com/jmoiron/sqlx"
 )
 
 type RepositoryFactory struct {
-	DB *sqlx.DB
+	dbx *sqlx.DB
 }
 
-func (r *RepositoryFactory) Person() *PersonRepository {
-	return &PersonRepository{db: r.DB}
+func (r RepositoryFactory) Person() *PersonRepository {
+	fmt.Println("hello jason")
+	return &PersonRepository{dbx: r.dbx}
 }

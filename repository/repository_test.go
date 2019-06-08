@@ -7,6 +7,6 @@ import (
 )
 
 func TestInitialize(t *testing.T) {
-	_, err := repository.Initialize()
+	_, err := repository.NewTestDB()
 	assert.NoError(t, err)
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func TestPersonRepository_GetById(t *testing.T) {
-	r, err := repository.Initialize()
+	r, err := repository.NewTestDB()
 	assert.NoError(t, err)
 	p1 := models.NewPerson("jason@raimondi.us")
 	p1.FirstName = models.ToNullString("Jason")
@@ -26,7 +26,7 @@ func TestPersonRepository_GetById(t *testing.T) {
 }
 
 func TestPersonRepository_GetByEmail(t *testing.T) {
-	r, err := repository.Initialize()
+	r, err := repository.NewTestDB()
 	assert.NoError(t, err)
 	p := models.NewPerson("kimberly@foo.bar")
 	p.FirstName = models.ToNullString("Kimberly")
