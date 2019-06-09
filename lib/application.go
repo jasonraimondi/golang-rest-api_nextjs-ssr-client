@@ -1,11 +1,15 @@
-package repository
+package lib
 
 import (
 	"database/sql"
+	"fmt"
+	"git.jasonraimondi.com/jason/jasontest/repository"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/jmoiron/sqlx"
+	"os"
+	"path/filepath"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattn/go-sqlite3"
@@ -16,10 +20,8 @@ type Application struct {
 	driver *database.Driver
 }
 
-func (a *Application) RepositoryFactory() *RepositoryFactory {
-	return &RepositoryFactory{
-		dbx: a.dbx,
-	}
+func (a *Application) RepositoryFactory() *repository.Factory {
+	return repository.NewFactory(a.dbx)
 }
 
 func (a *Application) MigrateNow() error {
@@ -31,6 +33,12 @@ func (a *Application) MigrateNow() error {
 }
 
 func (a *Application) Migrate(databaseInstance database.Driver) (*migrate.Migrate, error) {
+	ex, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	exPath := filepath.Dir(ex)
+	fmt.Println(exPath)
 	return migrate.NewWithDatabaseInstance("file://../migrations", "ql", databaseInstance)
 }
 

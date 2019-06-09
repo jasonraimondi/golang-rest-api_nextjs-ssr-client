@@ -1,25 +1,26 @@
-package actions
+package action_test
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/repository"
+	"git.jasonraimondi.com/jason/jasontest/action"
+	"git.jasonraimondi.com/jason/jasontest/lib"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestCreatePerson(t *testing.T) {
-	r := repository.NewTestApplication().RepositoryFactory()
+	r := lib.NewTestApplication().RepositoryFactory()
 
-	cp := &CreatePersonHandler{
-		personRepository: r.Person(),
+	cp := &action.CreatePersonHandler{
+		PersonRepository: r.Person(),
 	}
 	first := "Jason"
 	last := "Raimondi"
 	password := "jasonraimondi"
-	err := cp.Handle(&CreatePerson{
-		first:    &first,
-		last:     &last,
-		email:    "jason@raimondi.us",
-		password: &password,
+	err := cp.Handle(&action.CreatePerson{
+		First:    &first,
+		Last:     &last,
+		Email:    "jason@raimondi.us",
+		Password: &password,
 	})
 	assert.NoError(t, err)
 

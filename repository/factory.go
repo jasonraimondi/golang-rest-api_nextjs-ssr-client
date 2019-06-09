@@ -4,10 +4,14 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type RepositoryFactory struct {
+type Factory struct {
 	dbx *sqlx.DB
 }
 
-func (r RepositoryFactory) Person() *PersonRepository {
-	return &PersonRepository{dbx: r.dbx}
+func NewFactory(dbx *sqlx.DB) *Factory {
+	return &Factory{dbx}
+}
+
+func (r Factory) Person() *Person {
+	return &Person{dbx: r.dbx}
 }

@@ -1,17 +1,17 @@
 package repository_test
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/models"
-	"git.jasonraimondi.com/jason/jasontest/repository"
+	"git.jasonraimondi.com/jason/jasontest/lib"
+	"git.jasonraimondi.com/jason/jasontest/model"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestPersonRepository_GetById(t *testing.T) {
-	r := repository.NewTestApplication().RepositoryFactory()
-	p := models.NewPerson("jason@raimondi.us")
-	p.FirstName = models.ToNullString("Jason")
-	p.LastName = models.ToNullString("Raimondi")
+	r := lib.NewTestApplication().RepositoryFactory()
+	p := model.NewPerson("jason@raimondi.us")
+	p.FirstName = model.ToNullString("Jason")
+	p.LastName = model.ToNullString("Raimondi")
 	err := r.Person().Create(p)
 	assert.NoError(t, err)
 
@@ -24,10 +24,10 @@ func TestPersonRepository_GetById(t *testing.T) {
 }
 
 func TestPersonRepository_GetByEmail(t *testing.T) {
-	r := repository.NewTestApplication().RepositoryFactory()
-	p := models.NewPerson("kimberly@foo.bar")
-	p.FirstName = models.ToNullString("Kimberly")
-	p.LastName = models.ToNullString("Foo")
+	r := lib.NewTestApplication().RepositoryFactory()
+	p := model.NewPerson("kimberly@foo.bar")
+	p.FirstName = model.ToNullString("Kimberly")
+	p.LastName = model.ToNullString("Foo")
 	err := r.Person().Create(p)
 	assert.NoError(t, err)
 
