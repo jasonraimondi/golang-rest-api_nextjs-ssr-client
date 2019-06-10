@@ -12,6 +12,6 @@ func NewFactory(dbx *sqlx.DB) *Factory {
 	return &Factory{dbx}
 }
 
-func (r Factory) Person() *Person {
-	return &Person{dbx: r.dbx}
+func (r Factory) Person() *SqlxPersonRepository {
+	return &SqlxPersonRepository{dbx: r.dbx}
 }

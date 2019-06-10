@@ -1,11 +1,13 @@
 package action
 
 import (
+	"git.jasonraimondi.com/jason/jasontest/lib"
 	"git.jasonraimondi.com/jason/jasontest/model"
 	"git.jasonraimondi.com/jason/jasontest/repository"
 )
 
 type CreatePerson struct {
+	lib.Command
 	First    *string
 	Last     *string
 	Email    string
@@ -13,7 +15,8 @@ type CreatePerson struct {
 }
 
 type CreatePersonHandler struct {
-	PersonRepository *repository.Person
+	lib.CommandHandler
+	PersonRepository repository.PersonRepository
 }
 
 func (h *CreatePersonHandler) Handle(s *CreatePerson) (err error) {

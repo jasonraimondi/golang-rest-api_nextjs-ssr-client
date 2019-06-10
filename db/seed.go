@@ -1,18 +1,17 @@
 package db
 
-import (
-	"github.com/jmoiron/sqlx"
-)
-
-type SeedData struct {
-	dbx *sqlx.DB
-}
-
-func (s *SeedData) Seed() error {
-	s.people()
-	return nil
-}
-
-func (s *SeedData) people() {
-
-}
+//type SeedData struct {
+//	a *lib.Application
+//}
+//
+//func (s *SeedData) Seed() error {
+//	//s.people()
+//	return nil
+//}
+//
+//func (s *SeedData) people() error {
+//	var commands []interface{}
+//	commands = append(commands, action.CreatePerson{})
+//	//return s.a.Dispatch(commands)
+//	return nil
+//}
