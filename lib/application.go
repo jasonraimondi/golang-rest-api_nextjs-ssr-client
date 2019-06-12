@@ -26,3 +26,7 @@ func (a *Application) Dispatch(commands []Command) (err error) {
 func NewApplication(dbx *sqlx.DB, driver *database.Driver) *Application {
 	return &Application{dbx: dbx, Driver: driver}
 }
+
+func GetHandlerForCommand(c Command) (h CommandHandler) {
+	return nil
+}

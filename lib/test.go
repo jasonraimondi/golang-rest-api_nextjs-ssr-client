@@ -2,7 +2,7 @@ package lib
 
 import (
 	"database/sql"
-	appDB "git.jasonraimondi.com/jason/jasontest/db"
+	"git.jasonraimondi.com/jason/jasontest/repository"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/jmoiron/sqlx"
 
@@ -22,7 +22,7 @@ func NewTestApplication() (a *Application) {
 		panic(err)
 	}
 	a = NewApplication(dbx, &databaseInstance)
-	if err = appDB.MigrateNow(a.Driver); err != nil {
+	if err = repository.MigrateNow(a.Driver); err != nil {
 		panic(err)
 	}
 	return a

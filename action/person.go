@@ -7,7 +7,7 @@ import (
 )
 
 type CreatePerson struct {
-	lib.Command
+	*lib.Command
 	First    *string
 	Last     *string
 	Email    string
