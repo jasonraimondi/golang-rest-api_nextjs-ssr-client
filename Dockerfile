@@ -1,4 +1,4 @@
-FROM golang:1.12 as builder
+FROM golang:1.12-alpine as builder
 ENV GO111MODULE on
 ENV API_PATH /go/src/git.jasonraimondi.com/jason/jasontest
 WORKDIR $API_PATH
