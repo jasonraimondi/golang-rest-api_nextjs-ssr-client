@@ -17,8 +17,8 @@ func (a *Application) RepositoryFactory() *repository.Factory {
 
 func (a *Application) Dispatch(commands []Command) (err error) {
 	//for _, v := range commands {
-		// get command handler for command
-		// dispatch that command to the handler
+	// get command handler for command
+	// dispatch that command to the handler
 	//}
 	return err
 }

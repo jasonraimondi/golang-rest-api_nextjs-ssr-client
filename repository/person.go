@@ -6,13 +6,17 @@ import (
 )
 
 type PersonRepository interface {
-	GetById(id string) (*model.Person,error)
+	GetById(id string) (*model.Person, error)
 	GetByEmail(email string) (*model.Person, error)
 	Create(person model.Person) error
 }
 
 type SqlxPersonRepository struct {
 	dbx *sqlx.DB
+}
+
+func NewSqlxPersonRepository(dbx *sqlx.DB) *SqlxPersonRepository {
+	return &SqlxPersonRepository{dbx}
 }
 
 func (r *SqlxPersonRepository) GetById(id string) (p *model.Person, err error) {

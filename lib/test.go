@@ -10,7 +10,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-
 func NewTestApplication() (a *Application) {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {

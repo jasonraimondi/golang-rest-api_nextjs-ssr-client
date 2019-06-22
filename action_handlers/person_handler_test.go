@@ -1,27 +1,30 @@
-package action_test
+package action_handlers_test
 
 import (
 	"git.jasonraimondi.com/jason/jasontest/action"
+	"git.jasonraimondi.com/jason/jasontest/action_handlers"
 	"git.jasonraimondi.com/jason/jasontest/lib"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
-func TestCreatePerson(t *testing.T) {
+func TestCreatePersonHandler(t *testing.T) {
 	r := lib.NewTestApplication().RepositoryFactory()
 
-	cp := &action.CreatePersonHandler{
-		PersonRepository: r.Person(),
-	}
+	cp := action_handlers.NewCreatePersonHandler(r.Person())
 	first := "Jason"
 	last := "Raimondi"
 	password := "jasonraimondi"
-	err := cp.Handle(&action.CreatePerson{
-		First:    &first,
-		Last:     &last,
-		Email:    "jason@raimondi.us",
-		Password: &password,
-	})
+	err := cp.Handle(action.NewCreatePerson(
+		&lib.Command{
+			Time: time.Now(),
+		},
+		&first,
+		&last,
+		"jason@raimondi.us",
+		&password,
+	))
 	assert.NoError(t, err)
 
 	p, err := r.Person().GetByEmail("jason@raimondi.us")

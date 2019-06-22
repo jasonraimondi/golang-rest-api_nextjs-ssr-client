@@ -5,7 +5,8 @@ import (
 )
 
 type Command struct {
-	Time *time.Time
+	Time      time.Time
+	CommandId string
 }
 
 type CommandHandler interface {
