@@ -3,7 +3,8 @@ name: default
 
 steps:
   - name: test
-    image: golang:1.12
+    image: golang:1.12-alpine
     commands:
+      - apk add --no-cache git
       - go mod download
       - go test ./...

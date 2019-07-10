@@ -6,7 +6,6 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/lib"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
 
 func TestCreatePersonHandler(t *testing.T) {
@@ -17,9 +16,6 @@ func TestCreatePersonHandler(t *testing.T) {
 	last := "Raimondi"
 	password := "jasonraimondi"
 	err := cp.Handle(action.NewCreatePerson(
-		&lib.Command{
-			Time: time.Now(),
-		},
 		&first,
 		&last,
 		"jason@raimondi.us",

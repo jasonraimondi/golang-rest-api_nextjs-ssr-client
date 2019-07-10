@@ -2,6 +2,8 @@ package action
 
 import (
 	"git.jasonraimondi.com/jason/jasontest/lib"
+	uuid "github.com/satori/go.uuid"
+	"time"
 )
 
 type CreatePerson struct {
@@ -12,7 +14,11 @@ type CreatePerson struct {
 	Password *string
 }
 
-func NewCreatePerson(command *lib.Command, first *string, last *string, email string, password *string) *CreatePerson {
+func NewCreatePerson(first *string, last *string, email string, password *string) *CreatePerson {
+	command := &lib.Command{
+		Time:      time.Now(),
+		CommandId: uuid.NewV4().String(),
+	}
 	return &CreatePerson{command, first, last, email, password}
 }
 
