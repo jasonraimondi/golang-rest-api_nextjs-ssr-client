@@ -1,7 +1,7 @@
 package model_test
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/model"
+	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

@@ -14,5 +14,5 @@ func MigrateNow(driver *database.Driver) error {
 }
 
 func Migrate(databaseInstance database.Driver) (*migrate.Migrate, error) {
-	return migrate.NewWithDatabaseInstance("file://../db/migrations", "ql", databaseInstance)
+	return migrate.NewWithDatabaseInstance("file://../../db/migrations", "ql", databaseInstance)
 }

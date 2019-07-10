@@ -2,7 +2,7 @@ package lib
 
 import (
 	"database/sql"
-	"git.jasonraimondi.com/jason/jasontest/repository"
+	"git.jasonraimondi.com/jason/jasontest/domain/repository"
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/jmoiron/sqlx"
 

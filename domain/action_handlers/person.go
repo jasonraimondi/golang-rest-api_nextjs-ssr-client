@@ -1,9 +1,9 @@
 package action_handlers
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/action"
-	"git.jasonraimondi.com/jason/jasontest/model"
-	"git.jasonraimondi.com/jason/jasontest/repository"
+	action2 "git.jasonraimondi.com/jason/jasontest/domain/action"
+	model2 "git.jasonraimondi.com/jason/jasontest/domain/model"
+	"git.jasonraimondi.com/jason/jasontest/domain/repository"
 )
 
 type CreatePersonHandler struct {
@@ -14,13 +14,13 @@ func NewCreatePersonHandler(personRepository repository.PersonRepository) *Creat
 	return &CreatePersonHandler{PersonRepository: personRepository}
 }
 
-func (h *CreatePersonHandler) Handle(s *action.CreatePerson) (err error) {
-	p := model.NewPerson(s.Email)
+func (h *CreatePersonHandler) Handle(s *action2.CreatePerson) (err error) {
+	p := model2.NewPerson(s.Email)
 	if s.First != nil {
-		p.FirstName = model.ToNullString(*s.First)
+		p.FirstName = model2.ToNullString(*s.First)
 	}
 	if s.Last != nil {
-		p.LastName = model.ToNullString(*s.Last)
+		p.LastName = model2.ToNullString(*s.Last)
 	}
 	if s.Password != nil {
 		if err = p.SetPassword(*s.Password); err != nil {

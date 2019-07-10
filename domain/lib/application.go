@@ -2,7 +2,7 @@ package lib
 
 import (
 	"fmt"
-	"git.jasonraimondi.com/jason/jasontest/repository"
+	"git.jasonraimondi.com/jason/jasontest/domain/repository"
 	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/jmoiron/sqlx"
 )

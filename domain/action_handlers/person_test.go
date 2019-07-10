@@ -1,21 +1,21 @@
 package action_handlers_test
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/action"
-	"git.jasonraimondi.com/jason/jasontest/action_handlers"
-	"git.jasonraimondi.com/jason/jasontest/lib"
+	action2 "git.jasonraimondi.com/jason/jasontest/domain/action"
+	"git.jasonraimondi.com/jason/jasontest/domain/action_handlers"
+	lib2 "git.jasonraimondi.com/jason/jasontest/domain/lib"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestCreatePersonHandler(t *testing.T) {
-	r := lib.NewTestApplication().RepositoryFactory()
+	r := lib2.NewTestApplication().RepositoryFactory()
 
 	cp := action_handlers.NewCreatePersonHandler(r.Person())
 	first := "Jason"
 	last := "Raimondi"
 	password := "jasonraimondi"
-	err := cp.Handle(action.NewCreatePerson(
+	err := cp.Handle(action2.NewCreatePerson(
 		&first,
 		&last,
 		"jason@raimondi.us",

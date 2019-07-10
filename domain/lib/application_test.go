@@ -1,9 +1,9 @@
-package main_test
+package lib_test
 
 import (
 	"fmt"
-	"git.jasonraimondi.com/jason/jasontest/action"
-	"git.jasonraimondi.com/jason/jasontest/lib"
+	"git.jasonraimondi.com/jason/jasontest/domain/action"
+	"git.jasonraimondi.com/jason/jasontest/domain/lib"
 	"testing"
 )
 

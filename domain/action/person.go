@@ -1,13 +1,13 @@
 package action
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/lib"
+	lib2 "git.jasonraimondi.com/jason/jasontest/domain/lib"
 	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
 type CreatePerson struct {
-	*lib.Command
+	*lib2.Command
 	First    *string
 	Last     *string
 	Email    string
@@ -15,7 +15,7 @@ type CreatePerson struct {
 }
 
 func NewCreatePerson(first *string, last *string, email string, password *string) *CreatePerson {
-	command := &lib.Command{
+	command := &lib2.Command{
 		Time:      time.Now(),
 		CommandId: uuid.NewV4().String(),
 	}
