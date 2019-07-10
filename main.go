@@ -19,7 +19,6 @@ var (
 		Short('k').
 		String()
 )
-
 func init() {
 	kingpin.Parse()
 }
@@ -30,7 +29,12 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	authRoute := middleware.JWT([]byte(*JwtSecureKey))
+
+	config := middleware.JWTConfig{
+		Claims:     &jwtCustomClaims{},
+		SigningKey: []byte("secret"),
+	}
+	authRoute := middleware.JWTWithConfig(config)
 
 	e.POST("/login", login)
 
@@ -45,31 +49,36 @@ func main() {
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-
-
-
-
+type jwtCustomClaims struct {
+	Name  string `json:"name"`
+	Admin bool   `json:"admin"`
+	jwt.StandardClaims
+}
 
 func login(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
+
+	// diminish brute force attempts
+	time.Sleep(500 * time.Millisecond)
 
 	// Throws unauthorized error
 	if username != "jon" && password != "shhh!" {
 		return echo.ErrUnauthorized
 	}
 
-	// Create token
-	token := jwt.New(jwt.SigningMethodHS256)
-
-	// Set claims
-	claims := token.Claims.(jwt.MapClaims)
-	claims["name"] = "Jon Snow"
-	claims["admin"] = true
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	// Set custom claims
+	claims := &jwtCustomClaims{
+		username,
+		true,
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("secret"))
+	t, err := token.SignedString([]byte(*JwtSecureKey))
 	if err != nil {
 		return err
 	}
