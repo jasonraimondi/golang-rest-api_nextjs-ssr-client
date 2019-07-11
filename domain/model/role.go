@@ -1,6 +1,6 @@
 package model
 
 type Role struct {
-	ID   string `db:"id"`
+	ID   int32  `db:"id"`
 	Name string `db:"name"`
 }

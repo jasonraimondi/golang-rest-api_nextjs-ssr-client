@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type Person struct {
+type User struct {
 	ID           string         `db:"id"`
 	FirstName    sql.NullString `db:"first_name"`
 	LastName     sql.NullString `db:"last_name"`
@@ -17,8 +17,8 @@ type Person struct {
 	ModifiedAt   sql.NullInt64  `db:"modified_at"`
 }
 
-func NewPerson(email string) (p Person) {
-	return Person{
+func NewUser(email string) (u User) {
+	return User{
 		ID:           uuid.NewV4().String(),
 		FirstName:    ToNullString(""),
 		LastName:     ToNullString(""),
@@ -29,15 +29,15 @@ func NewPerson(email string) (p Person) {
 	}
 }
 
-func (p *Person) SetPassword(pass string) (err error) {
+func (u *User) SetPassword(pass string) (err error) {
 	bytes, err := HashPassword(pass)
 	if err != nil {
 		return err
 	}
-	p.PasswordHash = ToNullString(string(bytes))
+	u.PasswordHash = ToNullString(string(bytes))
 	return nil
 }
 
-func (p *Person) CheckPassword(pass string) bool {
-	return CheckPasswordHash(pass, p.PasswordHash.String)
+func (u *User) CheckPassword(pass string) bool {
+	return CheckPasswordHash(pass, u.PasswordHash.String)
 }

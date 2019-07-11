@@ -13,7 +13,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	time.Sleep(500 * time.Millisecond)
 
 	// Throws unauthorized error
-	p, err := h.App.RepositoryFactory().Person().GetByEmail(c.FormValue("email"))
+	p, err := h.App.RepositoryFactory().User().GetByEmail(c.FormValue("email"))
 
 	// Set custom claims
 	claims := &JwtCustomClaims{

@@ -7,7 +7,7 @@ import (
 )
 
 func TestPerson_SetPassword(t *testing.T) {
-	p := model.NewPerson("jason@raimondi.us")
+	p := model.NewUser("jason@raimondi.us")
 	password := "jasonraimondi"
 
 	assert.NoError(t, p.SetPassword(password))
