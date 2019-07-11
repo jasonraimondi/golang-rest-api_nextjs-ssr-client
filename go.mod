@@ -3,7 +3,7 @@ module git.jasonraimondi.com/jason/jasontest
 go 1.12
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/golang-migrate/migrate/v4 v4.4.0
 	github.com/jmoiron/sqlx v1.2.0

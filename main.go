@@ -19,6 +19,7 @@ var (
 		Short('k').
 		String()
 )
+
 func init() {
 	kingpin.Parse()
 }
@@ -32,7 +33,7 @@ func main() {
 
 	config := middleware.JWTConfig{
 		Claims:     &jwtCustomClaims{},
-		SigningKey: []byte("secret"),
+		SigningKey: []byte(*JwtSecureKey),
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
@@ -94,7 +95,6 @@ func accessible(c echo.Context) error {
 
 func restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	name := claims["name"].(string)
-	return c.String(http.StatusOK, "Welcome "+name+"!")
+	claims := user.Claims.(*jwtCustomClaims)
+	return c.JSON(http.StatusOK, "It Worked! "+claims.Name+"!")
 }
