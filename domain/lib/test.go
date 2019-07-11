@@ -20,8 +20,8 @@ func NewTestApplication() (a *Application) {
 	if err != nil {
 		panic(err)
 	}
-	a = NewApplication(dbx, &databaseInstance)
-	if err = repository.MigrateNow(a.Driver); err != nil {
+	a = NewApplication(dbx)
+	if err = repository.MigrateNow(&databaseInstance); err != nil {
 		panic(err)
 	}
 	return a

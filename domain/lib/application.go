@@ -3,17 +3,15 @@ package lib
 import (
 	"fmt"
 	"git.jasonraimondi.com/jason/jasontest/domain/repository"
-	"github.com/golang-migrate/migrate/v4/database"
 	"github.com/jmoiron/sqlx"
 )
 
 type Application struct {
 	dbx    *sqlx.DB
-	Driver *database.Driver
 }
 
-func NewApplication(dbx *sqlx.DB, driver *database.Driver) *Application {
-	return &Application{dbx: dbx, Driver: driver}
+func NewApplication(dbx *sqlx.DB) *Application {
+	return &Application{dbx: dbx}
 }
 
 func (a *Application) RepositoryFactory() *repository.Factory {
