@@ -1,28 +1,20 @@
 package web
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/domain/action"
-	"git.jasonraimondi.com/jason/jasontest/domain/action_handlers"
+	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/labstack/echo"
 	"net/http"
 )
 
-func (h *Handler) SignUp(c echo.Context) error {
-	first := c.FormValue("first")
-	last := c.FormValue("last")
-	password := c.FormValue("password")
-
-	r := h.App.RepositoryFactory()
-	createHandler := action_handlers.NewCreatePersonHandler(r.Person())
-
-	createPerson := action.NewCreatePerson(
-		&first,
-		&last,
-		c.FormValue("email"),
-		&password,
-	)
-	if err := createHandler.Handle(createPerson); err != nil {
+func (h *Handler) SignUp(c echo.Context) (err error) {
+	p := model.NewPerson(c.FormValue("email"))
+	p.FirstName = model.ToNullString(c.FormValue("first_name"))
+	p.LastName = model.ToNullString(c.FormValue("last_name"))
+	if err = p.SetPassword(c.FormValue("password")); err != nil {
 		return err
 	}
-	return c.JSON(http.StatusCreated, createPerson)
+	if err = h.App.RepositoryFactory().Person().Create(p); err != nil {
+		return err
+	}
+	return c.JSON(http.StatusCreated, http.StatusText(http.StatusCreated))
 }

@@ -19,14 +19,14 @@ func NewSqlxPersonRepository(dbx *sqlx.DB) *SqlxPersonRepository {
 	return &SqlxPersonRepository{dbx}
 }
 
-func (r *SqlxPersonRepository) GetById(id string) (p *model2.Person, err error) {
-	p = &model2.Person{}
+func (r *SqlxPersonRepository) GetById(id string) (p model2.Person, err error) {
+	p = model2.Person{}
 	err = r.dbx.Get(p, `SELECT * FROM persons WHERE id=$1`, id)
 	return p, err
 }
 
-func (r *SqlxPersonRepository) GetByEmail(email string) (p *model2.Person, err error) {
-	p = &model2.Person{}
+func (r *SqlxPersonRepository) GetByEmail(email string) (p model2.Person, err error) {
+	p = model2.Person{}
 	err = r.dbx.Get(p, `SELECT * FROM persons WHERE email=$1`, email)
 	return p, err
 }

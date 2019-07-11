@@ -1,27 +1,23 @@
 package web
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"net/http"
 	"time"
 )
 
-func (h *Handler) Login(c echo.Context) error {
-	username := c.FormValue("username")
-	password := c.FormValue("password")
-
+func (h *Handler) Login(c echo.Context) (err error) {
 	// diminish brute force attempts
 	time.Sleep(500 * time.Millisecond)
 
 	// Throws unauthorized error
-	if username != "jon" && password != "shhh!" {
-		return echo.ErrUnauthorized
-	}
+	p, err := h.App.RepositoryFactory().Person().GetByEmail(c.FormValue("email"))
 
 	// Set custom claims
 	claims := &JwtCustomClaims{
-		username,
+		p.Email,
 		true,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
@@ -30,7 +26,7 @@ func (h *Handler) Login(c echo.Context) error {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("*JwtSecureKey"))
+	t, err := token.SignedString([]byte(h.JwtSecureKey))
 	if err != nil {
 		return err
 	}
@@ -47,5 +43,5 @@ func (h *Handler) Accessible(c echo.Context) error {
 func (h *Handler) Restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*JwtCustomClaims)
-	return c.JSON(http.StatusOK, "It Worked! "+claims.Name+"!")
+	return c.JSON(http.StatusOK, fmt.Sprintf("It Worked! %s!", claims.Email))
 }

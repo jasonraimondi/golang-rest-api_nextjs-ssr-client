@@ -7,42 +7,50 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	_ "github.com/lib/pq"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
-	EnableDebugging = kingpin.
+	ENABLE_DEBUGGING = kingpin.
 		Flag("debug", "Enable Debug.").
-		Short('d').
+		Short('D').
+		Envar("ENABLE_DEBUGGING").
 		Bool()
-	JwtSecureKey = kingpin.
+	JWT_SECURE_KEY = kingpin.
 		Flag("jwt-secure-key", "Secure JWT Key, changing this logs everyone out.").
 		Short('k').
+		Envar("JWT_SECURE_KEY").
 		String()
 	PG_HOST = kingpin.
 		Flag("pg-host", "Postgres Host").
 		Short('h').
+		Envar("PG_HOST").
 		Default("localhost").
 		String()
 	PG_PORT = kingpin.
-		Flag("pg-host", "Postgres Port").
+		Flag("pg-port", "Postgres Port").
 		Short('P').
+		Envar("PG_PORT").
 		Default("5432").
 		String()
 	PG_USER = kingpin.
-		Flag("pg-host", "Postgres Database").
+		Flag("pg-user", "Postgres User").
 		Short('u').
-		Default("prints").
+		Envar("PG_USER").
+		Default("print").
 		String()
 	PG_PASSWORD = kingpin.
-		Flag("pg-host", "Postgres Host").
+		Flag("pg-password", "Postgres Host").
 		Short('p').
-		Default("prints").
+		Envar("PG_PASSWORD").
+		Default("print").
 		String()
 	PG_DATABASE = kingpin.
-		Flag("pg-host", "Postgres Host").
+		Flag("pg-datbase", "Postgres Host").
 		Short('d').
-		Default("prints").
+		Envar("PG_DATABASE").
+		Default("print").
 		String()
 )
 
@@ -54,27 +62,28 @@ var (
 func init() {
 	kingpin.Parse()
 	s := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE,
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		*PG_HOST, *PG_PORT, *PG_USER, *PG_PASSWORD, *PG_DATABASE,
 	)
+	fmt.Println(s)
 	dbx, err := sqlx.Connect("postgres", s)
 	if err != nil {
 		panic(err)
 	}
 	a = lib.NewApplication(dbx)
-	h = &web.Handler{App: a}
+	h = web.NewHandler(a, *JWT_SECURE_KEY)
 }
 
 func main() {
 	e := echo.New()
-	e.Debug = *EnableDebugging
+	e.Debug = *ENABLE_DEBUGGING
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	config := middleware.JWTConfig{
 		Claims:     &web.JwtCustomClaims{},
-		SigningKey: []byte(*JwtSecureKey),
+		SigningKey: []byte(*JWT_SECURE_KEY),
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
