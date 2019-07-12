@@ -2,9 +2,16 @@ package model
 
 import (
 	"database/sql"
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 	"strconv"
+	"time"
 )
+
+//ToNullString invalidates a sql.NullString if empty, validates if not empty
+func ToNullTime(t *time.Time) pq.NullTime {
+	return pq.NullTime{Time: *t, Valid: t != nil}
+}
 
 //ToNullString invalidates a sql.NullString if empty, validates if not empty
 func ToNullString(s string) sql.NullString {

@@ -15,7 +15,7 @@ type SqlxUserRepository struct {
 	dbx *sqlx.DB
 }
 
-func NewSqlxPersonRepository(dbx *sqlx.DB) *SqlxUserRepository {
+func NewSqlxUserRepository(dbx *sqlx.DB) *SqlxUserRepository {
 	return &SqlxUserRepository{dbx}
 }
 
@@ -25,16 +25,16 @@ func (r *SqlxUserRepository) GetById(id string) (p model.User, err error) {
 	return p, err
 }
 
-func (r *SqlxUserRepository) GetByEmail(email string) (p model.User, err error) {
-	p = model.User{}
+func (r *SqlxUserRepository) GetByEmail(email string) (p *model.User, err error) {
+	p = &model.User{}
 	err = r.dbx.Get(p, `SELECT * FROM users WHERE email=$1`, email)
 	return p, err
 }
 
-func (r *SqlxUserRepository) Create(p model.User) (err error) {
+func (r *SqlxUserRepository) Create(p *model.User) (err error) {
 	_, err = r.dbx.NamedExec(`
-		INSERT INTO users (id, first_name, last_name, email, password_hash, created_at, modified_at) 
-		VALUES (:id, :first_name, :last_name, :email, :password_hash, :created_at, :modified_at)
+		INSERT INTO users (id, first_name, last_name, email, password_hash, is_verified, created_at, modified_at) 
+		VALUES (:id, :first_name, :last_name, :email, :password_hash, :is_verified, :created_at, :modified_at)
 	`, p)
 	return err
 }

@@ -2,30 +2,32 @@ package model
 
 import (
 	"database/sql"
+	"github.com/lib/pq"
 	"github.com/satori/go.uuid"
 	"time"
 )
 
 type User struct {
-	ID           string         `db:"id"`
+	ID           uuid.UUID      `db:"id"`
 	FirstName    sql.NullString `db:"first_name"`
 	LastName     sql.NullString `db:"last_name"`
 	Email        string         `db:"email"`
 	PasswordHash sql.NullString `db:"password_hash"`
 	IsVerified   bool           `db:"is_verified"`
-	CreatedAt    int64          `db:"created_at"`
-	ModifiedAt   sql.NullInt64  `db:"modified_at"`
+	CreatedAt    time.Time      `db:"created_at"`
+	ModifiedAt   pq.NullTime    `db:"modified_at"`
 }
 
-func NewUser(email string) (u User) {
-	return User{
-		ID:           uuid.NewV4().String(),
+func NewUser(email string) (u *User) {
+	return &User{
+		ID:           uuid.NewV4(),
 		FirstName:    ToNullString(""),
 		LastName:     ToNullString(""),
 		Email:        email,
 		PasswordHash: ToNullString(""),
-		CreatedAt:    time.Now().Unix(),
-		ModifiedAt:   ToNullInt64(""),
+		IsVerified:   true,
+		CreatedAt:    time.Now(),
+		ModifiedAt:   pq.NullTime{Time: time.Now(), Valid: false},
 	}
 }
 
