@@ -5,7 +5,7 @@ import (
 )
 
 type Factory struct {
-	dbx *sqlx.DB
+	DBx *sqlx.DB
 }
 
 func NewFactory(dbx *sqlx.DB) *Factory {
@@ -13,9 +13,9 @@ func NewFactory(dbx *sqlx.DB) *Factory {
 }
 
 func (r *Factory) User() *SqlxUserRepository {
-	return NewSqlxUserRepository(r.dbx)
+	return NewSqlxUserRepository(r.DBx)
 }
 
 func (r *Factory) SignUpConfirmation() *SqlxSignUpConfirmationRepository {
-	return NewSqlxSignUpConfirmationRepository(r.dbx)
+	return NewSqlxSignUpConfirmationRepository(r.DBx)
 }

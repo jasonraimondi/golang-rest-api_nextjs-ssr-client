@@ -6,13 +6,13 @@ import (
 )
 
 type Application struct {
-	dbx *sqlx.DB
+	DBx *sqlx.DB
 }
 
 func NewApplication(dbx *sqlx.DB) *Application {
-	return &Application{dbx: dbx}
+	return &Application{DBx: dbx}
 }
 
 func (a *Application) RepositoryFactory() *repository.Factory {
-	return repository.NewFactory(a.dbx)
+	return repository.NewFactory(a.DBx)
 }

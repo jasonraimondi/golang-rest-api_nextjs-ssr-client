@@ -25,7 +25,7 @@ func NewUser(email string) (u *User) {
 		LastName:     ToNullString(""),
 		Email:        email,
 		PasswordHash: ToNullString(""),
-		IsVerified:   true,
+		IsVerified:   false,
 		CreatedAt:    time.Now(),
 		ModifiedAt:   pq.NullTime{Time: time.Now(), Valid: false},
 	}

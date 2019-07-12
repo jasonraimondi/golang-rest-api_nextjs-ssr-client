@@ -31,12 +31,3 @@ func (r *SqlxSignUpConfirmationRepository) GetByEmail(email string) (p *model.Si
 	return p, err
 }
 
-func (r *SqlxSignUpConfirmationRepository) Create(p *model.SignUpConfirmation) (err error) {
-	r.dbx.MustExec(
-		"INSERT INTO users (token, user_id, created_at) VALUES ($1, $2, $3)",
-		p.Token,
-		p.User.ID,
-		p.CreatedAt,
-	)
-	return err
-}

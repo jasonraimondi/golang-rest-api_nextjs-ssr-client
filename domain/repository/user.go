@@ -31,10 +31,17 @@ func (r *SqlxUserRepository) GetByEmail(email string) (p *model.User, err error)
 	return p, err
 }
 
+var insertQuery = `
+	INSERT INTO users (id, first_name, last_name, email, password_hash, is_verified, created_at, modified_at) 
+	VALUES (:id, :first_name, :last_name, :email, :password_hash, :is_verified, :created_at, :modified_at)
+`
+
 func (r *SqlxUserRepository) Create(p *model.User) (err error) {
-	_, err = r.dbx.NamedExec(`
-		INSERT INTO users (id, first_name, last_name, email, password_hash, is_verified, created_at, modified_at) 
-		VALUES (:id, :first_name, :last_name, :email, :password_hash, :is_verified, :created_at, :modified_at)
-	`, p)
+	_, err = r.dbx.NamedExec(insertQuery, p)
+	return err
+}
+
+func (r *SqlxUserRepository) CreateTx(tx *sqlx.Tx, p *model.User) (err error) {
+	_, err = tx.NamedExec(insertQuery, p)
 	return err
 }

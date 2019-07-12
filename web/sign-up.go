@@ -15,7 +15,7 @@ func (h *Handler) ConfirmEmail(c echo.Context) (err error) {
 func (h *Handler) SignUp(c echo.Context) (err error) {
 	r := h.App.RepositoryFactory()
 	email := c.FormValue("email")
-
+	r.User()
 	if err = guardAgainstInvalidEmail(h.Validator, email); err != nil {
 		return err
 	} else if err = guardAgainstDuplicateEmail(r.User(), email); err != nil {
@@ -34,12 +34,19 @@ func (h *Handler) SignUp(c echo.Context) (err error) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "server error set user password")
 		}
 	}
-
 	t := model.NewSignUpConfirmation(u)
-	if err = r.SignUpConfirmation().Create(t); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating sign up confirmation", err)
-	} else if err = r.User().Create(u); err != nil {
+	tx := r.DBx.MustBegin()
+	if err = r.User().CreateTx(tx, u); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
+	}
+	tx.MustExec(
+		"INSERT INTO sign_up_confirmation (token, user_id, created_at) VALUES ($1, $2, $3)",
+		t.Token,
+		t.User.ID,
+		t.CreatedAt,
+	)
+	if err = tx.Commit(); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err, "server error transaction commit user", err)
 	}
 	return c.JSON(http.StatusCreated, http.StatusText(http.StatusCreated))
 }

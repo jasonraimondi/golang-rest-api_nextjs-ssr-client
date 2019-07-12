@@ -8,7 +8,7 @@ import (
 type SignUpConfirmation struct {
 	Token     uuid.UUID `db:"token"`
 	CreatedAt time.Time `db:"created_at"`
-	*User     `db:"user_id"`
+	*User     `db:"user"`
 }
 
 func NewSignUpConfirmation(u *User) (c *SignUpConfirmation) {
