@@ -8,9 +8,13 @@ import (
 	"time"
 )
 
-//ToNullString invalidates a sql.NullString if empty, validates if not empty
-func ToNullTime(t *time.Time) pq.NullTime {
-	return pq.NullTime{Time: *t, Valid: t != nil}
+//ToNullTime invalidates a pq.ToNullTime if empty, validates if not empty
+func ToNullTime(t time.Time) pq.NullTime {
+	return pq.NullTime{Time: t, Valid: true}
+}
+
+func ToNullNullTime() pq.NullTime {
+	return pq.NullTime{Time: time.Now(), Valid: false}
 }
 
 //ToNullString invalidates a sql.NullString if empty, validates if not empty

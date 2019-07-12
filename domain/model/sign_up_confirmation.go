@@ -8,13 +8,13 @@ import (
 type SignUpConfirmation struct {
 	Token     uuid.UUID `db:"token"`
 	CreatedAt time.Time `db:"created_at"`
-	*User     `db:"user"`
+	UserId    uuid.UUID `db:"user_id"`
 }
 
-func NewSignUpConfirmation(u *User) (c *SignUpConfirmation) {
+func NewSignUpConfirmation(u User) (c *SignUpConfirmation) {
 	return &SignUpConfirmation{
 		Token:     uuid.NewV4(),
 		CreatedAt: time.Now(),
-		User:      u,
+		UserId:    u.ID,
 	}
 }

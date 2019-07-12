@@ -11,4 +11,3 @@ type Factory struct {
 func NewFactory(r *repository.Factory) *Factory {
 	return &Factory{r}
 }
-

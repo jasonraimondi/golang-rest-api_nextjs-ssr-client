@@ -9,13 +9,41 @@ import (
 )
 
 func (h *Handler) ConfirmEmail(c echo.Context) (err error) {
+	r := h.App.RepositoryFactory()
+
+	token := c.QueryParam("t")
+	userId := c.QueryParam("u")
+
+	tx := r.DBx.MustBegin()
+	signUpConfirmation, err := repository.GetByTokenTx(tx, token)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, "token not found")
+	}
+
+	user, err := repository.GetByIdTx(tx, userId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, "error token not found")
+	} else if err := tx.Commit(); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed", err)
+	} else if signUpConfirmation.UserId.String() != userId {
+		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
+	}
+
+	user.IsVerified = true
+
+	tx = r.DBx.MustBegin()
+	repository.UpdateUserTx(tx, *user)
+	repository.DeleteSignUpConfirmationTx(tx, signUpConfirmation)
+	if err := tx.Commit(); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
+	}
 	return c.JSON(http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func (h *Handler) SignUp(c echo.Context) (err error) {
 	r := h.App.RepositoryFactory()
+
 	email := c.FormValue("email")
-	r.User()
 	if err = guardAgainstInvalidEmail(h.Validator, email); err != nil {
 		return err
 	} else if err = guardAgainstDuplicateEmail(r.User(), email); err != nil {
@@ -25,7 +53,6 @@ func (h *Handler) SignUp(c echo.Context) (err error) {
 	u := model.NewUser(email)
 	u.FirstName = model.ToNullString(c.FormValue("first_name"))
 	u.LastName = model.ToNullString(c.FormValue("last_name"))
-
 	password := c.FormValue("password")
 	if password != "" {
 		if err = guardAgainstInvalidPassword(h.Validator, password); err != nil {
@@ -34,17 +61,12 @@ func (h *Handler) SignUp(c echo.Context) (err error) {
 			return echo.NewHTTPError(http.StatusInternalServerError, "server error set user password")
 		}
 	}
-	t := model.NewSignUpConfirmation(u)
+	signUpConfirmation := model.NewSignUpConfirmation(*u)
 	tx := r.DBx.MustBegin()
-	if err = r.User().CreateTx(tx, u); err != nil {
+	if err = repository.CreateUserTx(tx, *u); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
-	tx.MustExec(
-		"INSERT INTO sign_up_confirmation (token, user_id, created_at) VALUES ($1, $2, $3)",
-		t.Token,
-		t.User.ID,
-		t.CreatedAt,
-	)
+	repository.CreateSignUpConfirmationTx(tx, signUpConfirmation)
 	if err = tx.Commit(); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err, "server error transaction commit user", err)
 	}

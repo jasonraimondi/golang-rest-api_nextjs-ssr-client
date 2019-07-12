@@ -7,9 +7,9 @@ import (
 )
 
 type Handler struct {
-	App *lib.Application
+	App          *lib.Application
 	JwtSecureKey string
-	Validator *validator.Validate
+	Validator    *validator.Validate
 }
 
 func NewHandler(a *lib.Application, j string) *Handler {
@@ -17,9 +17,9 @@ func NewHandler(a *lib.Application, j string) *Handler {
 	_ = v.RegisterValidation("password-strength", ValidatePasswordStrength)
 
 	return &Handler{
-		App: a,
+		App:          a,
 		JwtSecureKey: j,
-		Validator: v,
+		Validator:    v,
 	}
 }
 

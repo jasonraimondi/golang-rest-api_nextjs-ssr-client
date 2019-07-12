@@ -13,15 +13,15 @@ import (
 
 var (
 	ENABLE_DEBUGGING = kingpin.
-		Flag("debug", "Enable Debug.").
-		Short('D').
-		Envar("ENABLE_DEBUGGING").
-		Bool()
+				Flag("debug", "Enable Debug.").
+				Short('D').
+				Envar("ENABLE_DEBUGGING").
+				Bool()
 	JWT_SECURE_KEY = kingpin.
-		Flag("jwt-secure-key", "Secure JWT Key, changing this logs everyone out.").
-		Short('k').
-		Envar("JWT_SECURE_KEY").
-		String()
+			Flag("jwt-secure-key", "Secure JWT Key, changing this logs everyone out.").
+			Short('k').
+			Envar("JWT_SECURE_KEY").
+			String()
 	PG_HOST = kingpin.
 		Flag("pg-host", "Postgres Host").
 		Short('h').
@@ -41,17 +41,17 @@ var (
 		Default("print").
 		String()
 	PG_PASSWORD = kingpin.
-		Flag("pg-password", "Postgres Host").
-		Short('p').
-		Envar("PG_PASSWORD").
-		Default("print").
-		String()
+			Flag("pg-password", "Postgres Host").
+			Short('p').
+			Envar("PG_PASSWORD").
+			Default("print").
+			String()
 	PG_DATABASE = kingpin.
-		Flag("pg-datbase", "Postgres Host").
-		Short('d').
-		Envar("PG_DATABASE").
-		Default("print").
-		String()
+			Flag("pg-datbase", "Postgres Host").
+			Short('d').
+			Envar("PG_DATABASE").
+			Default("print").
+			String()
 )
 
 var (
@@ -91,6 +91,7 @@ func main() {
 
 	// Unauthenticated route
 	e.POST("/sign-up", h.SignUp)
+	e.GET("/confirm-email", h.ConfirmEmail)
 	e.GET("/", h.Accessible)
 
 	// Restricted group
