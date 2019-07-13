@@ -4,24 +4,17 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/jmoiron/sqlx"
 	uuid "github.com/satori/go.uuid"
-	//uuid "github.com/satori/go.uuid"
 )
 
-type SignUpConfirmationRepository interface {
-	GetById(id string) (*model.SignUpConfirmation, error)
-	GetByEmail(email string) (*model.SignUpConfirmation, error)
-	Create(p model.SignUpConfirmation) error
-}
-
-type SqlxSignUpConfirmationRepository struct {
+type SignUpConfirmationRepository struct {
 	dbx *sqlx.DB
 }
 
-func NewSqlxSignUpConfirmationRepository(dbx *sqlx.DB) *SqlxSignUpConfirmationRepository {
-	return &SqlxSignUpConfirmationRepository{dbx}
+func NewSignUpConfirmationRepository(dbx *sqlx.DB) *SignUpConfirmationRepository {
+	return &SignUpConfirmationRepository{dbx}
 }
 
-func (r *SqlxSignUpConfirmationRepository) GetByToken(t string) (s *model.SignUpConfirmation, err error) {
+func (r *SignUpConfirmationRepository) GetByToken(t string) (s *model.SignUpConfirmation, err error) {
 	token := uuid.FromStringOrNil(t)
 	s = &model.SignUpConfirmation{}
 	if err = r.dbx.Get(s, `SELECT * FROM sign_up_confirmation WHERE token=$1`, token); err != nil {

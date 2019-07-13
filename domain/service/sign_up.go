@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-func (f *Service) CreateUser(email string, firstName string, lastName string, password string) (u *model.User, httpErr *echo.HTTPError) {
-	if err := guardAgainstInvalidEmail(f.validate, email); err != nil {
+func (s *Service) CreateUser(email string, firstName string, lastName string, password string) (u *model.User, httpErr *echo.HTTPError) {
+	if err := guardAgainstInvalidEmail(s.validate, email); err != nil {
 		return nil, echo.NewHTTPError(http.StatusNotAcceptable, "invalid email", err)
-	} else if err = guardAgainstDuplicateEmail(f.repository.User(), email); err != nil {
+	} else if err = guardAgainstDuplicateEmail(s.repository.User(), email); err == nil {
 		return nil, echo.NewHTTPError(http.StatusConflict, "duplicate email", err)
 	}
 
@@ -20,7 +20,7 @@ func (f *Service) CreateUser(email string, firstName string, lastName string, pa
 	u.LastName = model.ToNullString(lastName)
 
 	if password != "" {
-		if err := guardAgainstInvalidPassword(f.validate, password); err != nil {
+		if err := guardAgainstInvalidPassword(s.validate, password); err != nil {
 			return nil, echo.NewHTTPError(http.StatusNotAcceptable, "invalid password", err)
 		} else if err = u.SetPassword(password); err != nil {
 			return nil, echo.NewHTTPError(http.StatusInternalServerError, "server error set user password")
@@ -29,21 +29,21 @@ func (f *Service) CreateUser(email string, firstName string, lastName string, pa
 	return u, httpErr
 }
 
-func (f *Service) CreateSignUpConfirmation(u *model.User) (s *model.SignUpConfirmation, httpErr *echo.HTTPError) {
-	s = model.NewSignUpConfirmation(*u)
-	tx := f.repository.DBx.MustBegin()
+func (s *Service) CreateSignUpConfirmation(u *model.User) (c *model.SignUpConfirmation, httpErr *echo.HTTPError) {
+	c = model.NewSignUpConfirmation(*u)
+	tx := s.repository.DBx.MustBegin()
 	if err := repository.CreateUserTx(tx, *u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
-	repository.CreateSignUpConfirmationTx(tx, s)
+	repository.CreateSignUpConfirmationTx(tx, c)
 	if err := tx.Commit(); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error transaction commit user", err)
 	}
-	return s, httpErr
+	return c, httpErr
 }
 
-func (f *Service) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
-	tx := f.repository.DBx.MustBegin()
+func (s *Service) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
+	tx := s.repository.DBx.MustBegin()
 	signUpConfirmation, err := repository.GetByTokenTx(tx, token)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "token not found")
@@ -57,7 +57,7 @@ func (f *Service) ValidateEmailSignUpConfirmation(token string, userId string) *
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
-	tx = f.repository.DBx.MustBegin()
+	tx = s.repository.DBx.MustBegin()
 	repository.UpdateUserTx(tx, *user)
 	repository.DeleteSignUpConfirmationTx(tx, signUpConfirmation)
 	if err := tx.Commit(); err != nil {

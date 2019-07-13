@@ -16,10 +16,15 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	// Throws unauthorized error
 	p, err := h.App.RepositoryFactory.User().GetByEmail(c.FormValue("email"))
 
+	if err != nil {
+		return echo.NewHTTPError(http.StatusNotFound, "user not found")
+	} else if p.CheckPassword(c.FormValue("password")) == false {
+		return echo.NewHTTPError(http.StatusUnauthorized, "invalid password")
+	}
+
 	// Set custom claims
 	claims := &JwtCustomClaims{
 		p.Email,
-		true,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 		},

@@ -16,6 +16,6 @@ func (r *Factory) User() *UserRepository {
 	return NewUserRepository(r.DBx)
 }
 
-func (r *Factory) SignUpConfirmation() *SqlxSignUpConfirmationRepository {
-	return NewSqlxSignUpConfirmationRepository(r.DBx)
+func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
+	return NewSignUpConfirmationRepository(r.DBx)
 }

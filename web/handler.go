@@ -10,15 +10,22 @@ type Handler struct {
 	JwtSecureKey string
 }
 
-func NewHandler(a *lib.Application, j string) *Handler {
+func NewHandler(a *lib.Application, jwtSecureKey string) *Handler {
 	return &Handler{
 		App:          a,
-		JwtSecureKey: j,
+		JwtSecureKey: jwtSecureKey,
+	}
+}
+
+func NewTestHandler() *Handler {
+	a := lib.NewTestApplication()
+	return &Handler{
+		App:          a,
+		JwtSecureKey: "testing",
 	}
 }
 
 type JwtCustomClaims struct {
-	Email      string `json:"email"`
-	IsVerified bool   `json:"isVerified"`
+	Email string `json:"email"`
 	jwt.StandardClaims
 }

@@ -24,7 +24,7 @@ INSERT INTO users (
 	is_verified, 
 	created_at, 
 	modified_at
-) 
+)
 VALUES (
 	:id, 
 	:first_name, 
