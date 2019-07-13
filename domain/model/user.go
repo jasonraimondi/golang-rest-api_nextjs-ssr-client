@@ -2,8 +2,9 @@ package model
 
 import (
 	"database/sql"
-	"github.com/lib/pq"
+	"fmt"
 	"github.com/satori/go.uuid"
+	"strings"
 	"time"
 )
 
@@ -14,8 +15,8 @@ type User struct {
 	Email        string         `db:"email"`
 	PasswordHash sql.NullString `db:"password_hash"`
 	IsVerified   bool           `db:"is_verified"`
-	CreatedAt    time.Time      `db:"created_at"`
-	ModifiedAt   pq.NullTime    `db:"modified_at"`
+	CreatedAt    int64      `db:"created_at"`
+	ModifiedAt   sql.NullInt64    `db:"modified_at"`
 }
 
 func NewUser(email string) (u *User) {
@@ -26,8 +27,8 @@ func NewUser(email string) (u *User) {
 		Email:        email,
 		PasswordHash: ToNullString(""),
 		IsVerified:   false,
-		CreatedAt:    time.Now(),
-		ModifiedAt:   ToNullNullTime(),
+		CreatedAt:    time.Now().Unix(),
+		ModifiedAt:   ToNullInt64(""),
 	}
 }
 
@@ -42,4 +43,23 @@ func (u *User) SetPassword(pass string) (err error) {
 
 func (u *User) CheckPassword(pass string) bool {
 	return CheckPasswordHash(pass, u.PasswordHash.String)
+}
+
+func (u *User) SetVerified() {
+	u.IsVerified = true
+}
+
+func (u *User) GetFullName() (name string) {
+	var s []string
+	if u.FirstName.Valid {
+		s = append(s, u.FirstName.String)
+	}
+	if u.LastName.Valid {
+		s = append(s, u.LastName.String)
+	}
+	return strings.Join(s, " ")
+}
+
+func (u *User) GetFullIdentifier() (name string) {
+	return fmt.Sprintf("%s <%s>", u.GetFullName(), u.Email)
 }

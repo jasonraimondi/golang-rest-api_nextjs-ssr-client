@@ -3,63 +3,54 @@ package repository
 import (
 	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/jmoiron/sqlx"
-	"time"
 )
 
-type UserRepository interface {
-	GetById(id string) (*model.User, error)
-	GetByEmail(email string) (*model.User, error)
-	Create(p model.User) error
-}
-
-type SqlxUserRepository struct {
+type UserRepository struct {
 	dbx *sqlx.DB
 }
 
-func NewSqlxUserRepository(dbx *sqlx.DB) *SqlxUserRepository {
-	return &SqlxUserRepository{dbx}
+func NewUserRepository(dbx *sqlx.DB) *UserRepository {
+	return &UserRepository{dbx}
 }
 
-
-var create = `
-	INSERT INTO users (
-		id, 
-		first_name, 
-		last_name, 
-		email, 
-		password_hash, 
-		is_verified, 
-		created_at, 
-		modified_at
-	) 
-	VALUES (
-		:id, 
-		:first_name, 
-		:last_name, 
-		:email, 
-		:password_hash, 
-		:is_verified, 
-		:created_at, 
-		:modified_at
-	)
+var (
+	create = `
+INSERT INTO users (
+	id, 
+	first_name, 
+	last_name, 
+	email, 
+	password_hash, 
+	is_verified, 
+	created_at, 
+	modified_at
+) 
+VALUES (
+	:id, 
+	:first_name, 
+	:last_name, 
+	:email, 
+	:password_hash, 
+	:is_verified, 
+	:created_at, 
+	:modified_at
+)
 `
+	update = `
+UPDATE users 
+	SET 
+		id=:id,
+		first_name=:first_name, 
+		last_name=:last_name,
+		email=:email,
+		password_hash=:password_hash,
+		is_verified=:is_verified,
+		modified_at=:modified_at
+WHERE id=$1
+	`
+)
 
-var update = `
-	UPDATE users 
-		SET 
-			id=:id,
-			first_name=:first_name, 
-			last_name=:last_name,
-			email=:email,
-			password_hash=:password_hash,
-			is_verified=:is_verified,
-			modified_at=:modified_at
-	WHERE id=$1
-`
-
-
-
-func (r *SqlxUserRepository) GetById(id string) (*model.User, error) {
+func (r *UserRepository) GetById(id string) (*model.User, error) {
 	user := &model.User{}
 	if err := r.dbx.Get(user, `SELECT * FROM users WHERE id=$1`, id); err != nil {
 		return nil, err
@@ -67,22 +58,26 @@ func (r *SqlxUserRepository) GetById(id string) (*model.User, error) {
 	return user, nil
 }
 
-func (r *SqlxUserRepository) GetByEmail(email string) (*model.User, error) {
+func (r *UserRepository) GetByEmail(email string) (*model.User, error) {
 	user := &model.User{}
 	err := r.dbx.Get(user, `SELECT * FROM users WHERE email=$1`, email)
 	return user, err
 }
 
+func (r *UserRepository) Create(u model.User) (err error) {
+	_, err = r.dbx.NamedExec(create, u)
+	return err
+}
 
-func UpdateUserTx(tx *sqlx.Tx, p model.User) {
-	p.ModifiedAt = model.ToNullTime(time.Now())
-	if _, err := tx.NamedExec(update, p); err != nil {
+func UpdateUserTx(tx *sqlx.Tx, u model.User) {
+	u.ModifiedAt = model.ToNullInt64Now()
+	if _, err := tx.NamedExec(update, u); err != nil {
 		panic(err)
 	}
 }
 
-func CreateUserTx(tx *sqlx.Tx, p model.User) (err error) {
-	_, err = tx.NamedExec(create, p)
+func CreateUserTx(tx *sqlx.Tx, u model.User) (err error) {
+	_, err = tx.NamedExec(create, u)
 	return err
 }
 

@@ -8,12 +8,13 @@ import (
 	"time"
 )
 
+// @todo pull this into a service
 func (h *Handler) Login(c echo.Context) (err error) {
 	// diminish brute force attempts
 	time.Sleep(500 * time.Millisecond)
 
 	// Throws unauthorized error
-	p, err := h.App.RepositoryFactory().User().GetByEmail(c.FormValue("email"))
+	p, err := h.App.RepositoryFactory.User().GetByEmail(c.FormValue("email"))
 
 	// Set custom claims
 	claims := &JwtCustomClaims{

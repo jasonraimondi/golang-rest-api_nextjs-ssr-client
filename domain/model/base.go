@@ -2,20 +2,10 @@ package model
 
 import (
 	"database/sql"
-	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 	"strconv"
 	"time"
 )
-
-//ToNullTime invalidates a pq.ToNullTime if empty, validates if not empty
-func ToNullTime(t time.Time) pq.NullTime {
-	return pq.NullTime{Time: t, Valid: true}
-}
-
-func ToNullNullTime() pq.NullTime {
-	return pq.NullTime{Time: time.Now(), Valid: false}
-}
 
 //ToNullString invalidates a sql.NullString if empty, validates if not empty
 func ToNullString(s string) sql.NullString {
@@ -27,6 +17,10 @@ func ToNullInt64(s string) sql.NullInt64 {
 	i, err := strconv.Atoi(s)
 	return sql.NullInt64{Int64: int64(i), Valid: err == nil}
 }
+func ToNullInt64Now() sql.NullInt64 {
+		return sql.NullInt64{Int64: time.Now().Unix(), Valid: false}
+}
+
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)

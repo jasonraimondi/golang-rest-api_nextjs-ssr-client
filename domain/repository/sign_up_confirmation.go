@@ -4,7 +4,6 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/jmoiron/sqlx"
 	uuid "github.com/satori/go.uuid"
-
 	//uuid "github.com/satori/go.uuid"
 )
 
@@ -35,7 +34,6 @@ func DeleteSignUpConfirmationTx(tx *sqlx.Tx, s *model.SignUpConfirmation) {
 	tx.MustExec(`DELETE FROM sign_up_confirmation WHERE token=$1`, s.Token)
 }
 
-
 func GetByTokenTx(tx *sqlx.Tx, t string) (s *model.SignUpConfirmation, err error) {
 	token := uuid.FromStringOrNil(t)
 	s = &model.SignUpConfirmation{}
@@ -53,4 +51,3 @@ func CreateSignUpConfirmationTx(tx *sqlx.Tx, s *model.SignUpConfirmation) {
 		s.CreatedAt,
 	)
 }
-
