@@ -14,8 +14,8 @@ import (
 func TestCreateUser(t *testing.T) {
 	e := echo.New()
 	f := make(url.Values)
-	f.Set("first_name", "Jon")
-	f.Set("last_name", "Snow")
+	f.Set("first", "Jon")
+	f.Set("last", "Snow")
 	f.Set("email", "jon23@example.com")
 	req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(f.Encode()))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)

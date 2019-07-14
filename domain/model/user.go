@@ -10,21 +10,21 @@ import (
 
 type User struct {
 	ID           uuid.UUID      `db:"id"`
-	FirstName    sql.NullString `db:"first_name"`
-	LastName     sql.NullString `db:"last_name"`
+	First        sql.NullString `db:"first"`
+	Last         sql.NullString `db:"last"`
 	Email        string         `db:"email"`
 	PasswordHash sql.NullString `db:"password_hash"`
 	IsVerified   bool           `db:"is_verified"`
-	CreatedAt    int64      `db:"created_at"`
-	ModifiedAt   sql.NullInt64    `db:"modified_at"`
+	CreatedAt    int64          `db:"created_at"`
+	ModifiedAt   sql.NullInt64  `db:"modified_at"`
 }
 
 func NewUser(email string) (u *User) {
 	return &User{
 		ID:           uuid.NewV4(),
-		FirstName:    ToNullString(""),
-		LastName:     ToNullString(""),
-		Email:        email,
+		First:        ToNullString(""),
+		Last:         ToNullString(""),
+		Email:        strings.ToLower(email),
 		PasswordHash: ToNullString(""),
 		IsVerified:   false,
 		CreatedAt:    time.Now().Unix(),
@@ -51,11 +51,11 @@ func (u *User) SetVerified() {
 
 func (u *User) GetFullName() (name string) {
 	var s []string
-	if u.FirstName.Valid {
-		s = append(s, u.FirstName.String)
+	if u.First.Valid {
+		s = append(s, u.First.String)
 	}
-	if u.LastName.Valid {
-		s = append(s, u.LastName.String)
+	if u.Last.Valid {
+		s = append(s, u.Last.String)
 	}
 	return strings.Join(s, " ")
 }

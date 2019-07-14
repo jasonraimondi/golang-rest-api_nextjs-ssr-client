@@ -3,8 +3,8 @@ name: default
 
 steps:
   - name: test
-    image: golang:1.12-alpine
+    image: golang:1.12-stretch
     commands:
-      - apk add --no-cache git
+      - apt-get update && apt-get install -y git gcc
       - go mod download
       - go test ./...

@@ -18,9 +18,8 @@ func ToNullInt64(s string) sql.NullInt64 {
 	return sql.NullInt64{Int64: int64(i), Valid: err == nil}
 }
 func ToNullInt64Now() sql.NullInt64 {
-		return sql.NullInt64{Int64: time.Now().Unix(), Valid: false}
+	return sql.NullInt64{Int64: time.Now().Unix(), Valid: true}
 }
-
 
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)

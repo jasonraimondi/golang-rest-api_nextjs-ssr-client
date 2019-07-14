@@ -6,8 +6,12 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	_ "github.com/lib/pq"
 	"gopkg.in/alecthomas/kingpin.v2"
+
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var (
@@ -20,21 +24,32 @@ var (
 			Envar("JWT_SECURE_KEY").
 			String()
 	DB_DRIVER = kingpin.
-		Flag("db-driver", "Database Driver").
-		Envar("DB_DRIVER").
-		Default("postgres").
-		Enum("postgres", "sqlite3")
+			Flag("db-driver", "Database Driver").
+			Envar("DB_DRIVER").
+			Default("postgres").
+			Enum("postgres", "sqlite3")
 	DB_CONNECTION = kingpin.
-		Flag("db-connection", "DB Connection").
-		Envar("DB_CONNECTION").
-		Default("host=localhost port=5432 user=print password=print dbname=print sslmode=disable").
-		String()
+			Flag("db-connection", "DB Connection").
+			Envar("DB_CONNECTION").
+			Default("host=localhost port=5432 user=print password=print dbname=print sslmode=disable").
+			String()
 )
 
 var (
 	a *lib.Application
 	h *web.Handler
 )
+
+// initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
+func initialize() {
+	kingpin.Parse()
+	dbx, err := sqlx.Connect(*DB_DRIVER, *DB_CONNECTION)
+	if err != nil {
+		panic(err)
+	}
+	a = lib.NewApplication(dbx)
+	h = web.NewHandler(a, *JWT_SECURE_KEY)
+}
 
 func main() {
 	initialize()
@@ -52,11 +67,11 @@ func main() {
 	authRoute := middleware.JWTWithConfig(config)
 
 	e.POST("/login", h.Login)
+	e.POST("/upload", h.Upload)
 
 	// Unauthenticated route
 	e.POST("/sign-up", h.SignUp)
 	e.GET("/confirm-email", h.ConfirmEmail)
-	e.GET("/", h.Accessible)
 
 	// Restricted group
 	r := e.Group("/restricted")
@@ -64,15 +79,4 @@ func main() {
 	r.GET("", h.Restricted)
 
 	e.Logger.Fatal(e.Start(":1323"))
-}
-
-// initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
-func initialize() {
-	kingpin.Parse()
-	dbx, err := sqlx.Connect(*DB_DRIVER, *DB_CONNECTION)
-	if err != nil {
-		panic(err)
-	}
-	a = lib.NewApplication(dbx)
-	h = web.NewHandler(a, *JWT_SECURE_KEY)
 }

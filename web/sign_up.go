@@ -19,8 +19,8 @@ func (h *Handler) SignUp(c echo.Context) error {
 	s := h.App.ServiceFactory
 
 	email := c.FormValue("email")
-	firstName := c.FormValue("first_name")
-	lastName := c.FormValue("last_name")
+	firstName := c.FormValue("first")
+	lastName := c.FormValue("last")
 	password := c.FormValue("password")
 
 	if user, httpError := s.CreateUser(email, firstName, lastName, password); httpError != nil {

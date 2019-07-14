@@ -42,10 +42,6 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	})
 }
 
-func (h *Handler) Accessible(c echo.Context) error {
-	return c.String(http.StatusOK, "Accessible")
-}
-
 func (h *Handler) Restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*JwtCustomClaims)

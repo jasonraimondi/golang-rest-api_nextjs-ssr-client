@@ -7,7 +7,7 @@ import (
 
 type SignUpConfirmation struct {
 	Token     uuid.UUID `db:"token"`
-	CreatedAt int64 `db:"created_at"`
+	CreatedAt int64     `db:"created_at"`
 	UserId    uuid.UUID `db:"user_id"`
 }
 

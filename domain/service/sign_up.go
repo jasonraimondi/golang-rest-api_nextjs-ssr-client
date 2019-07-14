@@ -16,8 +16,8 @@ func (s *Service) CreateUser(email string, firstName string, lastName string, pa
 	}
 
 	u = model.NewUser(email)
-	u.FirstName = model.ToNullString(firstName)
-	u.LastName = model.ToNullString(lastName)
+	u.First = model.ToNullString(firstName)
+	u.Last = model.ToNullString(lastName)
 
 	if password != "" {
 		if err := guardAgainstInvalidPassword(s.validate, password); err != nil {
@@ -32,7 +32,7 @@ func (s *Service) CreateUser(email string, firstName string, lastName string, pa
 func (s *Service) CreateSignUpConfirmation(u *model.User) (c *model.SignUpConfirmation, httpErr *echo.HTTPError) {
 	c = model.NewSignUpConfirmation(*u)
 	tx := s.repository.DBx.MustBegin()
-	if err := repository.CreateUserTx(tx, *u); err != nil {
+	if err := repository.CreateUserTx(tx, u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
 	repository.CreateSignUpConfirmationTx(tx, c)
@@ -50,7 +50,7 @@ func (s *Service) ValidateEmailSignUpConfirmation(token string, userId string) *
 	}
 	user, err := repository.GetByIdTx(tx, userId)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, "error token not found")
+		return echo.NewHTTPError(http.StatusNotFound, "user not found")
 	} else if err := tx.Commit(); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed", err)
 	} else if signUpConfirmation.UserId.String() != userId {
@@ -58,7 +58,7 @@ func (s *Service) ValidateEmailSignUpConfirmation(token string, userId string) *
 	}
 	user.SetVerified()
 	tx = s.repository.DBx.MustBegin()
-	repository.UpdateUserTx(tx, *user)
+	repository.UpdateUserTx(tx, user)
 	repository.DeleteSignUpConfirmationTx(tx, signUpConfirmation)
 	if err := tx.Commit(); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")

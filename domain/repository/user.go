@@ -15,38 +15,20 @@ func NewUserRepository(dbx *sqlx.DB) *UserRepository {
 
 var (
 	create = `
-INSERT INTO users (
-	id, 
-	first_name, 
-	last_name, 
-	email, 
-	password_hash, 
-	is_verified, 
-	created_at, 
-	modified_at
-)
-VALUES (
-	:id, 
-	:first_name, 
-	:last_name, 
-	:email, 
-	:password_hash, 
-	:is_verified, 
-	:created_at, 
-	:modified_at
-)
-`
+				INSERT INTO users (id, first, last, email, password_hash, is_verified, created_at, modified_at)
+				VALUES (:id, :first, :last, :email, :password_hash, :is_verified, :created_at, :modified_at)
+	`
 	update = `
-UPDATE users 
-	SET 
-		id=:id,
-		first_name=:first_name, 
-		last_name=:last_name,
-		email=:email,
-		password_hash=:password_hash,
-		is_verified=:is_verified,
-		modified_at=:modified_at
-WHERE id=$1
+				UPDATE users 
+				SET 
+					id=:id,
+					first=:first, 
+					last=:last,
+					email=:email,
+					password_hash=:password_hash,
+					is_verified=:is_verified,
+					modified_at=:modified_at
+				WHERE id=$1
 	`
 )
 
@@ -64,19 +46,19 @@ func (r *UserRepository) GetByEmail(email string) (*model.User, error) {
 	return user, err
 }
 
-func (r *UserRepository) Create(u model.User) (err error) {
+func (r *UserRepository) Create(u *model.User) (err error) {
 	_, err = r.dbx.NamedExec(create, u)
 	return err
 }
 
-func UpdateUserTx(tx *sqlx.Tx, u model.User) {
+func UpdateUserTx(tx *sqlx.Tx, u *model.User) {
 	u.ModifiedAt = model.ToNullInt64Now()
 	if _, err := tx.NamedExec(update, u); err != nil {
 		panic(err)
 	}
 }
 
-func CreateUserTx(tx *sqlx.Tx, u model.User) (err error) {
+func CreateUserTx(tx *sqlx.Tx, u *model.User) (err error) {
 	_, err = tx.NamedExec(create, u)
 	return err
 }
