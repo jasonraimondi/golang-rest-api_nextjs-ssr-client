@@ -1,11 +1,13 @@
 package repository_test
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"git.jasonraimondi.com/jason/jasontest/domain/lib"
 	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"git.jasonraimondi.com/jason/jasontest/domain/repository"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestSignUpConfirmationRepository_GetByToken(t *testing.T) {

@@ -1,9 +1,11 @@
 package model_test
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"git.jasonraimondi.com/jason/jasontest/domain/model"
 )
 
 func TestToNullString(t *testing.T) {

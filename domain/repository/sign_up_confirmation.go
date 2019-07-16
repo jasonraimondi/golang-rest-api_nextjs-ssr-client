@@ -1,9 +1,10 @@
 package repository
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/jmoiron/sqlx"
 	uuid "github.com/satori/go.uuid"
+
+	"git.jasonraimondi.com/jason/jasontest/domain/model"
 )
 
 type SignUpConfirmationRepository struct {

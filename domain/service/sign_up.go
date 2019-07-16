@@ -1,11 +1,13 @@
 package service
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
-	"git.jasonraimondi.com/jason/jasontest/domain/repository"
+	"net/http"
+
 	"github.com/labstack/echo"
 	"gopkg.in/go-playground/validator.v9"
-	"net/http"
+
+	"git.jasonraimondi.com/jason/jasontest/domain/model"
+	"git.jasonraimondi.com/jason/jasontest/domain/repository"
 )
 
 func (s *Service) CreateUser(email string, firstName string, lastName string, password string) (u *model.User, httpErr *echo.HTTPError) {

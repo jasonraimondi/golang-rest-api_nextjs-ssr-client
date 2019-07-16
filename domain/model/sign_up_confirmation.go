@@ -1,8 +1,9 @@
 package model
 
 import (
-	uuid "github.com/satori/go.uuid"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type SignUpConfirmation struct {

@@ -1,49 +1,26 @@
 package web
 
 import (
-	"fmt"
-	"github.com/labstack/echo"
-	"io"
 	"net/http"
-	"os"
+
+	"github.com/labstack/echo"
 )
 
 func (h *Handler) Upload(c echo.Context) error {
 	// Read form fields
-	name := c.FormValue("name")
-	email := c.FormValue("email")
+	userId := c.FormValue("userId")
 
-	//------------
-	// Read files
-	//------------
-
-	// Multipart form
-	form, err := c.MultipartForm()
-	if err != nil {
-		return err
-	}
-	files := form.File["files"]
-
-	for _, file := range files {
-		// Source
-		src, err := file.Open()
-		if err != nil {
-			return err
-		}
-		defer src.Close()
-
-		// Destination
-		dst, err := os.Create(file.Filename)
-		if err != nil {
-			return err
-		}
-		defer dst.Close()
-
-		// Copy
-		if _, err = io.Copy(dst, src); err != nil {
-			return err
-		}
+	if form, err := c.MultipartForm(); err != nil {
+		return echo.NewHTTPError(http.StatusNotAcceptable, "form error")
+	} else if httpErr := h.App.ServiceFactory.FileUpload(form, userId); httpErr != nil {
+		return httpErr
 	}
 
-	return c.HTML(http.StatusOK, fmt.Sprintf("<p>Uploaded successfully %d files with fields name=%s and email=%s.</p>", len(files), name, email))
+	return sendMessage(c, http.StatusAccepted, userId)
+}
+
+func sendMessage(c echo.Context, statusCode int, message string) error {
+	return c.JSON(statusCode, map[string]interface{}{
+		"message": message,
+	})
 }

@@ -1,8 +1,9 @@
 package web
 
 import (
-	"github.com/labstack/echo"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 func (h *Handler) ConfirmEmail(c echo.Context) error {
@@ -12,7 +13,7 @@ func (h *Handler) ConfirmEmail(c echo.Context) error {
 	if httpErr := r.ValidateEmailSignUpConfirmation(token, userId); httpErr != nil {
 		return httpErr
 	}
-	return c.JSON(http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func (h *Handler) SignUp(c echo.Context) error {
@@ -28,5 +29,5 @@ func (h *Handler) SignUp(c echo.Context) error {
 	} else if _, httpError = s.CreateSignUpConfirmation(user); httpError != nil {
 		return httpError
 	}
-	return c.JSON(http.StatusCreated, http.StatusText(http.StatusCreated))
+	return sendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))
 }

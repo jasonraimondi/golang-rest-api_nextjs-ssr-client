@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"github.com/jmoiron/sqlx"
+
+	"git.jasonraimondi.com/jason/jasontest/domain/model"
 )
 
 type UserRepository struct {
@@ -14,11 +15,11 @@ func NewUserRepository(dbx *sqlx.DB) *UserRepository {
 }
 
 var (
-	create = `
+	createUser = `
 				INSERT INTO users (id, first, last, email, password_hash, is_verified, created_at, modified_at)
 				VALUES (:id, :first, :last, :email, :password_hash, :is_verified, :created_at, :modified_at)
 	`
-	update = `
+	updateUser = `
 				UPDATE users 
 				SET 
 					id=:id,
@@ -47,19 +48,19 @@ func (r *UserRepository) GetByEmail(email string) (*model.User, error) {
 }
 
 func (r *UserRepository) Create(u *model.User) (err error) {
-	_, err = r.dbx.NamedExec(create, u)
+	_, err = r.dbx.NamedExec(createUser, u)
 	return err
 }
 
 func UpdateUserTx(tx *sqlx.Tx, u *model.User) {
 	u.ModifiedAt = model.ToNullInt64Now()
-	if _, err := tx.NamedExec(update, u); err != nil {
+	if _, err := tx.NamedExec(updateUser, u); err != nil {
 		panic(err)
 	}
 }
 
 func CreateUserTx(tx *sqlx.Tx, u *model.User) (err error) {
-	_, err = tx.NamedExec(create, u)
+	_, err = tx.NamedExec(createUser, u)
 	return err
 }
 

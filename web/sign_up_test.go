@@ -1,14 +1,15 @@
 package web_test
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/web"
-	"github.com/labstack/echo"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
+
+	"git.jasonraimondi.com/jason/jasontest/web"
+	"github.com/labstack/echo"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateUser(t *testing.T) {
@@ -25,6 +26,7 @@ func TestCreateUser(t *testing.T) {
 
 	if assert.NoError(t, h.SignUp(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
-		assert.Equal(t, "\"Created\"\n", rec.Body.String())
+		assert.Equal(t, `{"message":"Created"}
+`, rec.Body.String())
 	}
 }

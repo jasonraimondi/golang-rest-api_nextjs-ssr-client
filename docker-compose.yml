@@ -1,18 +1,50 @@
 version: "3.7"
 
-volumes:
-  postgres_data: {}
-
 services:
-  app:
-    build: .
-    volumes:
-      - ./repository:/app/repository
-
-#  pg:
-#    image: postgres:latest
+#  app:
+#    build: .
 #    volumes:
-#      - postgres_data:/var/lib/postgres/data
-#    ports:
-#      - "5432:5432"
-#
+#      - ./:/app/
+
+  postgres:
+    image: postgres:10.3-alpine
+    environment:
+      POSTGRES_DB: print
+      POSTGRES_USER: print
+      POSTGRES_PASSWORD: print
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    command: ["server", "/data"]
+    ports:
+      - 9000:9000
+    volumes:
+      - minio-config:/root/.minio
+      - minio-data:/data
+    environment:
+      MINIO_ACCESS_KEY: miniominiominio
+      MINIO_SECRET_KEY: miniominiominio
+      MINIO_HTTP_TRACE: /dev/stdout
+
+  redis:
+    image: redis:3.2.6-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+  minio-config:

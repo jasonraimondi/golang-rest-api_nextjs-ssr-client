@@ -3,9 +3,10 @@ package model
 import (
 	"database/sql"
 	"fmt"
-	"github.com/satori/go.uuid"
 	"strings"
 	"time"
+
+	"github.com/satori/go.uuid"
 )
 
 type User struct {

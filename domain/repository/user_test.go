@@ -1,10 +1,12 @@
 package repository_test
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"git.jasonraimondi.com/jason/jasontest/domain/lib"
 	"git.jasonraimondi.com/jason/jasontest/domain/model"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestPersonRepository_GetById(t *testing.T) {

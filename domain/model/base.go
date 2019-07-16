@@ -2,9 +2,10 @@ package model
 
 import (
 	"database/sql"
-	"golang.org/x/crypto/bcrypt"
 	"strconv"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 //ToNullString invalidates a sql.NullString if empty, validates if not empty

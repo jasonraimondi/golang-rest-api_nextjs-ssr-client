@@ -19,3 +19,7 @@ func (r *Factory) User() *UserRepository {
 func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
 	return NewSignUpConfirmationRepository(r.DBx)
 }
+
+func (r *Factory) PhotoRepository() *PhotoRepository {
+	return NewPhotoRepository(r.DBx)
+}

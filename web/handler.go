@@ -1,12 +1,17 @@
 package web
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/domain/lib"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/dgrijalva/jwt-go"
+
+	"git.jasonraimondi.com/jason/jasontest/domain/lib"
 )
 
+// struct is kind of like "class" or object in javascript, add methods to the struct
+//in different files
 type Handler struct {
 	App          *lib.Application
+	S3Config     *aws.Config
 	JwtSecureKey string
 }
 

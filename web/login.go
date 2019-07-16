@@ -2,10 +2,11 @@ package web
 
 import (
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/labstack/echo"
 	"net/http"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/labstack/echo"
 )
 
 // @todo pull this into a service

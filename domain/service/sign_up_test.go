@@ -1,11 +1,13 @@
 package service_test
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"git.jasonraimondi.com/jason/jasontest/domain/lib"
 	"git.jasonraimondi.com/jason/jasontest/domain/model"
 	"git.jasonraimondi.com/jason/jasontest/domain/repository"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func xTestService_ValidateEmailSignUpConfirmation(t *testing.T) {
