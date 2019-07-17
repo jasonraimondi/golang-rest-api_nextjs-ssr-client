@@ -19,37 +19,6 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/domain/repository"
 )
 
-//func UploadFileToS3(s *session.Session, file multipart.File, fileHeader *multipart.FileHeader) (string, error) {
-//	// get the file size and read
-//	// the file content into a buffer
-//	size := fileHeader.Size
-//	buffer := make([]byte, size)
-//	file.Read(buffer)
-//
-//	// create a unique file name for the file
-//
-//
-//	// config settings: this is where you choose the bucket,
-//	// filename, content-type and storage class of the file
-//	// you're uploading
-//	_, err := s3.New(s).PutObject(&s3.PutObjectInput{
-//		Bucket:               aws.String("test-bucket"),
-//		Key:                  aws.String(tempFileName),
-//		ACL:                  aws.String("public-read"), // could be private if you want it to be access by only authorized users
-//		Body:                 bytes.NewReader(buffer),
-//		ContentLength:        aws.Int64(int64(size)),
-//		MimeType:          aws.String(http.DetectContentType(buffer)),
-//		ContentDisposition:   aws.String("attachment"),
-//		ServerSideEncryption: aws.String("AES256"),
-//		StorageClass:         aws.String("INTELLIGENT_TIERING"),
-//	})
-//	if err != nil {
-//		return "", err
-//	}
-//
-//	return tempFileName, err
-//}
-
 func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPError {
 	files := form.File["file[]"]
 
@@ -63,17 +32,17 @@ func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPErro
 
 	tx := s.repository.DBx.MustBegin()
 	for _, fileHeader := range files {
-		file, erroz := fileHeader.Open()
-		if erroz != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, erroz)
+		file, err := fileHeader.Open()
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err)
 		}
 		size := fileHeader.Size
 		buffer := make([]byte, size)
 		_, _ = file.Read(buffer)
 
-		photo, httpError := CreatePhoto(tx, user, file, fileHeader)
-		if httpError != nil {
-			return httpError
+		photo, err := CreatePhoto(tx, user, file, fileHeader)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err)
 		}
 		_, err = s3Client.PutObject(&s3.PutObjectInput{
 			ACL:                aws.String("public-read"),
@@ -94,7 +63,7 @@ func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPErro
 	return nil
 }
 
-func CreatePhoto(tx *sqlx.Tx, user *model.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *model.Photo, httpError *echo.HTTPError) {
+func CreatePhoto(tx *sqlx.Tx, user *model.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *model.Photo, err error) {
 	fileSHA256, _ := GetFileSHA256(f)
 	photo = model.NewPhoto(
 		uuid.NewV4(),
@@ -105,7 +74,7 @@ func CreatePhoto(tx *sqlx.Tx, user *model.User, f multipart.File, fileHeader *mu
 		fileHeader.Size,
 	)
 	if err := repository.CreatePhotoTx(tx, photo); err != nil {
-		return nil, echo.NewHTTPError(http.StatusInternalServerError, err)
+		return nil, err
 	}
 	return photo, nil
 }
