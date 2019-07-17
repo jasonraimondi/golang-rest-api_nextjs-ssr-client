@@ -17,7 +17,7 @@ func TestPersonRepository_GetById(t *testing.T) {
 	err := r.User().Create(u)
 	assert.NoError(t, err)
 
-	sut1, err := r.User().GetById(u.ID.String())
+	sut1, err := r.User().GetById(u.GetID())
 
 	if assert.NoError(t, err) {
 		assert.Equal(t, "jason@raimondi.us", sut1.Email)

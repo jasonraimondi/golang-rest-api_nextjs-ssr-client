@@ -14,6 +14,9 @@ migration:
 	migrate -source file://${MIGRATION_DIR} -database ${DB_CONN} up
 
 migration-down:
+	migrate -source file://${MIGRATION_DIR} -database ${DB_CONN} down 1
+
+migration-down-all:
 	migrate -source file://${MIGRATION_DIR} -database ${DB_CONN} down
 
 .PHONY: dev stage

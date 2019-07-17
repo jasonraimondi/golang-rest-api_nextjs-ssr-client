@@ -21,9 +21,9 @@ func TestPhotoRepository_GetById(t *testing.T) {
 	assert.NoError(t, repository.CreatePhotoTx(tx, photos))
 	assert.NoError(t, tx.Commit())
 
-	sut1, err := r.PhotoRepository().GetById(photos.ID.String())
+	sut1, err := r.PhotoRepository().GetById(photos.GetID())
 	if assert.NoError(t, err) {
 		assert.Equal(t, photos.FileSize, sut1.FileSize)
-		assert.Equal(t, photos.OriginalName, sut1.OriginalName)
+		assert.Equal(t, photos.FileName, sut1.FileName)
 	}
 }

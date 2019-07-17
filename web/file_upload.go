@@ -16,7 +16,7 @@ func (h *Handler) Upload(c echo.Context) error {
 		return httpErr
 	}
 
-	return sendMessage(c, http.StatusAccepted, userId)
+	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func sendMessage(c echo.Context, statusCode int, message string) error {

@@ -16,13 +16,11 @@ import (
 )
 
 type Application struct {
-	//S3Config          *aws.Config
-	//Validator         *validator.Validate
 	RepositoryFactory *repository.Factory
 	ServiceFactory    *service.Service
 }
 
-func NewApplication(dbx *sqlx.DB, s3Config *aws.Config) *Application {
+func NewApplication(dbx *sqlx.DB, s3Config *service.S3Config) *Application {
 	v := validator.New()
 	_ = v.RegisterValidation("password-strength", ValidatePasswordStrength)
 	r := repository.NewFactory(dbx)
@@ -45,12 +43,13 @@ func NewTestApplication() (a *Application) {
 		panic(err)
 	}
 	sessionToken := ""
-	s3Config := &aws.Config{
+	config := &aws.Config{
 		Credentials:      credentials.NewStaticCredentials("", "", sessionToken),
-		Endpoint:         aws.String("https://s3.wasabisys.com"),
+		Endpoint:         aws.String("http://localhost:9000"),
 		Region:           aws.String("us-east-1"),
 		S3ForcePathStyle: aws.Bool(true),
 	}
+	s3Config := service.NewS3Config("test-originals", config)
 	a = NewApplication(dbx, s3Config)
 	if err = repository.MigrateNow(&databaseInstance); err != nil {
 		panic(err)

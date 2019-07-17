@@ -11,8 +11,8 @@ type PhotoRepository struct {
 }
 
 var createPhoto = `
-	INSERT INTO photos (id, original_name, content_type, file_size, user_id, created_at, modified_at)
-	VALUES (:id, :original_name, :content_type, :file_size, :user_id, :created_at, :modified_at)
+	INSERT INTO photos (id, file_name, relative_url, mime_type, sha256, file_size, width, height, user_id, created_at, modified_at)
+	VALUES (:id, :file_name, :relative_url, :mime_type, :sha256, :file_size, :width, :height, :user_id, :created_at, :modified_at)
 `
 
 func NewPhotoRepository(db *sqlx.DB) *PhotoRepository {

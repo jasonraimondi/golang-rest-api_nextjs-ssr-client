@@ -1,11 +1,6 @@
 version: "3.7"
 
 services:
-#  app:
-#    build: .
-#    volumes:
-#      - ./:/app/
-
   postgres:
     image: postgres:10.3-alpine
     environment:
@@ -30,21 +25,7 @@ services:
       MINIO_SECRET_KEY: miniominiominio
       MINIO_HTTP_TRACE: /dev/stdout
 
-  redis:
-    image: redis:3.2.6-alpine
-    volumes:
-      - redis-data:/data
-    ports:
-      - 6379:6379
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui
-
 volumes:
   postgres-data:
-  redis-data:
   minio-data:
   minio-config:
