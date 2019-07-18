@@ -1,4 +1,4 @@
-package web
+package handlers
 
 import (
 	"net/http"
@@ -12,7 +12,7 @@ func (h *Handler) Upload(c echo.Context) error {
 
 	if form, err := c.MultipartForm(); err != nil {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "form error")
-	} else if httpErr := h.App.ServiceFactory.FileUpload(form, userId); httpErr != nil {
+	} else if httpErr := h.App.ServiceFactory.FileUploadService().FileUpload(form, userId); httpErr != nil {
 		return httpErr
 	}
 

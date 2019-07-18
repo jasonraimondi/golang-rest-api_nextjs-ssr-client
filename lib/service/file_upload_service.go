@@ -15,19 +15,27 @@ import (
 	"github.com/labstack/echo"
 	uuid "github.com/satori/go.uuid"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
-	"git.jasonraimondi.com/jason/jasontest/domain/repository"
+	"git.jasonraimondi.com/jason/jasontest/lib/repository"
+	s32 "git.jasonraimondi.com/jason/jasontest/lib/s3"
+	"git.jasonraimondi.com/jason/jasontest/models"
 )
 
-func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPError {
+type FileUploadService struct {
+	originals      string
+	repository     *repository.Factory
+	userRepository *repository.UserRepository
+	s3             *s32.S3Config
+}
+
+func (s *FileUploadService) FileUpload(form *multipart.Form, userId string) *echo.HTTPError {
 	files := form.File["file[]"]
 
-	user, err := s.repository.User().GetById(userId)
+	user, err := s.userRepository.GetById(userId)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "user not found")
 	}
 
-	newSession, _ := session.NewSession(s.s3Config.Config)
+	newSession, _ := session.NewSession(s.s3.Config)
 	s3Client := s3.New(newSession)
 
 	tx := s.repository.DBx.MustBegin()
@@ -40,7 +48,7 @@ func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPErro
 		buffer := make([]byte, size)
 		_, _ = file.Read(buffer)
 
-		photo, err := CreatePhoto(tx, user, file, fileHeader)
+		photo, err := createPhoto(tx, user, file, fileHeader)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err)
 		}
@@ -50,7 +58,7 @@ func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPErro
 			ContentLength:      aws.Int64(int64(photo.FileSize)),
 			ContentType:        aws.String(http.DetectContentType(buffer)),
 			Body:               bytes.NewReader(buffer),
-			Bucket:             aws.String(s.s3Config.OriginalBucket),
+			Bucket:             aws.String(s.originals),
 			Key:                aws.String(photo.RelativeURL),
 		})
 		if err != nil {
@@ -63,9 +71,9 @@ func (s *Service) FileUpload(form *multipart.Form, userId string) *echo.HTTPErro
 	return nil
 }
 
-func CreatePhoto(tx *sqlx.Tx, user *model.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *model.Photo, err error) {
-	fileSHA256, _ := GetFileSHA256(f)
-	photo = model.NewPhoto(
+func createPhoto(tx *sqlx.Tx, user *models.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *models.Photo, err error) {
+	fileSHA256, _ := getFileSHA256(f)
+	photo = models.NewPhoto(
 		uuid.NewV4(),
 		user,
 		fileHeader.Filename,
@@ -79,7 +87,7 @@ func CreatePhoto(tx *sqlx.Tx, user *model.User, f multipart.File, fileHeader *mu
 	return photo, nil
 }
 
-func GetFileSHA256(file io.Reader) (result string, err error) {
+func getFileSHA256(file io.Reader) (result string, err error) {
 	hash := sha256.New()
 	if _, err = io.Copy(hash, file); err != nil {
 		return result, err
@@ -87,5 +95,4 @@ func GetFileSHA256(file io.Reader) (result string, err error) {
 	hashInBytes := hash.Sum(nil)
 	result = hex.EncodeToString(hashInBytes)
 	return result, nil
-
 }

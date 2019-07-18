@@ -1,4 +1,4 @@
-package model
+package models
 
 import (
 	"database/sql"
@@ -32,11 +32,12 @@ func NewPhoto(
 	mimeType string,
 	fileSize int64,
 ) *Photo {
+	s := id.String()
 	return &Photo{
 		ID:          id,
 		UserId:      u.ID,
 		FileName:    fileName,
-		RelativeURL: fmt.Sprintf("pictures/%s%s", id.String(), strings.ToLower(filepath.Ext(fileName))),
+		RelativeURL: fmt.Sprintf("%s/%s%s", s[:2], s, strings.ToLower(filepath.Ext(fileName))),
 		SHA256:      sha256,
 		MimeType:    mimeType,
 		FileSize:    fileSize,

@@ -11,24 +11,28 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"gopkg.in/go-playground/validator.v9"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/repository"
-	"git.jasonraimondi.com/jason/jasontest/domain/service"
+	"git.jasonraimondi.com/jason/jasontest/lib/repository"
+	"git.jasonraimondi.com/jason/jasontest/lib/s3"
+	"git.jasonraimondi.com/jason/jasontest/lib/service"
 )
 
 type Application struct {
+	JwtSecureKey      string
+	MigrationDir      string
 	RepositoryFactory *repository.Factory
-	ServiceFactory    *service.Service
+	ServiceFactory    *service.Factory
 }
 
-func NewApplication(dbx *sqlx.DB, s3Config *service.S3Config) *Application {
+func NewApplication(dbx *sqlx.DB, s3Config *s3.S3Config, jwtSecureKey string, dir string) *Application {
 	v := validator.New()
 	_ = v.RegisterValidation("password-strength", ValidatePasswordStrength)
 	r := repository.NewFactory(dbx)
 	s := service.NewService(r, v, s3Config)
 	return &Application{
-		//Validator:         v,
 		RepositoryFactory: r,
 		ServiceFactory:    s,
+		JwtSecureKey:      jwtSecureKey,
+		MigrationDir:      dir,
 	}
 }
 
@@ -49,9 +53,9 @@ func NewTestApplication() (a *Application) {
 		Region:           aws.String("us-east-1"),
 		S3ForcePathStyle: aws.Bool(true),
 	}
-	s3Config := service.NewS3Config("test-originals", config)
-	a = NewApplication(dbx, s3Config)
-	if err = repository.MigrateNow(&databaseInstance); err != nil {
+	s3Config := s3.NewS3Config("test-originals", config)
+	a = NewApplication(dbx, s3Config, "jwtSecureKey-test", "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations")
+	if err = repository.MigrateNow(&databaseInstance, a.MigrationDir); err != nil {
 		panic(err)
 	}
 	return a

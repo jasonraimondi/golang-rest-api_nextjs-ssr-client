@@ -1,4 +1,4 @@
-package web
+package handlers
 
 import (
 	"net/http"
@@ -7,10 +7,10 @@ import (
 )
 
 func (h *Handler) ConfirmEmail(c echo.Context) error {
-	r := h.App.ServiceFactory
+	s := h.App.ServiceFactory
 	token := c.QueryParam("t")
 	userId := c.QueryParam("u")
-	if httpErr := r.ValidateEmailSignUpConfirmation(token, userId); httpErr != nil {
+	if httpErr := s.SignUpService().ValidateEmailSignUpConfirmation(token, userId); httpErr != nil {
 		return httpErr
 	}
 	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
@@ -24,9 +24,9 @@ func (h *Handler) SignUp(c echo.Context) error {
 	lastName := c.FormValue("last")
 	password := c.FormValue("password")
 
-	if user, httpError := s.CreateUser(email, firstName, lastName, password); httpError != nil {
+	if user, httpError := s.SignUpService().CreateUser(email, firstName, lastName, password); httpError != nil {
 		return httpError
-	} else if _, httpError = s.CreateSignUpConfirmation(user); httpError != nil {
+	} else if _, httpError = s.SignUpService().CreateSignUpConfirmation(user); httpError != nil {
 		return httpError
 	}
 	return sendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))

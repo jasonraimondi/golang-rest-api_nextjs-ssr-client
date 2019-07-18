@@ -1,4 +1,4 @@
-package model
+package models
 
 type Role struct {
 	ID   int32  `db:"id"`

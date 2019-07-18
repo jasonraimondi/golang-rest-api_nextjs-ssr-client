@@ -5,15 +5,15 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/lib"
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
+	"git.jasonraimondi.com/jason/jasontest/lib"
+	"git.jasonraimondi.com/jason/jasontest/models"
 )
 
 func TestPersonRepository_GetById(t *testing.T) {
 	r := lib.NewTestApplication().RepositoryFactory
-	u := model.NewUser("jason@raimondi.us")
-	u.First = model.ToNullString("Jason")
-	u.Last = model.ToNullString("Raimondi")
+	u := models.NewUser("jason@raimondi.us")
+	u.First = models.ToNullString("Jason")
+	u.Last = models.ToNullString("Raimondi")
 	err := r.User().Create(u)
 	assert.NoError(t, err)
 
@@ -28,9 +28,9 @@ func TestPersonRepository_GetById(t *testing.T) {
 
 func TestPersonRepository_GetByEmail(t *testing.T) {
 	r := lib.NewTestApplication().RepositoryFactory
-	u := model.NewUser("kimberly@foo.bar")
-	u.First = model.ToNullString("Kimberly")
-	u.Last = model.ToNullString("Foo")
+	u := models.NewUser("kimberly@foo.bar")
+	u.First = models.ToNullString("Kimberly")
+	u.Last = models.ToNullString("Foo")
 	err := r.User().Create(u)
 	assert.NoError(t, err)
 

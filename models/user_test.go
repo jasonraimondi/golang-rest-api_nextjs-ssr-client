@@ -1,15 +1,15 @@
-package model_test
+package models_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
+	"git.jasonraimondi.com/jason/jasontest/models"
 )
 
 func TestUser_SetPassword(t *testing.T) {
-	p := model.NewUser("jason@raimondi.us")
+	p := models.NewUser("jason@raimondi.us")
 	password := "jasonraimondi"
 
 	if assert.NoError(t, p.SetPassword(password)) {
@@ -18,17 +18,17 @@ func TestUser_SetPassword(t *testing.T) {
 }
 
 func TestUser_GetFullName(t *testing.T) {
-	p := model.NewUser("jason1@raimondi.us")
-	p.First = model.ToNullString("Jason")
-	p.Last = model.ToNullString("Raimondi")
+	p := models.NewUser("jason1@raimondi.us")
+	p.First = models.ToNullString("Jason")
+	p.Last = models.ToNullString("Raimondi")
 
-	p2 := model.NewUser("jason2@raimondi.us")
-	p2.First = model.ToNullString("Jason")
+	p2 := models.NewUser("jason2@raimondi.us")
+	p2.First = models.ToNullString("Jason")
 
-	p3 := model.NewUser("jason3@raimondi.us")
-	p3.Last = model.ToNullString("Raimondi")
+	p3 := models.NewUser("jason3@raimondi.us")
+	p3.Last = models.ToNullString("Raimondi")
 
-	p4 := model.NewUser("jason4@raimondi.us")
+	p4 :=models. NewUser("jason4@raimondi.us")
 
 	assert.Equal(t, "Jason Raimondi", p.GetFullName())
 	assert.Equal(t, "Jason", p2.GetFullName())
@@ -37,8 +37,8 @@ func TestUser_GetFullName(t *testing.T) {
 }
 
 func TestUser_GetFullIdentifier(t *testing.T) {
-	p := model.NewUser("jason@raimondi.us")
-	p.First = model.ToNullString("Jason")
-	p.Last = model.ToNullString("Raimondi")
+	p := models.NewUser("jason@raimondi.us")
+	p.First = models.ToNullString("Jason")
+	p.Last = models.ToNullString("Raimondi")
 	assert.Equal(t, "Jason Raimondi <jason@raimondi.us>", p.GetFullIdentifier())
 }

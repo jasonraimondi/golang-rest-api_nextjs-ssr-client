@@ -1,4 +1,4 @@
-package web
+package handlers
 
 import (
 	"fmt"
@@ -33,7 +33,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte(h.JwtSecureKey))
+	t, err := token.SignedString([]byte(h.App.JwtSecureKey))
 	if err != nil {
 		return err
 	}

@@ -1,24 +1,24 @@
-package model_test
+package models_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
+	"git.jasonraimondi.com/jason/jasontest/models"
 )
 
 func TestToNullString(t *testing.T) {
-	invalid := model.ToNullString("")
-	valid := model.ToNullString("jason")
+	invalid := models.ToNullString("")
+	valid := models.ToNullString("jason")
 
 	assert.False(t, invalid.Valid)
 	assert.True(t, valid.Valid)
 }
 
 func TestToNullInt64(t *testing.T) {
-	invalid := model.ToNullInt64("")
-	valid := model.ToNullInt64("634")
+	invalid := models.ToNullInt64("")
+	valid := models.ToNullInt64("634")
 
 	assert.False(t, invalid.Valid)
 	assert.True(t, valid.Valid)

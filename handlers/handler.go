@@ -1,32 +1,29 @@
-package web
+package handlers
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/dgrijalva/jwt-go"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/lib"
+	"git.jasonraimondi.com/jason/jasontest/lib"
 )
 
 // struct is kind of like "class" or object in javascript, add methods to the struct
 //in different files
 type Handler struct {
-	App          *lib.Application
-	S3Config     *aws.Config
-	JwtSecureKey string
+	App      *lib.Application
+	S3Config *aws.Config
 }
 
-func NewHandler(a *lib.Application, jwtSecureKey string) *Handler {
+func NewHandler(a *lib.Application) *Handler {
 	return &Handler{
-		App:          a,
-		JwtSecureKey: jwtSecureKey,
+		App: a,
 	}
 }
 
 func NewTestHandler() *Handler {
 	a := lib.NewTestApplication()
 	return &Handler{
-		App:          a,
-		JwtSecureKey: "testing",
+		App: a,
 	}
 }
 

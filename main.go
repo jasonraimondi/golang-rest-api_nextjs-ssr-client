@@ -8,14 +8,14 @@ import (
 	"github.com/labstack/echo/middleware"
 	"gopkg.in/alecthomas/kingpin.v2"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/lib"
-	"git.jasonraimondi.com/jason/jasontest/domain/service"
-	"git.jasonraimondi.com/jason/jasontest/web"
-
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
+
+	"git.jasonraimondi.com/jason/jasontest/handlers"
+	"git.jasonraimondi.com/jason/jasontest/lib"
+	"git.jasonraimondi.com/jason/jasontest/lib/s3"
 )
 
 var (
@@ -36,6 +36,11 @@ var (
 		Flag("db-connection", "DB Connection").
 		Envar("DB_CONNECTION").
 		Default("host=localhost port=5432 user=print password=print dbname=print sslmode=disable").
+		String()
+	DbMigrationsDir = kingpin.
+		Flag("db-connection", "DB Connection").
+		Envar("DB_CONNECTION").
+		Default("/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations").
 		String()
 	S3Host = kingpin.
 		Flag("s3-host", "S3 Origin").
@@ -61,7 +66,7 @@ var (
 
 var (
 	a *lib.Application
-	h *web.Handler
+	h *handlers.Handler
 )
 
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
@@ -72,14 +77,14 @@ func initialize() {
 		panic(err)
 	}
 	sessionToken := "" // @todo what is session token?
-	s3Config := service.NewS3Config("originals", &aws.Config{
+	s3Config := s3.NewS3Config("originals", &aws.Config{
 		Credentials:      credentials.NewStaticCredentials(*S3IdentifierKey, *S3SecretKey, sessionToken),
 		Endpoint:         aws.String(*S3Host),
 		Region:           aws.String(*S3Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
-	a = lib.NewApplication(dbx, s3Config)
-	h = web.NewHandler(a, *JwtSecureKey)
+	a = lib.NewApplication(dbx, s3Config, *JwtSecureKey, *DbMigrationsDir)
+	h = handlers.NewHandler(a)
 }
 
 func main() {
@@ -92,7 +97,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	config := middleware.JWTConfig{
-		Claims:     &web.JwtCustomClaims{},
+		Claims:     &handlers.JwtCustomClaims{},
 		SigningKey: []byte(*JwtSecureKey),
 	}
 	authRoute := middleware.JWTWithConfig(config)

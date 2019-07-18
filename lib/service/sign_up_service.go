@@ -6,20 +6,26 @@ import (
 	"github.com/labstack/echo"
 	"gopkg.in/go-playground/validator.v9"
 
-	"git.jasonraimondi.com/jason/jasontest/domain/model"
-	"git.jasonraimondi.com/jason/jasontest/domain/repository"
+	"git.jasonraimondi.com/jason/jasontest/lib/repository"
+	"git.jasonraimondi.com/jason/jasontest/models"
 )
 
-func (s *Service) CreateUser(email string, firstName string, lastName string, password string) (u *model.User, httpErr *echo.HTTPError) {
+type SignUpService struct {
+	repository *repository.Factory // @todo pull this out, begintx is the issue
+	validate *validator.Validate
+	userRepository *repository.UserRepository
+}
+
+func (s *SignUpService) CreateUser(email string, firstName string, lastName string, password string) (u *models.User, httpErr *echo.HTTPError) {
 	if err := guardAgainstInvalidEmail(s.validate, email); err != nil {
-		return nil, echo.NewHTTPError(http.StatusNotAcceptable, "invalid email", err)
-	} else if err = guardAgainstDuplicateEmail(s.repository.User(), email); err == nil {
-		return nil, echo.NewHTTPError(http.StatusConflict, "duplicate email", err)
+		return u, echo.NewHTTPError(http.StatusNotAcceptable, "invalid email", err)
+	} else if err = guardAgainstDuplicateEmail(s.userRepository, email); err == nil {
+		return u, echo.NewHTTPError(http.StatusConflict, "duplicate email", err)
 	}
 
-	u = model.NewUser(email)
-	u.First = model.ToNullString(firstName)
-	u.Last = model.ToNullString(lastName)
+	u = models.NewUser(email)
+	u.First = models.ToNullString(firstName)
+	u.Last = models.ToNullString(lastName)
 
 	if password != "" {
 		if err := guardAgainstInvalidPassword(s.validate, password); err != nil {
@@ -31,8 +37,8 @@ func (s *Service) CreateUser(email string, firstName string, lastName string, pa
 	return u, httpErr
 }
 
-func (s *Service) CreateSignUpConfirmation(u *model.User) (c *model.SignUpConfirmation, httpErr *echo.HTTPError) {
-	c = model.NewSignUpConfirmation(*u)
+func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
+	c = models.NewSignUpConfirmation(*u)
 	tx := s.repository.DBx.MustBegin()
 	if err := repository.CreateUserTx(tx, u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
@@ -44,7 +50,7 @@ func (s *Service) CreateSignUpConfirmation(u *model.User) (c *model.SignUpConfir
 	return c, httpErr
 }
 
-func (s *Service) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
+func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
 	tx := s.repository.DBx.MustBegin()
 	signUpConfirmation, err := repository.GetByTokenTx(tx, token)
 	if err != nil {
@@ -80,3 +86,4 @@ func guardAgainstDuplicateEmail(r *repository.UserRepository, email string) (err
 	_, err = r.GetByEmail(email)
 	return err
 }
+

@@ -13,13 +13,13 @@ func NewFactory(dbx *sqlx.DB) *Factory {
 }
 
 func (r *Factory) User() *UserRepository {
-	return NewUserRepository(r.DBx)
+	return &UserRepository{r.DBx}
 }
 
 func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
-	return NewSignUpConfirmationRepository(r.DBx)
+	return &SignUpConfirmationRepository{r.DBx}
 }
 
 func (r *Factory) PhotoRepository() *PhotoRepository {
-	return NewPhotoRepository(r.DBx)
+	return &PhotoRepository{r.DBx}
 }
