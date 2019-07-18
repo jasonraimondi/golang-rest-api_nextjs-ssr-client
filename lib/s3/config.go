@@ -15,4 +15,3 @@ func NewS3Config(originalBucket string, aws *aws.Config) *S3Config {
 		Config:         aws,
 	}
 }
-

@@ -19,16 +19,16 @@ func TestUser_SetPassword(t *testing.T) {
 
 func TestUser_GetFullName(t *testing.T) {
 	p := models.NewUser("jason1@raimondi.us")
-	p.First = models.ToNullString("Jason")
-	p.Last = models.ToNullString("Raimondi")
+	p.SetFirst("Jason")
+	p.SetLast("Raimondi")
 
 	p2 := models.NewUser("jason2@raimondi.us")
-	p2.First = models.ToNullString("Jason")
+	p2.SetFirst("Jason")
 
 	p3 := models.NewUser("jason3@raimondi.us")
-	p3.Last = models.ToNullString("Raimondi")
+	p3.SetLast("Raimondi")
 
-	p4 :=models. NewUser("jason4@raimondi.us")
+	p4 := models.NewUser("jason4@raimondi.us")
 
 	assert.Equal(t, "Jason Raimondi", p.GetFullName())
 	assert.Equal(t, "Jason", p2.GetFullName())
@@ -38,7 +38,7 @@ func TestUser_GetFullName(t *testing.T) {
 
 func TestUser_GetFullIdentifier(t *testing.T) {
 	p := models.NewUser("jason@raimondi.us")
-	p.First = models.ToNullString("Jason")
-	p.Last = models.ToNullString("Raimondi")
+	p.SetFirst("Jason")
+	p.SetLast("Raimondi")
 	assert.Equal(t, "Jason Raimondi <jason@raimondi.us>", p.GetFullIdentifier())
 }

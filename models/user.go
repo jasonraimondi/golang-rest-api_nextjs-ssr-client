@@ -33,8 +33,28 @@ func NewUser(email string) (u *User) {
 	}
 }
 
-func (u *User) GetID() string {
-	return u.ID.String()
+func (u *User) GetID() uuid.UUID {
+	return u.ID
+}
+
+func (u *User) GetFirst() sql.NullString {
+	return u.First
+}
+
+func (u *User) GetLast() sql.NullString {
+	return u.Last
+}
+
+func (u *User) SetEmail(email string) {
+	u.Email = strings.ToLower(email)
+}
+
+func (u *User) SetFirst(first string) {
+	u.First = ToNullString(first)
+}
+
+func (u *User) SetLast(last string) {
+	u.Last = ToNullString(last)
 }
 
 func (u *User) SetPassword(pass string) (err error) {

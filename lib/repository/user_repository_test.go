@@ -12,12 +12,12 @@ import (
 func TestPersonRepository_GetById(t *testing.T) {
 	r := lib.NewTestApplication().RepositoryFactory
 	u := models.NewUser("jason@raimondi.us")
-	u.First = models.ToNullString("Jason")
-	u.Last = models.ToNullString("Raimondi")
+	u.SetFirst("Jason")
+	u.SetLast("Raimondi")
 	err := r.User().Create(u)
 	assert.NoError(t, err)
 
-	sut1, err := r.User().GetById(u.GetID())
+	sut1, err := r.User().GetById(u.GetID().String())
 
 	if assert.NoError(t, err) {
 		assert.Equal(t, "jason@raimondi.us", sut1.Email)
@@ -29,8 +29,8 @@ func TestPersonRepository_GetById(t *testing.T) {
 func TestPersonRepository_GetByEmail(t *testing.T) {
 	r := lib.NewTestApplication().RepositoryFactory
 	u := models.NewUser("kimberly@foo.bar")
-	u.First = models.ToNullString("Kimberly")
-	u.Last = models.ToNullString("Foo")
+	u.SetFirst("Kimberly")
+	u.SetLast("Foo")
 	err := r.User().Create(u)
 	assert.NoError(t, err)
 

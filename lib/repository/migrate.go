@@ -15,5 +15,5 @@ func MigrateNow(driver *database.Driver, dir string) error {
 
 func Migrate(databaseInstance database.Driver, dir string) (*migrate.Migrate, error) {
 	dir = "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations"
-	return migrate.NewWithDatabaseInstance("file://" + dir, "ql", databaseInstance)
+	return migrate.NewWithDatabaseInstance("file://"+dir, "ql", databaseInstance)
 }

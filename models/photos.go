@@ -35,7 +35,7 @@ func NewPhoto(
 	s := id.String()
 	return &Photo{
 		ID:          id,
-		UserId:      u.ID,
+		UserId:      u.GetID(),
 		FileName:    fileName,
 		RelativeURL: fmt.Sprintf("%s/%s%s", s[:2], s, strings.ToLower(filepath.Ext(fileName))),
 		SHA256:      sha256,

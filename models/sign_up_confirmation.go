@@ -16,6 +16,6 @@ func NewSignUpConfirmation(u User) (c *SignUpConfirmation) {
 	return &SignUpConfirmation{
 		Token:     uuid.NewV4(),
 		CreatedAt: time.Now().Unix(),
-		UserId:    u.ID,
+		UserId:    u.GetID(),
 	}
 }

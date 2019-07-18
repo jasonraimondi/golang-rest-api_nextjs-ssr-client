@@ -11,8 +11,8 @@ import (
 )
 
 type SignUpService struct {
-	repository *repository.Factory // @todo pull this out, begintx is the issue
-	validate *validator.Validate
+	repository     *repository.Factory // @todo pull this out, begintx is the issue
+	validate       *validator.Validate
 	userRepository *repository.UserRepository
 }
 
@@ -24,8 +24,8 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 	}
 
 	u = models.NewUser(email)
-	u.First = models.ToNullString(firstName)
-	u.Last = models.ToNullString(lastName)
+	u.SetFirst(firstName)
+	u.SetLast(lastName)
 
 	if password != "" {
 		if err := guardAgainstInvalidPassword(s.validate, password); err != nil {
@@ -86,4 +86,3 @@ func guardAgainstDuplicateEmail(r *repository.UserRepository, email string) (err
 	_, err = r.GetByEmail(email)
 	return err
 }
-
