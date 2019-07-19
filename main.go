@@ -1,12 +1,13 @@
 package main
 
 import (
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"gopkg.in/alecthomas/kingpin.v2"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -19,86 +20,66 @@ import (
 )
 
 var (
-	EnableDebugging = kingpin.
-		Flag("debug", "Enable Debug.").
-		Envar("ENABLE_DEBUGGING").
-		Bool()
-	JwtSecureKey = kingpin.
-		Flag("jwt-secure-key", "Secure JWT Key, changing this logs everyone out.").
-		Envar("JWT_SECURE_KEY").
-		String()
-	DbDriver = kingpin.
-		Flag("db-driver", "Database Driver").
-		Envar("DB_DRIVER").
-		Default("postgres").
-		Enum("postgres", "sqlite3")
-	DbConnection = kingpin.
-		Flag("db-connection", "DB Connection").
-		Envar("DB_CONNECTION").
-		Default("host=localhost port=5432 user=print password=print dbname=print sslmode=disable").
-		String()
-	DbMigrationsDir = kingpin.
-		Flag("db-connection", "DB Connection").
-		Envar("DB_CONNECTION").
-		Default("/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations").
-		String()
-	S3Host = kingpin.
-		Flag("s3-host", "S3 Origin").
-		Envar("S3_HOST").
-		Default("http://localhost:9000").
-		String()
-	S3Region = kingpin.
-		Flag("s3-region", "S3 Region").
-		Envar("S3_REGION").
-		Default("us-east-1").
-		Enum("us-east-1")
-	S3IdentifierKey = kingpin.
-		Flag("s3-id", "S3 Identifier Key").
-		Envar("S3_IDENTIFIER_KEY").
-		Default("miniominiominio").
-		String()
-	S3SecretKey = kingpin.
-		Flag("s3-secret", "S3 Secret Key").
-		Envar("S3_SECRET_KEY").
-		Default("miniominiominio").
-		String()
-)
-
-var (
+	EnableDebugging bool
+	JwtSecureKey string
+	DbDriver string
+	DbConnection string
+	DbMigrationsDir string
+	S3Host string
+	S3Region string
+	S3IdentifierKey string
+	S3SecretKey string
 	a *lib.Application
 	h *handlers.Handler
 )
 
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
-func initialize() {
-	kingpin.Parse()
-	dbx, err := sqlx.Connect(*DbDriver, *DbConnection)
+func init() {
+	if env("ENABLE_DEBUGGING", "true") == "true" {
+		EnableDebugging = true
+	}
+	JwtSecureKey = env("JWT_SECURE_KEY", "my-secret-key")
+	DbDriver = env("DB_DRIVER", "postgres")
+	DbConnection = env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable")
+	DbMigrationsDir = env("DB_MIGRATIONS_DIR", "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations")
+	S3Host = env("S3_HOST", "http://localhost:9000")
+	S3Region = env("S3_REGION", "us-east-1")
+	S3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
+	S3SecretKey = env("S3_SECRET_KEY", "miniominiominio")
+
+	dbx, err := sqlx.Connect(DbDriver, DbConnection)
 	if err != nil {
 		panic(err)
 	}
 	sessionToken := "" // @todo what is session token?
 	s3Config := s3.NewS3Config("originals", &aws.Config{
-		Credentials:      credentials.NewStaticCredentials(*S3IdentifierKey, *S3SecretKey, sessionToken),
-		Endpoint:         aws.String(*S3Host),
-		Region:           aws.String(*S3Region),
+		Credentials:      credentials.NewStaticCredentials(S3IdentifierKey, S3SecretKey, sessionToken),
+		Endpoint:         aws.String(S3Host),
+		Region:           aws.String(S3Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
-	a = lib.NewApplication(dbx, s3Config, *JwtSecureKey, *DbMigrationsDir)
+	a = lib.NewApplication(dbx, s3Config, JwtSecureKey, DbMigrationsDir)
 	h = handlers.NewHandler(a)
 }
 
-func main() {
-	initialize()
+func env(env string, fallback string) (result string) {
+	result = os.Getenv(env)
+	if result == "" {
+		result = fallback
+	}
+	return result
+}
 
+func main() {
 	e := echo.New()
-	e.Debug = *EnableDebugging
+	e.Debug = EnableDebugging
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	config := middleware.JWTConfig{
 		Claims:     &handlers.JwtCustomClaims{},
-		SigningKey: []byte(*JwtSecureKey),
+		SigningKey: []byte(JwtSecureKey),
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
