@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/handlers"
+	"git.jasonraimondi.com/jason/jasontest/test/utils"
 )
 
 func TestCreateUser(t *testing.T) {
@@ -23,7 +23,7 @@ func TestCreateUser(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	h := handlers.NewTestHandler()
+	h := utils.NewTestHandler()
 
 	if assert.NoError(t, h.SignUp(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)

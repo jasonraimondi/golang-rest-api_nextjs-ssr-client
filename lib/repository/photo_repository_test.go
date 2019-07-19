@@ -6,13 +6,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/lib"
 	"git.jasonraimondi.com/jason/jasontest/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/models"
+	"git.jasonraimondi.com/jason/jasontest/test/utils"
 )
 
 func TestPhotoRepository_GetById(t *testing.T) {
-	r := lib.NewTestApplication().RepositoryFactory
+	r := utils.NewTestApplication().RepositoryFactory
 	user := models.NewUser("jason@raimondi.us")
 	photos := models.NewPhoto(uuid.NewV4(), user, "filename", "image title", "", 213241)
 

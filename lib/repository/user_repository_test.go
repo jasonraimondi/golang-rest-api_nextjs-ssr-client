@@ -5,12 +5,12 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/lib"
 	"git.jasonraimondi.com/jason/jasontest/models"
+	"git.jasonraimondi.com/jason/jasontest/test/utils"
 )
 
 func TestPersonRepository_GetById(t *testing.T) {
-	r := lib.NewTestApplication().RepositoryFactory
+	r := utils.NewTestApplication().RepositoryFactory
 	u := models.NewUser("jason@raimondi.us")
 	u.SetFirst("Jason")
 	u.SetLast("Raimondi")
@@ -27,7 +27,7 @@ func TestPersonRepository_GetById(t *testing.T) {
 }
 
 func TestPersonRepository_GetByEmail(t *testing.T) {
-	r := lib.NewTestApplication().RepositoryFactory
+	r := utils.NewTestApplication().RepositoryFactory
 	u := models.NewUser("kimberly@foo.bar")
 	u.SetFirst("Kimberly")
 	u.SetLast("Foo")

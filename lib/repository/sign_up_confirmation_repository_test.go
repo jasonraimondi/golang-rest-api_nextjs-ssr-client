@@ -5,13 +5,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"git.jasonraimondi.com/jason/jasontest/lib"
 	"git.jasonraimondi.com/jason/jasontest/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/models"
+	"git.jasonraimondi.com/jason/jasontest/test/utils"
 )
 
 func TestSignUpConfirmationRepository_GetByToken(t *testing.T) {
-	r := lib.NewTestApplication().RepositoryFactory
+	r := utils.NewTestApplication().RepositoryFactory
 	user := models.NewUser("jason@raimondi.us")
 	confirmation := models.NewSignUpConfirmation(*user)
 

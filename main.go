@@ -12,7 +12,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
-	_ "github.com/mattn/go-sqlite3"
 
 	"git.jasonraimondi.com/jason/jasontest/handlers"
 	"git.jasonraimondi.com/jason/jasontest/lib"
@@ -20,66 +19,58 @@ import (
 )
 
 var (
-	EnableDebugging bool
-	JwtSecureKey string
-	DbDriver string
-	DbConnection string
-	DbMigrationsDir string
-	S3Host string
-	S3Region string
-	S3IdentifierKey string
-	S3SecretKey string
-	a *lib.Application
-	h *handlers.Handler
+	enableDebugging bool
+	jwtSecureKey    string
+	dbDriver        string
+	dbConnection    string
+	dbMigrationsDir string
+	s3Host          string
+	s3Region        string
+	s3IdentifierKey string
+	s3SecretKey     string
+	a               *lib.Application
+	h               *handlers.Handler
 )
 
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
 func init() {
 	if env("ENABLE_DEBUGGING", "true") == "true" {
-		EnableDebugging = true
+		enableDebugging = true
 	}
-	JwtSecureKey = env("JWT_SECURE_KEY", "my-secret-key")
-	DbDriver = env("DB_DRIVER", "postgres")
-	DbConnection = env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable")
-	DbMigrationsDir = env("DB_MIGRATIONS_DIR", "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations")
-	S3Host = env("S3_HOST", "http://localhost:9000")
-	S3Region = env("S3_REGION", "us-east-1")
-	S3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
-	S3SecretKey = env("S3_SECRET_KEY", "miniominiominio")
+	jwtSecureKey = env("JWT_SECURE_KEY", "my-secret-key")
+	dbDriver = env("DB_DRIVER", "postgres")
+	dbConnection = env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable")
+	dbMigrationsDir = env("DB_MIGRATIONS_DIR", "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations")
+	s3Host = env("S3_HOST", "http://localhost:9000")
+	s3Region = env("S3_REGION", "us-east-1")
+	s3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
+	s3SecretKey = env("S3_SECRET_KEY", "miniominiominio")
 
-	dbx, err := sqlx.Connect(DbDriver, DbConnection)
+	dbx, err := sqlx.Connect(dbDriver, dbConnection)
 	if err != nil {
 		panic(err)
 	}
 	sessionToken := "" // @todo what is session token?
 	s3Config := s3.NewS3Config("originals", &aws.Config{
-		Credentials:      credentials.NewStaticCredentials(S3IdentifierKey, S3SecretKey, sessionToken),
-		Endpoint:         aws.String(S3Host),
-		Region:           aws.String(S3Region),
+		Credentials:      credentials.NewStaticCredentials(s3IdentifierKey, s3SecretKey, sessionToken),
+		Endpoint:         aws.String(s3Host),
+		Region:           aws.String(s3Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
-	a = lib.NewApplication(dbx, s3Config, JwtSecureKey, DbMigrationsDir)
+	a = lib.NewApplication(dbx, s3Config, jwtSecureKey, dbMigrationsDir)
 	h = handlers.NewHandler(a)
-}
-
-func env(env string, fallback string) (result string) {
-	result = os.Getenv(env)
-	if result == "" {
-		result = fallback
-	}
-	return result
 }
 
 func main() {
 	e := echo.New()
-	e.Debug = EnableDebugging
+	e.Debug = enableDebugging
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	config := middleware.JWTConfig{
 		Claims:     &handlers.JwtCustomClaims{},
-		SigningKey: []byte(JwtSecureKey),
+		SigningKey: []byte(jwtSecureKey),
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
@@ -96,4 +87,12 @@ func main() {
 	r.GET("", h.Restricted)
 
 	e.Logger.Fatal(e.Start(":1323"))
+}
+
+func env(env string, fallback string) (result string) {
+	result = os.Getenv(env)
+	if result == "" {
+		result = fallback
+	}
+	return result
 }
