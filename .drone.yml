@@ -1,10 +1,22 @@
 kind: pipeline
-name: default
+name: backend
 
 steps:
-  - name: test
+  - name: test backend
     image: golang:1.12-stretch
     commands:
       - apt-get update && apt-get install -y git gcc
       - go mod download
       - go test ./...
+
+---
+kind: pipeline
+name: frontend
+
+steps:
+  - name: test frontend
+    image: node:alpine
+    commands:
+      - cd web
+      - npm install
+      - npm run build
