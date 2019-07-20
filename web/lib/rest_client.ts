@@ -8,7 +8,7 @@ export class AxiosRestClient {
         return this.http.get<T>(url, config);
     }
 
-    post<T = any>(url: string, data: any, config?: AxiosRequestConfig) {
+    post<T = any>(url: string, data?: any, config?: AxiosRequestConfig) {
         return this.http.post<T>(url, data, config);
     }
 }
@@ -21,13 +21,26 @@ export class AppRestClient {
         return this.http.get<T>(url, this.mergeConfig(config))
     }
 
-    post<T = any>(url: string, data: any, config?: AxiosRequestConfig) {
-        return this.http.post<T>(url, data, this.mergeConfig(config));
+    post<T = any>(url: string, data?: any, config?: AxiosRequestConfig) {
+        const params = new URLSearchParams();
+        for (const key in data) {
+            params.append(key, data[key])
+        }
+        return this.http.post<T>(url, params, config);
     }
 
     private mergeConfig(config?: AxiosRequestConfig): AxiosRequestConfig {
-        if (config) return {...config};
-        return {}
+        if (!config) {
+            config = {};
+        }
+        config = {
+            ...config,
+            headers: {
+                ...config.headers,
+            }
+        };
+        console.log('i am end config', config);
+        return config
     }
 }
 
