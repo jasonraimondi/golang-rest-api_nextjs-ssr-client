@@ -1,6 +1,6 @@
-import {AxiosInstance, AxiosRequestConfig} from 'axios';
+import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 
-export class AxiosRestClient {
+class AxiosRestClient {
     constructor(private readonly http: AxiosInstance) {
     }
 
@@ -13,7 +13,7 @@ export class AxiosRestClient {
     }
 }
 
-export class AppRestClient {
+class AppRestClient {
     constructor(private readonly http: AxiosRestClient) {
     }
 
@@ -44,3 +44,8 @@ export class AppRestClient {
     }
 }
 
+const http = axios.create({
+    baseURL: "http://localhost:1323",
+});
+const restClient = new AxiosRestClient(http);
+export const appRestClient = new AppRestClient(restClient);

@@ -1,91 +1,74 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+import React, {useState} from "react";
 
-import {AppRestClient, AxiosRestClient} from "../lib/rest_client";
+import {GlobalHeader} from "../components/head";
+import {signUp} from "../lib/services/sign_up";
 
-interface SignUpForm {
+export interface SignUpForm {
     email: string
     first?: string
     last?: string
     password?: string
 }
 
-const http = axios.create({
-    baseURL: 'http://localhost:1323'
-});
-const restClient = new AxiosRestClient(http);
-const appRestClient = new AppRestClient(restClient);
-
-
-function catchAxiosError(error: any) {
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-    } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-    }
-    console.log(error.config);
-}
 
 function Home() {
     const rand = () => {
-        const min=0;
-        const max=1000;
+        const min = 0;
+        const max = 1000;
         return Math.floor(Math.random() * (+max - +min)) + +min;
     };
-
+    const [message, setMessage] = useState("");
+    const [submitted, setSubmitted] = useState(false);
     const [inputs, setInputs] = useState<SignUpForm>({
         email: `jason${rand()}@raimondi.us`,
     });
 
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        setMessage(await signUp(inputs));
+        setSubmitted(true);
+    };
 
-    const handleSubmit = async (event: any) => {
-        event.preventDefault();
-        const res = await appRestClient.post('/sign-up', inputs).catch(catchAxiosError);
-        console.log(res);
+    const handleInputChange = (e: any) => {
+        e.persist();
+        setInputs(inputs => ({...inputs, [e.target.name]: e.target.value}));
     };
-    const handleInputChange = (event: any) => {
-        event.persist();
-        setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
-    };
+
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
-                        First Name
-                        <input type="text" name="first" onChange={handleInputChange} value={inputs.first}/>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Last Name
-                        <input type="text" name="last" onChange={handleInputChange} value={inputs.last}/>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Email Address
-                        <input type="email" name="email" onChange={handleInputChange} value={inputs.email} required/>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Password
-                        <input type="password" name="password" onChange={handleInputChange} value={inputs.password}/>
-                    </label>
-                </div>
-                <button type="submit">Sign Up</button>
-            </form>
+            <GlobalHeader/>
+            <h1>This page has a title {inputs.first}🤔</h1>
+            {submitted ? message : (
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>
+                            First Name
+                            <input type="text" name="first" onChange={handleInputChange} value={inputs.first}/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Last Name
+                            <input type="text" name="last" onChange={handleInputChange} value={inputs.last}/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Email Address
+                            <input type="email" name="email" onChange={handleInputChange} value={inputs.email}
+                                   required/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Password
+                            <input type="password" name="password" onChange={handleInputChange}
+                                   value={inputs.password}/>
+                        </label>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+            )}
         </div>
     );
 }
