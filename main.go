@@ -68,6 +68,11 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:9000"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
+
 	config := middleware.JWTConfig{
 		Claims:     &handlers.JwtCustomClaims{},
 		SigningKey: []byte(jwtSecureKey),
