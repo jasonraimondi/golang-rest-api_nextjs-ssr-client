@@ -28,7 +28,7 @@ var (
 	s3Region        string
 	s3IdentifierKey string
 	s3SecretKey     string
-	a               *lib.Application
+	app             *lib.Application
 	h               *handlers.Handler
 )
 
@@ -57,8 +57,8 @@ func init() {
 		Region:           aws.String(s3Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
-	a = lib.NewApplication(dbx, s3Config, jwtSecureKey, dbMigrationsDir)
-	h = handlers.NewHandler(a)
+	app = lib.NewApplication(dbx, s3Config, jwtSecureKey, dbMigrationsDir)
+	h = handlers.NewHandler(app)
 }
 
 func main() {
@@ -75,14 +75,12 @@ func main() {
 	authRoute := middleware.JWTWithConfig(config)
 
 	e.POST("/login", h.Login)
-	e.POST("/upload", h.Upload)
 
-	//It is just like express javascript
 	e.POST("/sign-up", h.SignUp)
 	e.GET("/confirm-email", h.ConfirmEmail)
 
-	// Restricted group
-	r := e.Group("/restricted")
+	r := e.Group("/app")
+	r.POST("/upload", h.Upload)
 	r.Use(authRoute)
 	r.GET("", h.Restricted)
 

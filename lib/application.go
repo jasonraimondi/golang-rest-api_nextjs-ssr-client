@@ -3,7 +3,6 @@ package lib
 import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
 	"gopkg.in/go-playground/validator.v9"
 
 	"git.jasonraimondi.com/jason/jasontest/lib/repository"
