@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    ports:
+      - 1323:1323
+    environment:
+      DB_CONNECTION: host=postgres port=5432 user=print password=print dbname=print sslmode=disable
+
+  web:
+    build: ./web
+    ports:
+      - 3000:3000

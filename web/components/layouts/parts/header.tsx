@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { AuthService } from "../auth/auth_service";
+import { AuthService } from "../../auth/auth_service";
 
 interface Props {
   auth?: AuthService,

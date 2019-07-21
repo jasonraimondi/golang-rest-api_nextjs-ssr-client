@@ -1,16 +1,6 @@
 version: "3.7"
 
 services:
-#  app:
-#    build: .
-#    ports:
-#      - 1324:1323
-#
-#  web:
-#    build: ./web
-#    ports:
-#      - 8009:3000
-
   postgres:
     image: postgres:10.3-alpine
     environment:
