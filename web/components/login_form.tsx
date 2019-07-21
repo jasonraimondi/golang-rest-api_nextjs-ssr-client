@@ -28,25 +28,10 @@ export class LoginForm extends Component<Props, State> {
     };
   }
 
-  private async handleSubmit(e: any) {
-    e.preventDefault();
-    await AuthService.login(this.state.inputs);
-  };
-
-  private handleInputChange(e: any) {
-    e.persist();
-    this.setState({
-      inputs: {
-        ...this.state.inputs,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
-
   render() {
     const inputs = this.state.inputs;
     return <>
-      <form onSubmit={this.handleSubmit}>
+      <form className="container mx-auto max-w-sm" onSubmit={this.handleSubmit}>
         <TextInput type="email"
                    label="Email"
                    name="email"
@@ -63,4 +48,19 @@ export class LoginForm extends Component<Props, State> {
       </form>
     </>;
   }
+
+  private async handleSubmit(e: any) {
+    e.preventDefault();
+    await AuthService.login(this.state.inputs);
+  };
+
+  private handleInputChange(e: any) {
+    e.persist();
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
 }

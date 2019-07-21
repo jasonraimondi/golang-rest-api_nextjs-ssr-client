@@ -14,7 +14,7 @@ export function TextInput({ label, name, value, handleInputChange, required, typ
     <span className="block">
       {label}:
     </span>
-    <input className="border-solid border-2 border-gray-600 rounded"
+    <input className="border-solid border-2 border-gray-600 rounded w-full"
            type={type} name={name} onChange={handleInputChange} value={value} required={required}/>
   </label>;
 }

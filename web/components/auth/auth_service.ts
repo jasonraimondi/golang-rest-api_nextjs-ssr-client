@@ -28,21 +28,6 @@ export class AuthService {
     this.logout = this.logout.bind(this);
   }
 
-  static async login(inputs: LoginInputs) {
-    const res = await appRestClient.post<{ token: string }>("/login", inputs);
-    if (res.data.token) {
-      Cookie.set(COOKIES.authToken, res.data.token);
-      Router.push("/app/dashboard");
-    }
-  }
-
-  static redirectIfAuthenticated() {
-    const authService = new AuthService(Cookie.get(COOKIES.authToken));
-    if (authService.isAuthenticated) {
-      Router.push("/app/dashboard");
-    }
-  }
-
   get user() {
     return {
       id: this.decodedJWT.user_id,
@@ -68,6 +53,21 @@ export class AuthService {
       email: "",
       exp: 0,
     };
+  }
+
+  static async login(inputs: LoginInputs) {
+    const res = await appRestClient.post<{ token: string }>("/login", inputs);
+    if (res.data.token) {
+      Cookie.set(COOKIES.authToken, res.data.token);
+      Router.push("/app/dashboard");
+    }
+  }
+
+  static redirectIfAuthenticated() {
+    const authService = new AuthService(Cookie.get(COOKIES.authToken));
+    if (authService.isAuthenticated) {
+      Router.push("/app/dashboard");
+    }
   }
 
   logout() {

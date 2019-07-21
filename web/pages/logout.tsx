@@ -6,8 +6,9 @@ class LogoutPage extends Component<{ auth: AuthService }> {
   componentDidMount(): void {
     this.props.auth.logout();
   }
+
   render() {
-    return "Logging Out..."
+    return "Logging Out...";
   }
 }
 

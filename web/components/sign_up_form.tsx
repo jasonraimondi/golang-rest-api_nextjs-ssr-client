@@ -32,26 +32,10 @@ export class SignUpForm extends Component<Props, State> {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  private async handleSubmit(e: any) {
-    e.preventDefault();
-    this.props.setMessage(await signUp(this.state.inputs));
-    this.props.setSubmitted(true);
-  };
-
-  private handleInputChange(e: any) {
-    e.persist();
-    this.setState({
-      inputs: {
-        ...this.state.inputs,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
-
   render() {
     const { inputs } = this.state;
     return <>
-      <form onSubmit={this.handleSubmit}>
+      <form className="container mx-auto max-w-sm" onSubmit={this.handleSubmit}>
         <TextInput type="text"
                    label="First"
                    name="first"
@@ -80,5 +64,21 @@ export class SignUpForm extends Component<Props, State> {
       </form>
     </>;
   }
+
+  private async handleSubmit(e: any) {
+    e.preventDefault();
+    this.props.setMessage(await signUp(this.state.inputs));
+    this.props.setSubmitted(true);
+  };
+
+  private handleInputChange(e: any) {
+    e.persist();
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
 }
 

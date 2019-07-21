@@ -7,8 +7,7 @@ type AuthProps = {
   auth: AuthService
 }
 
-type Props = {
-}
+type Props = {}
 
 function DashboardPage({ auth }: Props & AuthProps) {
   console.log(auth);
