@@ -3,7 +3,7 @@ import decode from "jwt-decode";
 import Router from "next/router";
 import { COOKIES } from "../../lib/cookie";
 import { appRestClient } from "../../lib/rest_client";
-import { LoginForm } from "../login_form";
+import { LoginInputs } from "../login_form";
 
 export interface DecodedToken {
   user_id: string;
@@ -25,9 +25,10 @@ export class AuthService {
     }
 
     this.authorizationString = `Bearer ${this.token}`;
+    this.logout = this.logout.bind(this);
   }
 
-  static async login(inputs: LoginForm) {
+  static async login(inputs: LoginInputs) {
     const res = await appRestClient.post<{ token: string }>("/login", inputs);
     if (res.data.token) {
       Cookie.set(COOKIES.authToken, res.data.token);
@@ -35,9 +36,9 @@ export class AuthService {
     }
   }
 
-  get auth() {
+  get user() {
     return {
-      userId: this.decodedJWT.user_id,
+      id: this.decodedJWT.user_id,
       email: this.decodedJWT.email,
     };
   }
@@ -63,6 +64,8 @@ export class AuthService {
   }
 
   logout() {
+    Cookie.remove(COOKIES.authToken);
     this.decodedJWT = this.blankToken;
+    Router.push("/login");
   }
 }

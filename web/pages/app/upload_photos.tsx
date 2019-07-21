@@ -1,12 +1,11 @@
 import React from "react";
-import { PrivateRoute } from "../../components/auth/private_route";
-import Header from "../../components/layout/header";
+import { privateRoute } from "../../components/auth/private_route";
+import { defaultLayout } from "../../components/layouts/default";
 
-function UploadPhotos() {
+function UploadPhotosPage() {
   return <>
-    <Header/>
     <p>Hello Upload Photos</p>
   </>;
 }
 
-export default PrivateRoute(UploadPhotos);
+export default defaultLayout(privateRoute(UploadPhotosPage));

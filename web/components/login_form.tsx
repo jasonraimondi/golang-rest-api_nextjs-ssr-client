@@ -4,16 +4,16 @@ import { AuthService } from "./auth/auth_service";
 interface Props {
 }
 
-export interface LoginForm {
+export interface LoginInputs {
   email: string
   password: string
 }
 
 interface State {
-  inputs: LoginForm;
+  inputs: LoginInputs;
 }
 
-export class Login extends Component<Props, State> {
+export class LoginForm extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);

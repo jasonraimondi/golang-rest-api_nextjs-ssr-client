@@ -1,13 +1,12 @@
 import React from "react";
-import { PrivateRoute } from "../../components/auth/private_route";
-import Header from "../../components/layout/header";
+import { privateRoute } from "../../components/auth/private_route";
+import { defaultLayout } from "../../components/layouts/default";
 
-function Dashboard({ authService }) {
-  console.log(authService);
+function DashboardPage({ authService }) {
+  console.log('dashboard', authService);
   return <>
-    <Header/>
     <p>Hello Dashboard</p>
   </>;
 }
 
-export default PrivateRoute(Dashboard);
+export default defaultLayout(privateRoute(DashboardPage));

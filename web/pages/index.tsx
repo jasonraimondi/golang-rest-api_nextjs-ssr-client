@@ -1,17 +1,10 @@
-import Cookie from "js-cookie";
 import React from "react";
-import Header from "../components/layout/header";
+import { defaultLayout } from "../components/layouts/default";
 
-function Home() {
-  const handleStoreToken = () => {
-    Cookie.set("isAuthenticated", true);
-  };
-
+function Index() {
   return <>
-    <Header/>
-    <p>Hello Index</p>
-    <button onClick={handleStoreToken}>Login</button>
+    <p>Home</p>
   </>;
 }
 
-export default Home;
+export default defaultLayout(Index);

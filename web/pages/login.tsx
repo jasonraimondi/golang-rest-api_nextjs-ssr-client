@@ -1,18 +1,15 @@
 import React from "react";
+import { defaultLayout } from "../components/layouts/default";
 
-import { Head } from "../components/layout/head";
-import Header from "../components/layout/header";
-import { Login } from "../components/login_form";
+import { LoginForm } from "../components/login_form";
 
-function Home() {
+function LoginPage() {
   return (
     <>
-      <Head/>
-      <Header/>
-      <Login/>
+      <LoginForm/>
     </>
   );
 }
 
 
-export default Home;
+export default defaultLayout(LoginPage);
