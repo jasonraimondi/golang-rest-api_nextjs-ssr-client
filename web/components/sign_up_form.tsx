@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { signUp } from "../lib/services/sign_up";
+import { SubmitButton } from "./forms/button";
+import { TextInput } from "./forms/text";
 
 interface Props {
   setMessage: (message: string) => void
@@ -18,15 +20,16 @@ interface State {
 }
 
 export class SignUpForm extends Component<Props, State> {
+  state = {
+    inputs: {
+      email: "",
+    } as SignUp,
+  };
+
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.state = {
-      inputs: {
-        email: "",
-      },
-    };
   }
 
   private async handleSubmit(e: any) {
@@ -46,37 +49,36 @@ export class SignUpForm extends Component<Props, State> {
   };
 
   render() {
-    const inputs = this.state.inputs;
+    const { inputs } = this.state;
     return <>
       <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>
-            First Name
-            <input type="text" name="first" onChange={this.handleInputChange} value={inputs.first}/>
-          </label>
-        </div>
-        <div>
-          <label>
-            Last Name
-            <input type="text" name="last" onChange={this.handleInputChange} value={inputs.last}/>
-          </label>
-        </div>
-        <div>
-          <label>
-            Email Address
-            <input type="email" name="email" onChange={this.handleInputChange} value={inputs.email}
-                   required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input type="password" name="password" onChange={this.handleInputChange}
-                   value={inputs.password}/>
-          </label>
-        </div>
-        <button type="submit">Sign Up</button>
+        <TextInput type="text"
+                   label="First"
+                   name="first"
+                   handleInputChange={this.handleInputChange}
+                   value={inputs.first}
+        />
+        <TextInput type="text"
+                   label="Last"
+                   name="last"
+                   handleInputChange={this.handleInputChange}
+                   value={inputs.last}
+        />
+        <TextInput type="email"
+                   label="Email"
+                   name="email"
+                   handleInputChange={this.handleInputChange}
+                   value={inputs.email} required
+        />
+        <TextInput type="password"
+                   label="Password"
+                   name="password"
+                   handleInputChange={this.handleInputChange}
+                   value={inputs.password}
+        />
+        <SubmitButton label="Sign Up"/>
       </form>
     </>;
   }
 }
+

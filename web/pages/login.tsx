@@ -5,13 +5,7 @@ import { LoginForm } from "../components/login_form";
 
 function LoginPage() {
   AuthService.redirectIfAuthenticated();
-
-  return (
-    <>
-      <LoginForm/>
-    </>
-  );
+  return <LoginForm/>;
 }
-
 
 export default defaultLayout(LoginPage);

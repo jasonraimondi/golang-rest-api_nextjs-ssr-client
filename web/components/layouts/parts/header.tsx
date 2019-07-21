@@ -16,7 +16,7 @@ const Header = (props: Props) => {
 
   return <header>
     <nav>
-      <ul style={{ listStyleType: "none" }}>
+      <ul className="flex justify-around">
         <li>
           <Link href="/">
             <a>Home</a>
@@ -44,7 +44,7 @@ function PrivateRoutes() {
 
 function PublicRoutes() {
   return <>
-    <li>Public ROUTES</li>
+    <li><h1 className="text-2xl">Public ROUTES</h1></li>
     <li>
       <Link href="/login">
         <a>Login</a>

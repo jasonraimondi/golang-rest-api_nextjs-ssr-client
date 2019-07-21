@@ -17,7 +17,6 @@ function SignUpPage() {
       <Head>
         <title>SIGN UP TO WIN</title>
       </Head>
-      <h1>This page has a title🤔</h1>
       {submitted ? message : <SignUpForm setMessage={setMessage} setSubmitted={setSubmitted}/>}
     </>
   );

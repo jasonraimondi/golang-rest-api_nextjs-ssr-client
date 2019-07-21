@@ -3,7 +3,7 @@ import { defaultLayout } from "../components/layouts/default";
 
 function Index() {
   return <>
-    <p>Home</p>
+    <p className="text-red-500">Home</p>
   </>;
 }
 

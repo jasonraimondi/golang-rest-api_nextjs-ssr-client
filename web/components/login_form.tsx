@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { AuthService } from "./auth/auth_service";
+import { SubmitButton } from "./forms/button";
+import { TextInput } from "./forms/text";
 
 interface Props {
 }
@@ -45,21 +47,19 @@ export class LoginForm extends Component<Props, State> {
     const inputs = this.state.inputs;
     return <>
       <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>
-            Email Address
-            <input type="email" name="email" onChange={this.handleInputChange} value={inputs.email}
-                   required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input type="password" name="password" onChange={this.handleInputChange}
-                   value={inputs.password}/>
-          </label>
-        </div>
-        <button type="submit">Login</button>
+        <TextInput type="email"
+                   label="Email"
+                   name="email"
+                   handleInputChange={this.handleInputChange}
+                   value={inputs.email} required
+        />
+        <TextInput type="password"
+                   label="Password"
+                   name="password"
+                   handleInputChange={this.handleInputChange}
+                   value={inputs.password}
+        />
+        <SubmitButton label="Login"/>
       </form>
     </>;
   }
