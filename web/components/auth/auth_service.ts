@@ -1,4 +1,9 @@
+import Cookie from "js-cookie";
 import decode from "jwt-decode";
+import Router from "next/router";
+import { COOKIES } from "../../lib/cookie";
+import { appRestClient } from "../../lib/rest_client";
+import { LoginForm } from "../login_form";
 
 export interface DecodedToken {
   user_id: string;
@@ -7,20 +12,33 @@ export interface DecodedToken {
 }
 
 export class AuthService {
-  private token: DecodedToken;
+  public readonly authorizationString: string;
 
-  constructor(jwt: string) {
+  private decodedJWT: DecodedToken;
+
+  constructor(private token?: string) {
+    if (!this.token) this.token = "ERR";
     try {
-      this.token = decode(jwt);
+      this.decodedJWT = decode(this.token);
     } catch (e) {
-      this.token = this.blankToken;
+      this.decodedJWT = this.blankToken;
+    }
+
+    this.authorizationString = `Bearer ${this.token}`;
+  }
+
+  static async login(inputs: LoginForm) {
+    const res = await appRestClient.post<{ token: string }>("/login", inputs);
+    if (res.data.token) {
+      Cookie.set(COOKIES.authToken, res.data.token);
+      Router.push("/app/upload_photo");
     }
   }
 
   get auth() {
     return {
-      userId: this.token.user_id,
-      email: this.token.email,
+      userId: this.decodedJWT.user_id,
+      email: this.decodedJWT.email,
     };
   }
 
@@ -33,7 +51,7 @@ export class AuthService {
   }
 
   get expiresAt(): Date {
-    return new Date(this.token.exp * 1000);
+    return new Date(this.decodedJWT.exp * 1000);
   }
 
   get blankToken(): DecodedToken {
@@ -45,6 +63,6 @@ export class AuthService {
   }
 
   logout() {
-    this.token = this.blankToken;
+    this.decodedJWT = this.blankToken;
   }
 }

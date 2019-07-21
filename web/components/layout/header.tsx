@@ -3,8 +3,8 @@ import React from "react";
 
 // The Header creates links that can be used to navigate
 // between routes.
-const Header = () => (
-  <header>
+const Header = () => {
+  return <header>
     <nav>
       <ul style={{ listStyleType: "none" }}>
         <li>
@@ -18,18 +18,24 @@ const Header = () => (
           </Link>
         </li>
         <li>
-          <Link href="/app/upload_photos">
-            <a>Upload Photos</a>
-          </Link>
-        </li>
-        <li>
           <Link href="/sign_up">
             <a>SignUp</a>
           </Link>
         </li>
+        <li>PRIVATE ROUTES</li>
+        <li>
+          <Link href="/app/dashboard">
+            <a>Dashboard</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/app/upload_photos">
+            <a>Upload Photos</a>
+          </Link>
+        </li>
       </ul>
     </nav>
-  </header>
-);
+  </header>;
+};
 
 export default Header;

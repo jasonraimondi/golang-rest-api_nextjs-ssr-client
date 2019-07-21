@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { GlobalHeader } from "../components/layout/head";
+import { Head } from "../components/layout/head";
 import Header from "../components/layout/header";
 import { SignUpForm } from "../components/sign_up_form";
 
@@ -11,7 +11,7 @@ function Home() {
 
   return (
     <>
-      <GlobalHeader/>
+      <Head/>
       <Header/>
       <h1>This page has a title🤔</h1>
       {submitted ? message : (

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { login } from "../lib/services/sign_up";
+import { AuthService } from "./auth/auth_service";
 
 interface Props {
-  // setMessage: (message: string) => void
-  // setSubmitted: (isSubmitted: boolean) => void
 }
 
 export interface LoginForm {
@@ -30,7 +28,7 @@ export class Login extends Component<Props, State> {
 
   private async handleSubmit(e: any) {
     e.preventDefault();
-    await login(this.state.inputs);
+    await AuthService.login(this.state.inputs);
   };
 
   private handleInputChange(e: any) {
