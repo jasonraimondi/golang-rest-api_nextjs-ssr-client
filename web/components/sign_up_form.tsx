@@ -6,7 +6,7 @@ interface Props {
   setSubmitted: (isSubmitted: boolean) => void
 }
 
-export interface SignUpForm {
+export interface SignUp {
   email: string
   first?: string
   last?: string
@@ -14,19 +14,19 @@ export interface SignUpForm {
 }
 
 interface State {
-  inputs: SignUpForm;
+  inputs: SignUp;
 }
 
-export class UserForm extends Component<Props, State> {
+export class SignUpForm extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
       inputs: {
-        email: ""
-      }
-    }
+        email: "",
+      },
+    };
   }
 
   private async handleSubmit(e: any) {

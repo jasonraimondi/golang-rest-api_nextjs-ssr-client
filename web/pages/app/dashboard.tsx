@@ -2,11 +2,11 @@ import React from "react";
 import { PrivateRoute } from "../../components/auth/private_route";
 import Header from "../../components/layout/header";
 
-function UploadPhotos() {
+function Dashboard() {
   return <>
     <Header/>
-    <p>Hello Upload Photos</p>
+    <p>Hello Dashboard</p>
   </>;
 }
 
-export default PrivateRoute(UploadPhotos);
+export default PrivateRoute(Dashboard);

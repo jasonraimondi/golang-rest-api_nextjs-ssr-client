@@ -1,5 +1,5 @@
-import React from "react";
 import Link from "next/link";
+import React from "react";
 
 // The Header creates links that can be used to navigate
 // between routes.
@@ -10,6 +10,11 @@ const Header = () => (
         <li>
           <Link href="/">
             <a>Home</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/login">
+            <a>Login</a>
           </Link>
         </li>
         <li>

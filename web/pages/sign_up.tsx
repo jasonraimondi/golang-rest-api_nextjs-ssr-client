@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { GlobalHeader } from "../components/head";
-import Header from "../components/header";
-import { UserForm } from "../components/user_form";
+import { GlobalHeader } from "../components/layout/head";
+import Header from "../components/layout/header";
+import { SignUpForm } from "../components/sign_up_form";
 
 
 function Home() {
@@ -15,7 +15,7 @@ function Home() {
       <Header/>
       <h1>This page has a title🤔</h1>
       {submitted ? message : (
-        <UserForm setMessage={setMessage} setSubmitted={setSubmitted}/>
+        <SignUpForm setMessage={setMessage} setSubmitted={setSubmitted}/>
       )}
     </>
   );

@@ -25,6 +25,7 @@ func (h *Handler) Login(c echo.Context) (err error) {
 
 	// Set custom claims
 	claims := &JwtCustomClaims{
+		p.ID.String(),
 		p.Email,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),

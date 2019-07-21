@@ -19,6 +19,7 @@ func NewHandler(a *lib.Application) *Handler {
 }
 
 type JwtCustomClaims struct {
+	UserID string `json:"user_id"`
 	Email string `json:"email"`
 	jwt.StandardClaims
 }

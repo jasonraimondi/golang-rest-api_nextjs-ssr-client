@@ -1,7 +1,17 @@
+import Cookie from "js-cookie";
+import { LoginForm } from "../../components/login_form";
+import { SignUp } from "../../components/sign_up_form";
+import { COOKIES } from "../cookie";
 import { appRestClient } from "../rest_client";
-import { SignUpForm } from "../../components/user_form";
 
-export async function signUp(inputs: SignUpForm): Promise<string> {
+export async function login(inputs: LoginForm) {
+  const res = await appRestClient.post<{ token: string }>("/login", inputs);
+  if (res.data.token) {
+    Cookie.set(COOKIES.authToken, res.data.token);
+  }
+}
+
+export async function signUp(inputs: SignUp) {
   const foo = await appRestClient.post("/sign-up", inputs).catch(catchAxiosError);
   console.log(foo);
   return "hello sunshine my best friend";
