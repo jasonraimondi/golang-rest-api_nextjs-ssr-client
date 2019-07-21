@@ -1,22 +1,19 @@
 import Cookie from "js-cookie";
 import React from "react";
-import Header from "../components/header";
+import { PrivateRoute } from "../../components/private_route";
 
-function Home() {
+function UploadPhotos() {
   const handleStoreToken = () => {
     Cookie.set("isAuthenticated", true);
   };
-
   const handleRemoveToken = () => {
     Cookie.remove("isAuthenticated");
   };
-
   return <>
-    <Header/>
-    <p>Hello Index</p>
+    <p>Hello Upload Photos</p>
     <button onClick={handleStoreToken}>Login</button>
     <button onClick={handleRemoveToken}>Logout</button>
   </>;
 }
 
-export default Home;
+export default PrivateRoute(UploadPhotos);

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="FrontEnd" pattern="file[jasontest]:web//*&amp;&amp;!file[jasontest]:web/.idea//*&amp;&amp;!file[jasontest]:web/.next//*&amp;&amp;!file:web/next-env.d.ts" />
+</component>
