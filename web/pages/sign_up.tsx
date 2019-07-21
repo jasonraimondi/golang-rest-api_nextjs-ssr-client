@@ -1,11 +1,14 @@
 import Head from "next/head";
 import React, { useState } from "react";
+import { AuthService } from "../components/auth/auth_service";
 import { defaultLayout } from "../components/layouts/default";
 
 import { SignUpForm } from "../components/sign_up_form";
 
 
 function SignUpPage() {
+  AuthService.redirectIfAuthenticated();
+
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
 

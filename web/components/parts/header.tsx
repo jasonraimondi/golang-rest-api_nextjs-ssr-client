@@ -3,15 +3,14 @@ import React from "react";
 import { AuthService } from "../auth/auth_service";
 
 interface Props {
-  authService?: AuthService,
+  auth?: AuthService,
 }
 
 // The Header creates links that can be used to navigate
 // between routes.
 const Header = (props: Props) => {
   let isAuthenticated = false;
-
-  if (props.authService && props.authService.isAuthenticated) {
+  if (props.auth && props.auth.isAuthenticated) {
     isAuthenticated = true;
   }
 
@@ -23,7 +22,7 @@ const Header = (props: Props) => {
             <a>Home</a>
           </Link>
         </li>
-        {isAuthenticated ? <PrivateRoutes /> : <PublicRoutes />}
+        {isAuthenticated ? <PrivateRoutes/> : <PublicRoutes/>}
       </ul>
     </nav>
   </header>;
@@ -33,16 +32,14 @@ function PrivateRoutes() {
   return <>
     <li>PRIVATE ROUTES</li>
     <li>
-      <Link href="/login">
-        <a>Login</a>
+      <Link href="/app/dashboard">
+        <a>Dashboard</a>
+      </Link>
+      <Link href="/logout">
+        <a>Logout</a>
       </Link>
     </li>
-    <li>
-      <Link href="/sign_up">
-        <a>SignUp</a>
-      </Link>
-    </li>
-  </>
+  </>;
 }
 
 function PublicRoutes() {
@@ -58,6 +55,7 @@ function PublicRoutes() {
         <a>SignUp</a>
       </Link>
     </li>
-  </>
+  </>;
 }
+
 export default Header;

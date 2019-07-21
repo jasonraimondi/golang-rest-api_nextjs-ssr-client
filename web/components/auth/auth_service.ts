@@ -32,7 +32,14 @@ export class AuthService {
     const res = await appRestClient.post<{ token: string }>("/login", inputs);
     if (res.data.token) {
       Cookie.set(COOKIES.authToken, res.data.token);
-      Router.push("/app/upload_photo");
+      Router.push("/app/dashboard");
+    }
+  }
+
+  static redirectIfAuthenticated() {
+    const authService = new AuthService(Cookie.get(COOKIES.authToken));
+    if (authService.isAuthenticated) {
+      Router.push("/app/dashboard");
     }
   }
 
