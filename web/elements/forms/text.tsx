@@ -22,6 +22,11 @@ export function TextInput({ label, name, value, handleInputChange, required, typ
       {label}:
     </span>
     <input className="border-solid border-2 border-gray-600 rounded w-full py-1 px-2"
-           type={type} name={name} onChange={handleInputChange} value={value} required={required}/>
+           type={type}
+           name={name}
+           onChange={handleInputChange}
+           value={value}
+           required={required}
+    />
   </Label>;
 }

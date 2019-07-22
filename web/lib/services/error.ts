@@ -1,18 +1,27 @@
-export function catchAxiosError(error: any) {
-  if (error.response) {
+export interface ErrorResponse {
+  error: string
+}
+
+export function catchAxiosError(err: any): ErrorResponse {
+  let message: string;
+  if (err.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    console.log(error.response.data.message);
-    console.log(error.response.status);
-    console.log(error.response.headers);
-  } else if (error.request) {
+    console.log(err.response.data.message);
+    console.log(err.response.status);
+    console.log(err.response.headers);
+    message = err.response.data.message;
+  } else if (err.request) {
     // The request was made but no response was received
-    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    // `err.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
-    console.log(error.request);
+    console.log(err.request);
+    message = "The request was made, but no response was received";
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log("Error", error.message);
+    console.log("Error", err.message);
+    message = "Something happened in setting up the request that triggered an Error";
   }
-  console.log(error.config);
+  console.log(err.config);
+  return { error: message };
 }

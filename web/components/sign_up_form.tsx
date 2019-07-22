@@ -1,84 +1,64 @@
-import React, { Component } from "react";
-import { signUp } from "../lib/services/sign_up";
+import React, { useState } from "react";
 import { SubmitButton } from "../elements/forms/button";
 import { TextInput } from "../elements/forms/text";
-
-interface Props {
-  setMessage: (message: string) => void
-  setSubmitted: (isSubmitted: boolean) => void
-}
+import { signUp } from "../lib/services/api/sign_up";
 
 export interface SignUp {
   email: string
-  first?: string
-  last?: string
-  password?: string
+  first: string
+  last: string
+  password: string
 }
 
-interface State {
-  inputs: SignUp;
-}
+export function SignUpForm() {
+  const [inputs, setInputs] = useState({
+    email: "",
+    first: "",
+    last: "",
+    password: "",
+  } as SignUp);
 
-export class SignUpForm extends Component<Props, State> {
-  state = {
-    inputs: {
-      email: "",
-    } as SignUp,
-  };
-
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  render() {
-    const { inputs } = this.state;
-    return <>
-      <form className="container mx-auto max-w-sm" onSubmit={this.handleSubmit}>
-        <TextInput type="text"
-                   label="First"
-                   name="first"
-                   handleInputChange={this.handleInputChange}
-                   value={inputs.first}
-        />
-        <TextInput type="text"
-                   label="Last"
-                   name="last"
-                   handleInputChange={this.handleInputChange}
-                   value={inputs.last}
-        />
-        <TextInput type="email"
-                   label="Email"
-                   name="email"
-                   handleInputChange={this.handleInputChange}
-                   value={inputs.email} required
-        />
-        <TextInput type="password"
-                   label="Password"
-                   name="password"
-                   handleInputChange={this.handleInputChange}
-                   value={inputs.password}
-        />
-        <SubmitButton label="Sign Up"/>
-      </form>
-    </>;
-  }
-
-  private async handleSubmit(e: any) {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    this.props.setMessage(await signUp(this.state.inputs));
-    this.props.setSubmitted(true);
+    await signUp(inputs);
   };
 
-  private handleInputChange(e: any) {
+  const handleInputChange = (e: any) => {
     e.persist();
-    this.setState({
-      inputs: {
-        ...this.state.inputs,
-        [e.target.name]: e.target.value,
-      },
-    });
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    })
   };
+
+  return <>
+    <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
+      <TextInput type="text"
+                 label="First"
+                 name="first"
+                 handleInputChange={handleInputChange}
+                 value={inputs.first}
+      />
+      <TextInput type="text"
+                 label="Last"
+                 name="last"
+                 handleInputChange={handleInputChange}
+                 value={inputs.last}
+      />
+      <TextInput type="email"
+                 label="Email"
+                 name="email"
+                 handleInputChange={handleInputChange}
+                 value={inputs.email} required
+      />
+      <TextInput type="password"
+                 label="Password"
+                 name="password"
+                 handleInputChange={handleInputChange}
+                 value={inputs.password}
+      />
+      <SubmitButton label="Sign Up"/>
+    </form>
+  </>;
 }
 
