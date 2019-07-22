@@ -1,6 +1,6 @@
 import { Component } from "react";
-import { AuthService } from "../components/auth/auth_service";
-import { privateRoute } from "../components/auth/private_route";
+import { AuthService } from "../lib/auth/auth_service";
+import { privateRoute } from "../lib/auth/private_route";
 
 class LogoutPage extends Component<{ auth: AuthService }> {
   componentDidMount(): void {

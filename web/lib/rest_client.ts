@@ -5,18 +5,25 @@ class AppRestClient {
   }
 
   get<T = any>(url: string, config?: AxiosRequestConfig) {
-    return this.http.get<T>(url, this.mergeConfig(config));
+    return this.unauthorizedGet<T>(url, this.mergeAuthHeader(config));
   }
 
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return this.unauthorizedPost<T>(url, data, this.mergeAuthHeader(config));
+  }
+
+  unauthorizedGet<T = any>(url: string, config?: AxiosRequestConfig) {
+    return this.http.get<T>(url, config);
+  }
+
+  unauthorizedPost<T = any>(url: string, data?: any, config?: AxiosRequestConfig) {
     const params = new URLSearchParams();
     for (const key in data) {
       params.append(key, data[key]);
     }
     return this.http.post<T>(url, params, config);
   }
-
-  private mergeConfig(config?: AxiosRequestConfig): AxiosRequestConfig {
+  private mergeAuthHeader(config?: AxiosRequestConfig): AxiosRequestConfig {
     if (!config) {
       config = {};
     }

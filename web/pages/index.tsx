@@ -1,5 +1,5 @@
 import React from "react";
-import { defaultLayout } from "../components/layouts/default";
+import { defaultLayout } from "../elements/layouts/default";
 
 function Index() {
   return <>

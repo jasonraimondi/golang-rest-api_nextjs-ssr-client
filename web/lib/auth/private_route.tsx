@@ -1,7 +1,7 @@
 import Cookie from "js-cookie";
 import Router from "next/router";
 import React, { Component } from "react";
-import { COOKIES } from "../../lib/cookie";
+import { COOKIES } from "../cookie";
 import { AuthService } from "./auth_service";
 
 export function privateRoute(WrappedComponent: any) {

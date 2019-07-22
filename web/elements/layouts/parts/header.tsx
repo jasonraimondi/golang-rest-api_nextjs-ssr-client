@@ -1,13 +1,11 @@
 import Link from "next/link";
 import React from "react";
-import { AuthService } from "../../auth/auth_service";
+import { AuthService } from "../../../lib/auth/auth_service";
 
 interface Props {
   auth?: AuthService,
 }
 
-// The Header creates links that can be used to navigate
-// between routes.
 const Header = (props: Props) => {
   let isAuthenticated = false;
   if (props.auth && props.auth.isAuthenticated) {
@@ -35,6 +33,13 @@ function PrivateRoutes() {
       <Link href="/app/dashboard">
         <a>Dashboard</a>
       </Link>
+    </li>
+    <li>
+      <Link href="/app/upload_photo">
+        <a>Upload Photo</a>
+      </Link>
+    </li>
+    <li>
       <Link href="/logout">
         <a>Logout</a>
       </Link>

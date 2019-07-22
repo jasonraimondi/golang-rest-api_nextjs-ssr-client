@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AuthService } from "../auth/auth_service";
+import { AuthService } from "../../lib/auth/auth_service";
 import { Head } from "./parts/head";
 import Header from "./parts/header";
 

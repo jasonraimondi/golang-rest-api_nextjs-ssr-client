@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { signUp } from "../lib/services/sign_up";
-import { SubmitButton } from "./forms/button";
-import { TextInput } from "./forms/text";
+import { SubmitButton } from "../elements/forms/button";
+import { TextInput } from "../elements/forms/text";
 
 interface Props {
   setMessage: (message: string) => void

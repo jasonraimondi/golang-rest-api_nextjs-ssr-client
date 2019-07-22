@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { AuthService } from "./auth/auth_service";
-import { SubmitButton } from "./forms/button";
-import { TextInput } from "./forms/text";
+import { AuthService } from "../lib/auth/auth_service";
+import { SubmitButton } from "../elements/forms/button";
+import { TextInput } from "../elements/forms/text";
 
 interface Props {
 }

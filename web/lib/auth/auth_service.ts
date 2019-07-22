@@ -1,9 +1,9 @@
 import Cookie from "js-cookie";
 import decode from "jwt-decode";
 import Router from "next/router";
-import { COOKIES } from "../../lib/cookie";
-import { appRestClient } from "../../lib/rest_client";
-import { LoginInputs } from "../login_form";
+import { COOKIES } from "../cookie";
+import { appRestClient } from "../rest_client";
+import { LoginInputs } from "../../components/login_form";
 
 export interface DecodedToken {
   user_id: string;

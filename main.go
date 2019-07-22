@@ -85,8 +85,8 @@ func main() {
 	e.GET("/confirm-email", h.ConfirmEmail)
 
 	r := e.Group("/app")
-	r.POST("/upload", h.Upload)
 	r.Use(authRoute)
+	r.POST("/upload", h.Upload)
 	r.GET("", h.Restricted)
 
 	e.Logger.Fatal(e.Start(":1323"))
