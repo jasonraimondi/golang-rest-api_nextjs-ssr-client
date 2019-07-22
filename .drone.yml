@@ -5,8 +5,8 @@ steps:
   - name: test backend
     image: golang:1.12-stretch
     commands:
+      - export DB_MIGRATIONS_DIR=/drone/src/db/migrations
       - apt-get update && apt-get install -y git gcc
-      - go mod download
       - go test ./...
 
 ---
