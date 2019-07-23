@@ -5,18 +5,31 @@ export interface TextFields {
   type: "text" | "password" | "email";
   label: string;
   name: string;
-  value?: string;
-  handleInputChange: (e) => void;
+  value: string;
+  error?: string;
+  validating?: boolean;
+  submitting?: boolean
   required?: boolean;
+  touched?: boolean;
+
+  handleBlur(e: React.FocusEvent<any>): void;
+
+  handleChange(e: React.ChangeEvent<any>): void;
 }
 
-const Label = styled.label`
-  &:first-child {
-    margin-top: 0;
-  }
-`;
-
-export function TextInput({ label, name, value, handleInputChange, required, type }: TextFields) {
+export function TextInput({
+  type,
+  label,
+  name,
+  value,
+  error,
+  touched,
+  validating,
+  submitting,
+  required,
+  handleBlur,
+  handleChange,
+}: TextFields) {
   return <Label className="block mt-3">
     <span className="block">
       {label}:
@@ -24,9 +37,20 @@ export function TextInput({ label, name, value, handleInputChange, required, typ
     <input className="border-solid border-2 border-gray-600 rounded w-full py-1 px-2"
            type={type}
            name={name}
-           onChange={handleInputChange}
+           disabled={submitting || validating}
+           onBlur={handleBlur}
+           onChange={handleChange}
            value={value}
            required={required}
     />
+    <span className="block">
+          {error && touched && error}
+    </span>
   </Label>;
 }
+
+const Label = styled.label`
+  &:first-child {
+    margin-top: 0;
+  }
+`;
