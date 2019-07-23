@@ -43,7 +43,7 @@ export function TextInput({
            value={value}
            required={required}
     />
-    <span className="block">
+    <span className="block text-sm">
           {error && touched && error}
     </span>
   </Label>;
