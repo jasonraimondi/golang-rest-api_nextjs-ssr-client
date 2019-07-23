@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-export interface TextFields {
+interface TextInputFields {
   type: "text" | "password" | "email";
   label: string;
   name: string;
@@ -29,7 +29,7 @@ export function TextInput({
   required,
   handleBlur,
   handleChange,
-}: TextFields) {
+}: TextInputFields) {
   return <Label className="block mt-3">
     <span className="block">
       {label}:

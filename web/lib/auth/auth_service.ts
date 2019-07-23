@@ -1,9 +1,9 @@
 import Cookie from "js-cookie";
 import decode from "jwt-decode";
 import Router from "next/router";
+import { LoginInputs } from "../../pages/login";
 import { COOKIES } from "../cookie";
 import { post } from "../rest_client";
-import {LoginInputs} from "../../pages/login";
 
 export interface DecodedToken {
   user_id: string;
@@ -55,7 +55,7 @@ export class AuthService {
     };
   }
 
-  static async login(inputs: LoginInputs|any) {
+  static async login(inputs: LoginInputs | any) {
     const res = await post<{ token: string }>("/login", inputs);
     if (res.data.token) {
       Cookie.set(COOKIES.authToken, res.data.token);

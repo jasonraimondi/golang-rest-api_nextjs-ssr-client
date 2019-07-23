@@ -1,20 +1,105 @@
-import Head from "next/head";
+import { Formik, FormikProps } from "formik";
 import React from "react";
-import { SignUpForm } from "../components/sign_up_form";
+import { SubmitButton } from "../elements/forms/button";
+import { TextInput } from "../elements/forms/text";
 import { defaultLayout } from "../elements/layouts/default";
 import { AuthService } from "../lib/auth/auth_service";
+import { signUp } from "../lib/services/api/sign_up";
+import { emailRegex } from "./login";
+
+export type SignUpInputs = {
+  email: string
+  password: string
+  first: string
+  last: string
+}
 
 function SignUpPage() {
   AuthService.redirectIfAuthenticated();
 
-  return (
-    <>
-      <Head>
-        <title>SIGN UP TO WIN</title>
-      </Head>
-      <SignUpForm/>
-    </>
-  );
+  const initialValues = {email: "", password: "", first: "", last: ""};
+
+  const validate = (values: SignUpInputs) => {
+    let errors: Partial<SignUpInputs> = {};
+
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (!emailRegex.test(values.email)) {
+      errors.email = 'Invalid email address';
+    }
+
+    return errors;
+  };
+
+  const onSubmit = async (values, {setSubmitting, setError}) => {
+    setError("hi error");
+    await signUp(values);
+    setSubmitting(false);
+  };
+
+  return <Formik
+    initialValues={initialValues}
+    validate={validate}
+    onSubmit={onSubmit}
+  >
+    {({
+      values,
+      error,
+      errors,
+      touched,
+      handleChange,
+      handleBlur,
+      handleSubmit,
+      isSubmitting,
+    }: FormikProps<SignUpInputs>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
+      {error ? error : null}
+      <TextInput type="email"
+                 label="Email"
+                 name="email"
+                 touched={touched.email}
+                 value={values.email}
+                 error={errors.email}
+                 handleBlur={handleBlur}
+                 handleChange={handleChange}
+                 submitting={isSubmitting}
+                 required
+      />
+      <TextInput type="text"
+                 label="First"
+                 name="first"
+                 touched={touched.first}
+                 value={values.first}
+                 error={errors.first}
+                 handleBlur={handleBlur}
+                 handleChange={handleChange}
+                 submitting={isSubmitting}
+                 required
+      />
+      <TextInput type="text"
+                 label="Last"
+                 name="last"
+                 touched={touched.last}
+                 value={values.last}
+                 error={errors.last}
+                 handleBlur={handleBlur}
+                 handleChange={handleChange}
+                 submitting={isSubmitting}
+                 required
+      />
+      <TextInput type="password"
+                 label="Password"
+                 name="password"
+                 touched={touched.password}
+                 value={values.password}
+                 error={errors.password}
+                 handleBlur={handleBlur}
+                 handleChange={handleChange}
+                 submitting={isSubmitting}
+                 required
+      />
+      <SubmitButton label="Submit" type="submit" disabled={isSubmitting}/>
+    </form>}
+  </Formik>;
 }
 
 export default defaultLayout(SignUpPage);

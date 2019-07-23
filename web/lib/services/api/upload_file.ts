@@ -6,7 +6,7 @@ interface UploadFileFields {
   file: File;
 }
 
-export async function uploadFile(bearer: string, { userId, file }: UploadFileFields) {
+export async function uploadFile(bearer: string, {userId, file}: UploadFileFields) {
   try {
     const formData = new FormData();
     formData.append("userId", userId);

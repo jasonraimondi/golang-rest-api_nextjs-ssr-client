@@ -23,5 +23,5 @@ export function catchAxiosError(err: any): ErrorResponse {
     message = "Something happened in setting up the request that triggered an Error";
   }
   console.log(err.config);
-  return { error: message };
+  return {error: message};
 }

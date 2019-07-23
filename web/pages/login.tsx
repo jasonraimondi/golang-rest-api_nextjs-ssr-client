@@ -1,9 +1,9 @@
-import {Formik, FormikProps} from "formik";
+import { Formik, FormikProps } from "formik";
 import React from "react";
-import {TextInput} from "../elements/forms/text";
-import {defaultLayout} from "../elements/layouts/default";
-import {AuthService} from "../lib/auth/auth_service";
-import {SubmitButton} from "../elements/forms/button";
+import { SubmitButton } from "../elements/forms/button";
+import { TextInput } from "../elements/forms/text";
+import { defaultLayout } from "../elements/layouts/default";
+import { AuthService } from "../lib/auth/auth_service";
 
 function LoginPage() {
   AuthService.redirectIfAuthenticated();
@@ -12,7 +12,7 @@ function LoginPage() {
   </>;
 }
 
-const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+export const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
 export type LoginInputs = {
   email: string
@@ -34,7 +34,7 @@ function LoginForm() {
     return errors;
   };
 
-  const onSubmit = async (values, {setSubmitting, setError }) => {
+  const onSubmit = async (values, {setSubmitting, setError}) => {
     setError("hi error");
     await AuthService.login(values);
     setSubmitting(false);
