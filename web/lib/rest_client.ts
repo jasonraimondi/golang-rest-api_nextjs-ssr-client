@@ -9,10 +9,11 @@ export interface StringProps {
 }
 
 export function get<T = any>(url: string, params: StringProps = {}, headers: StringProps = {}) {
-  return http.get<T>(url, {
+  const config = {
     params: new URLSearchParams(params),
     headers: new Headers(headers),
-  });
+  };
+  return http.get<T>(url, config);
 }
 
 export function post<T = any>(url: string, data: StringProps = {}, headers: StringProps = {}) {

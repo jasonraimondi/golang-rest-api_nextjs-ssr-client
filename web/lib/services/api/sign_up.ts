@@ -1,13 +1,19 @@
 import { SignUpInputs } from "../../../pages/sign_up";
-import { post } from "../../rest_client";
+import { get, post } from "../../rest_client";
 import { catchAxiosError } from "../error";
 
 export async function signUp(inputs: SignUpInputs | any) {
   try {
-    const foo = await post("/sign-up", inputs);
-    console.log(foo);
+    return await post("/sign_up", inputs);
   } catch (e) {
     return catchAxiosError(e);
   }
-  return "hello sunshine my best friend";
+}
+
+export async function signUpConfirmation(inputs: { u: string, t: string }) {
+  try {
+    return await get("/sign_up_confirmation", inputs);
+  } catch (e) {
+    return catchAxiosError(e);
+  }
 }

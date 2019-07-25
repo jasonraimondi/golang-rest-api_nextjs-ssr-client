@@ -9,7 +9,7 @@ export function catchAxiosError(err: any): ErrorResponse {
     // that falls out of the range of 2xx
     console.log(err.response.data.message);
     console.log(err.response.status);
-    console.log(err.response.headers);
+    // console.log(err.response.headers);
     message = err.response.data.message;
   } else if (err.request) {
     // The request was made but no response was received
@@ -22,6 +22,5 @@ export function catchAxiosError(err: any): ErrorResponse {
     console.log("Error", err.message);
     message = "Something happened in setting up the request that triggered an Error";
   }
-  console.log(err.config);
   return {error: message};
 }

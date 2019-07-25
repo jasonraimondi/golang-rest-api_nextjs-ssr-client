@@ -1,19 +1,58 @@
-import React from "react";
+import Router from "next/router";
+import React, { Component } from "react";
 import { defaultLayout } from "../elements/layouts/default";
 import { AuthService } from "../lib/auth/auth_service";
+import { signUpConfirmation } from "../lib/services/api/sign_up";
 
-function Page({user_id, token}) {
-  AuthService.redirectIfAuthenticated();
+type State = { isValid: boolean, isLoading: boolean };
+type Props = { userId: string, token: string };
 
-  return <div>Here: {user_id}, {token}</div>;
+class Page extends Component<Props, State> {
+  state = {
+    isValid: false,
+    isLoading: true,
+  };
+
+  constructor(props) {
+    super(props);
+    AuthService.redirectIfAuthenticated();
+  }
+
+  static async getInitialProps({ res, query }) {
+    const { t, u } = query;
+    if (!t || !u) AuthService.redirectToLogin(res);
+    return { token: t, userId: u };
+  };
+
+  async componentDidMount(): Promise<void> {
+    const res: any = await signUpConfirmation({
+      t: this.props.token,
+      u: this.props.userId,
+    });
+
+    if (res.status === 202) {
+      this.setState({ isValid: true, isLoading: false });
+      AuthService.redirectToLogin();
+    } else {
+      this.setState({ isValid: false, isLoading: false });
+      Router.push("/sign_up");
+    }
+  }
+
+  render() {
+    const { isValid, isLoading } = this.state;
+
+    if (isLoading) {
+      return <div>Loading...</div>
+    }
+
+    if (isValid && !isLoading) {
+      return <div>Valid, redirecting to login.</div>;
+    }
+
+    return <div>Token is invalid.</div>;
+  }
 }
 
-Page.getInitialProps = async ({res, query}) => {
-  const {user_id, token} = query;
-  if (!user_id || !token) {
-    AuthService.redirectToLogin(res);
-  }
-  return {user_id, token};
-};
 
 export default defaultLayout(Page);

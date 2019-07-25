@@ -6,16 +6,6 @@ import (
 	"github.com/labstack/echo"
 )
 
-func (h *Handler) ConfirmEmail(c echo.Context) error {
-	s := h.App.ServiceFactory
-	token := c.QueryParam("t")
-	userId := c.QueryParam("u")
-	if httpErr := s.SignUpService().ValidateEmailSignUpConfirmation(token, userId); httpErr != nil {
-		return httpErr
-	}
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
-}
-
 func (h *Handler) SignUp(c echo.Context) error {
 	s := h.App.ServiceFactory
 
@@ -30,4 +20,14 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return httpError
 	}
 	return sendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))
+}
+
+func (h *Handler) SignUpConfirmation(c echo.Context) error {
+	s := h.App.ServiceFactory
+	token := c.QueryParam("t")
+	userId := c.QueryParam("u")
+	if httpErr := s.SignUpService().ValidateEmailSignUpConfirmation(token, userId); httpErr != nil {
+		return httpErr
+	}
+	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }

@@ -83,8 +83,8 @@ func main() {
 
 	e.POST("/login", h.Login)
 
-	e.POST("/sign-up", h.SignUp)
-	e.GET("/confirm-email", h.ConfirmEmail)
+	e.POST("/sign_up", h.SignUp)
+	e.GET("/sign_up_confirmation", h.SignUpConfirmation)
 
 	r := e.Group("/")
 	r.Use(authRoute)
