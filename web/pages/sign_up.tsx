@@ -14,7 +14,7 @@ export type SignUpInputs = {
   last: string
 }
 
-function SignUpPage() {
+function Page() {
   AuthService.redirectIfAuthenticated();
 
   const initialValues = {email: "", password: "", first: "", last: ""};
@@ -31,8 +31,8 @@ function SignUpPage() {
     return errors;
   };
 
-  const onSubmit = async (values, {setSubmitting, setError}) => {
-    setError("hi error");
+  const onSubmit = async (values, {setSubmitting, setStatus}) => {
+    setStatus("hi error");
     await signUp(values);
     setSubmitting(false);
   };
@@ -44,7 +44,7 @@ function SignUpPage() {
   >
     {({
       values,
-      error,
+      status,
       errors,
       touched,
       handleChange,
@@ -52,18 +52,7 @@ function SignUpPage() {
       handleSubmit,
       isSubmitting,
     }: FormikProps<SignUpInputs>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
-      {error ? error : null}
-      <TextInput type="email"
-                 label="Email"
-                 name="email"
-                 touched={touched.email}
-                 value={values.email}
-                 error={errors.email}
-                 handleBlur={handleBlur}
-                 handleChange={handleChange}
-                 submitting={isSubmitting}
-                 required
-      />
+      {status ? status : null}
       <TextInput type="text"
                  label="First"
                  name="first"
@@ -86,6 +75,17 @@ function SignUpPage() {
                  submitting={isSubmitting}
                  required
       />
+      <TextInput type="email"
+                 label="Email"
+                 name="email"
+                 touched={touched.email}
+                 value={values.email}
+                 error={errors.email}
+                 handleBlur={handleBlur}
+                 handleChange={handleChange}
+                 submitting={isSubmitting}
+                 required
+      />
       <TextInput type="password"
                  label="Password"
                  name="password"
@@ -102,4 +102,4 @@ function SignUpPage() {
   </Formik>;
 }
 
-export default defaultLayout(SignUpPage);
+export default defaultLayout(Page);

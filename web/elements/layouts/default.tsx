@@ -5,6 +5,13 @@ import Header from "./parts/header";
 
 export function defaultLayout(WrappedComponent) {
   return class extends Component<{ auth?: AuthService }> {
+    static async getInitialProps(ctx) {
+      if (WrappedComponent.getInitialProps) {
+        return WrappedComponent.getInitialProps(ctx);
+      }
+      return {}
+    }
+
     render() {
       return <>
         <Head/>

@@ -8,6 +8,12 @@ export function privateRoute(WrappedComponent: any) {
   const authService = new AuthService(Cookie.get(COOKIES.authToken));
 
   return class extends Component {
+    static getInitialProps(ctx) {
+      if (WrappedComponent.getInitialProps) {
+        return WrappedComponent.getInitialProps(ctx);
+      }
+    }
+
     componentDidMount(): void {
       if (authService.isExpired) Router.push("/");
     }

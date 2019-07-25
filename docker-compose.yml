@@ -10,7 +10,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - /tmp/pgdata:/var/lib/postgresql/data
 
   minio:
     image: minio/minio
@@ -26,6 +26,5 @@ services:
       MINIO_HTTP_TRACE: /dev/stdout
 
 volumes:
-  postgres-data:
   minio-data:
   minio-config:

@@ -1,11 +1,11 @@
-import { Formik, FormikProps } from "formik";
+import { Formik, FormikActions, FormikProps } from "formik";
 import React from "react";
 import { SubmitButton } from "../elements/forms/button";
 import { TextInput } from "../elements/forms/text";
 import { defaultLayout } from "../elements/layouts/default";
 import { AuthService } from "../lib/auth/auth_service";
 
-function LoginPage() {
+function Page() {
   AuthService.redirectIfAuthenticated();
   return <>
     <LoginForm/>
@@ -26,17 +26,17 @@ function LoginForm() {
     let errors: Partial<LoginInputs> = {};
 
     if (!values.email) {
-      errors.email = 'Required';
+      errors.email = "Required";
     } else if (!emailRegex.test(values.email)) {
-      errors.email = 'Invalid email address';
+      errors.email = "Invalid email address";
     }
 
     return errors;
   };
 
-  const onSubmit = async (values, {setSubmitting, setError}) => {
-    setError("hi error");
-    await AuthService.login(values);
+  const onSubmit = async (values, {setSubmitting, setStatus}: FormikActions<LoginInputs>) => {
+    const errorMessage = await AuthService.login(values);
+    if (errorMessage) setStatus(errorMessage);
     setSubmitting(false);
   };
 
@@ -47,7 +47,7 @@ function LoginForm() {
   >
     {({
       values,
-      error,
+      status,
       errors,
       touched,
       handleChange,
@@ -55,7 +55,7 @@ function LoginForm() {
       handleSubmit,
       isSubmitting,
     }: FormikProps<LoginInputs>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
-      {error ? error : null}
+      <p>{status ? status : null}</p>
       <TextInput type="email"
                  label="Email"
                  name="email"
@@ -84,4 +84,4 @@ function LoginForm() {
 }
 
 
-export default defaultLayout(LoginPage);
+export default defaultLayout(Page);

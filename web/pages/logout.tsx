@@ -2,7 +2,7 @@ import { Component } from "react";
 import { AuthService } from "../lib/auth/auth_service";
 import { privateRoute } from "../lib/auth/private_route";
 
-class LogoutPage extends Component<{ auth: AuthService }> {
+class Page extends Component<{ auth: AuthService }> {
   componentDidMount(): void {
     this.props.auth.logout();
   }
@@ -12,4 +12,4 @@ class LogoutPage extends Component<{ auth: AuthService }> {
   }
 }
 
-export default privateRoute(LogoutPage);
+export default privateRoute(Page);

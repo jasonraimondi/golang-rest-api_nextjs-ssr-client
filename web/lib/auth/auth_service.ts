@@ -55,11 +55,33 @@ export class AuthService {
     };
   }
 
-  static async login(inputs: LoginInputs | any) {
-    const res = await post<{ token: string }>("/login", inputs);
-    if (res.data.token) {
-      Cookie.set(COOKIES.authToken, res.data.token);
-      Router.push("/app/dashboard");
+  static async login(inputs: LoginInputs | any): Promise<string|void> {
+    try {
+      const res = await post<{ token: string }>("/login", inputs);
+      if (res.data && res.data.token) {
+        Cookie.set(COOKIES.authToken, res.data.token);
+        Router.push("/app/dashboard");
+      }
+      return;
+    } catch (err) {
+      if (!err.response) {
+        return err.message;
+      } else if (err.response.status === 404) {
+        return "user not found";
+      } else if (err.response.data && err.response.data.message) {
+        return err.response.data;
+      }
+    }
+  }
+
+  static redirectToLogin(res?) {
+    if (res) {
+      res.writeHead(302, {
+        Location: "/login"
+      });
+      res.end();
+    } else {
+      Router.push("/login");
     }
   }
 
