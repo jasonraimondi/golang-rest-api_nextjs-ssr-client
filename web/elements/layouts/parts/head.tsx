@@ -1,6 +1,6 @@
 import NextHead from "next/head";
-import "../../../styles/style.css";
 import { createGlobalStyle } from "styled-components";
+import "../../../styles/style.css";
 
 const GlobalStyles = createGlobalStyle`
   html, body, #__next {

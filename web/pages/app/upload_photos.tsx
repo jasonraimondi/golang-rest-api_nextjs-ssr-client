@@ -5,7 +5,7 @@ import { AuthService } from "../../lib/auth/auth_service";
 import { privateRoute } from "../../lib/auth/private_route";
 import { uploadFile } from "../../lib/services/api/upload_file";
 
-function Page({auth}: { auth: AuthService }) {
+function Page({ auth }: { auth: AuthService }) {
   const [file, setFile] = useState<File | null>(null);
 
   const onFormSubmit = async (e) => {
@@ -14,7 +14,7 @@ function Page({auth}: { auth: AuthService }) {
       alert("Select a file");
       return;
     }
-    await uploadFile(auth.authorizationString, {userId: auth.user.id, file});
+    await uploadFile(auth.authorizationString, { userId: auth.user.id, file });
   };
 
   const onChange = (e) => {

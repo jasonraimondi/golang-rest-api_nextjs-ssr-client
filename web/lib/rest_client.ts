@@ -25,7 +25,7 @@ export function post<T = any>(url: string, data: StringProps = {}, headers: Stri
 export function postMultipart(url: string, data: FormData = new FormData(), headers: StringProps = {}) {
   headers = {
     ...headers,
-    "Content-Type": "multipart/form-data"
+    "Content-Type": "multipart/form-data",
   };
   const config = {
     headers: new Headers(headers),

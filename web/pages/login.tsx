@@ -20,7 +20,7 @@ export type LoginInputs = {
 }
 
 function LoginForm() {
-  const initialValues = {email: "", password: ""};
+  const initialValues = { email: "", password: "" };
 
   const validate = (values: LoginInputs) => {
     let errors: Partial<LoginInputs> = {};
@@ -34,7 +34,7 @@ function LoginForm() {
     return errors;
   };
 
-  const onSubmit = async (values, {setSubmitting, setStatus}: FormikActions<LoginInputs>) => {
+  const onSubmit = async (values, { setSubmitting, setStatus }: FormikActions<LoginInputs>) => {
     const errorMessage = await AuthService.login(values);
     if (errorMessage) setStatus(errorMessage);
     setSubmitting(false);

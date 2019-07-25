@@ -55,7 +55,7 @@ export class AuthService {
     };
   }
 
-  static async login(inputs: LoginInputs | any): Promise<string|void> {
+  static async login(inputs: LoginInputs | any): Promise<string | void> {
     try {
       const res = await post<{ token: string }>("/login", inputs);
       if (res.data && res.data.token) {
@@ -77,7 +77,7 @@ export class AuthService {
   static redirectToLogin(res?) {
     if (res) {
       res.writeHead(302, {
-        Location: "/login"
+        Location: "/login",
       });
       res.end();
     } else {

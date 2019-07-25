@@ -17,21 +17,21 @@ export type SignUpInputs = {
 function Page() {
   AuthService.redirectIfAuthenticated();
 
-  const initialValues = {email: "", password: "", first: "", last: ""};
+  const initialValues = { email: "", password: "", first: "", last: "" };
 
   const validate = (values: SignUpInputs) => {
     let errors: Partial<SignUpInputs> = {};
 
     if (!values.email) {
-      errors.email = 'Required';
+      errors.email = "Required";
     } else if (!emailRegex.test(values.email)) {
-      errors.email = 'Invalid email address';
+      errors.email = "Invalid email address";
     }
 
     return errors;
   };
 
-  const onSubmit = async (values, {setSubmitting, setStatus}) => {
+  const onSubmit = async (values, { setSubmitting, setStatus }) => {
     setStatus("hi error");
     await signUp(values);
     setSubmitting(false);

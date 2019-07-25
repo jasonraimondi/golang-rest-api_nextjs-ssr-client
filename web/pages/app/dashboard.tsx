@@ -9,7 +9,7 @@ type AuthProps = {
 
 type Props = {}
 
-function Page({auth}: Props & AuthProps) {
+function Page({ auth }: Props & AuthProps) {
   console.log(auth);
   return <>
     <p>{JSON.stringify(auth.user)}</p>

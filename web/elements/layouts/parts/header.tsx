@@ -26,11 +26,11 @@ const Header = (props: Props) => {
   </header>;
 };
 
-Header.getInitialProps = async ({req}) => {
+Header.getInitialProps = async ({ req }) => {
   console.log(req, "FETCHING");
   const res = await fetch("https://api.github.com/repos/zeit/next.js");
   const json = await res.json();
-  return {stars: json.stargazers_count};
+  return { stars: json.stargazers_count };
 };
 
 function PrivateRoutes() {

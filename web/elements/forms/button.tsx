@@ -6,7 +6,7 @@ export interface SubmitFields {
   disabled?: boolean
 }
 
-export function SubmitButton({label, type, disabled}: SubmitFields) {
+export function SubmitButton({ label, type, disabled }: SubmitFields) {
   if (!type) {
     type = "submit";
   }

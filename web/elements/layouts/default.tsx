@@ -9,7 +9,7 @@ export function defaultLayout(WrappedComponent) {
       if (WrappedComponent.getInitialProps) {
         return WrappedComponent.getInitialProps(ctx);
       }
-      return {}
+      return {};
     }
 
     render() {

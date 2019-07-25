@@ -6,7 +6,7 @@ interface UploadFileFields {
   file: File;
 }
 
-export async function uploadFile(bearer: string, {userId, file}: UploadFileFields) {
+export async function uploadFile(bearer: string, { userId, file }: UploadFileFields) {
   console.log(bearer);
   try {
     const formData = new FormData();
@@ -17,7 +17,7 @@ export async function uploadFile(bearer: string, {userId, file}: UploadFileField
     });
     console.log(foo);
   } catch (e) {
-    console.log('FAIL UPLOAD', e);
+    console.log("FAIL UPLOAD", e);
     return catchAxiosError(e);
   }
   return "hello sunshine my best friend";
