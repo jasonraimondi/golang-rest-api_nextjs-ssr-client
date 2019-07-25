@@ -4,6 +4,10 @@ import React, { Component } from "react";
 import { COOKIES } from "../cookie";
 import { AuthService } from "./auth_service";
 
+export type AuthProps = {
+  auth: AuthService
+}
+
 export function privateRoute(WrappedComponent: any) {
   const authService = new AuthService(Cookie.get(COOKIES.authToken));
 
@@ -12,6 +16,7 @@ export function privateRoute(WrappedComponent: any) {
       if (WrappedComponent.getInitialProps) {
         return WrappedComponent.getInitialProps(ctx);
       }
+      return {};
     }
 
     componentDidMount(): void {
