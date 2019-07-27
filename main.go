@@ -76,8 +76,9 @@ func main() {
 	}))
 
 	config := middleware.JWTConfig{
-		Claims:     &handlers.JwtCustomClaims{},
-		SigningKey: []byte(jwtSecureKey),
+		Claims:       &handlers.JwtCustomClaims{},
+		SigningKey:   []byte(jwtSecureKey),
+		ErrorHandler: func(err error) error { return err },
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
@@ -86,7 +87,7 @@ func main() {
 	e.POST("/sign_up", h.SignUp)
 	e.GET("/sign_up_confirmation", h.SignUpConfirmation)
 
-	r := e.Group("/")
+	r := e.Group("/api")
 	r.Use(authRoute)
 	r.POST("/upload", h.Upload)
 	r.GET("", h.Restricted)

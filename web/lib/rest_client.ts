@@ -1,36 +1,41 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { catchAxiosError } from "./services/error";
 
-const http = axios.create({
-  baseURL: "http://localhost:1323",
-});
-
 export interface StringProps {
   [id: string]: string
 }
 
-export function get<T = any>(url: string, params: StringProps = {}, headers: StringProps = {}) {
-  const config = {
-    params: new URLSearchParams(params),
-    headers: new Headers(headers),
-  };
-  return http.get<T>(url, config).catch(catchAxiosError);
+export function get<T = any>(
+  url: string,
+  params: URLSearchParams = new URLSearchParams(),
+  headers: StringProps = {},
+) {
+  return axios.get<T>(url, mergeConfig({ headers, params })).catch(catchAxiosError);
 }
 
-export function post<T = any>(url: string, data: StringProps = {}, headers: StringProps = {}) {
-  const body = new URLSearchParams(data);
-  const config = {
-    headers: new Headers(headers),
-  };
-  return http.post<T>(url, body, config).catch(catchAxiosError);
+export function post<T = any>(
+  url: string,
+  data: URLSearchParams = new URLSearchParams(),
+  headers: StringProps = {},
+) {
+  return axios.post<T>(url, data, mergeConfig({ headers })).catch(catchAxiosError);
 }
 
 export function postMultipart(url: string, data: FormData = new FormData(), headers: StringProps = {}) {
-  const config = {
-    headers: new Headers({
-      ...headers,
-      "Content-Type": "multipart/form-data",
-    }),
-  } as AxiosRequestConfig;
-  return http.post(url, data, config);
+  return axios.post(url, data, mergeConfig({ headers: mergeHeaders(headers) })).catch(catchAxiosError);
+}
+
+
+function mergeHeaders(headers: StringProps) {
+  return {
+    ...headers,
+    "Content-Type": "multipart/form-data",
+  };
+}
+
+function mergeConfig(config: AxiosRequestConfig): AxiosRequestConfig {
+  return {
+    ...config,
+    baseURL: "http://localhost:1323",
+  };
 }

@@ -15,7 +15,8 @@ func (h *Handler) Login(c echo.Context) (err error) {
 	time.Sleep(500 * time.Millisecond)
 
 	// Throws unauthorized error
-	p, err := h.App.RepositoryFactory.User().GetByEmail(c.FormValue("email"))
+	email := c.FormValue("email")
+	p, err := h.App.RepositoryFactory.User().GetByEmail(email)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "user not found")

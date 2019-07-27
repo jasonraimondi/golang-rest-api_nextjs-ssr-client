@@ -4,6 +4,7 @@ import { SubmitButton } from "../elements/forms/button";
 import { TextInput } from "../elements/forms/text";
 import { defaultLayout } from "../elements/layouts/default";
 import { AuthService } from "../lib/auth/auth_service";
+import { login } from "../lib/services/api/login";
 
 function Page() {
   AuthService.redirectIfAuthenticated();
@@ -35,7 +36,7 @@ function LoginForm() {
   };
 
   const onSubmit = async (values: LoginInputs, { setSubmitting, setStatus }: FormikActions<LoginInputs>) => {
-    const errorMessage = await AuthService.login(values);
+    const errorMessage: any = await login((values));
     if (errorMessage) setStatus(errorMessage);
     setSubmitting(false);
   };

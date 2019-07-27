@@ -41,7 +41,6 @@ class Page extends Component<Props, State> {
 
   render() {
     const { isValid, isLoading } = this.state;
-
     if (isLoading) {
       return <div>Loading...</div>;
     }

@@ -2,9 +2,7 @@ import { ServerResponse } from "http";
 import Cookie from "js-cookie";
 import decode from "jwt-decode";
 import Router from "next/router";
-import { LoginInputs } from "../../pages/login";
 import { COOKIES } from "../cookie";
-import { post } from "../rest_client";
 
 export interface DecodedToken {
   user_id: string;
@@ -54,25 +52,6 @@ export class AuthService {
       email: "",
       exp: 0,
     };
-  }
-
-  static async login(inputs: LoginInputs | any): Promise<string | void> {
-    try {
-      const res: any = await post<{ token: string }>("/login", inputs);
-      if (res.data && res.data.token) {
-        Cookie.set(COOKIES.authToken, res.data.token);
-        Router.push("/app/dashboard");
-      }
-      return;
-    } catch (err) {
-      if (!err.response) {
-        return err.message;
-      } else if (err.response.status === 404) {
-        return "user not found";
-      } else if (err.response.data && err.response.data.message) {
-        return err.response.data;
-      }
-    }
   }
 
   static redirectToLogin(res?: ServerResponse) {
