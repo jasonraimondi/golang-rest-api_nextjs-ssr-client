@@ -3,11 +3,11 @@ import { AuthService } from "../../lib/auth/auth_service";
 import { Head } from "./parts/head";
 import Header from "./parts/header";
 
-export function defaultLayout(WrappedComponent) {
+export function defaultLayout(WrappedComponent: any) {
   return class extends Component<{ auth?: AuthService }> {
-    static async getInitialProps(ctx) {
+    static async getInitialProps(props: any) {
       if (WrappedComponent.getInitialProps) {
-        return WrappedComponent.getInitialProps(ctx);
+        return WrappedComponent.getInitialProps(props);
       }
       return {};
     }

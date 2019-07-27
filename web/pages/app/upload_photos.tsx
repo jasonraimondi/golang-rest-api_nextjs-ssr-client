@@ -1,26 +1,16 @@
-import { Formik, FormikActions, FormikProps } from "formik";
+import { Formik, FormikProps } from "formik";
 import Dropzone from "react-dropzone";
 
 import { SubmitButton } from "../../elements/forms/button";
 import { FileInput } from "../../elements/forms/file";
 import { defaultLayout } from "../../elements/layouts/default";
-import { AuthProps, privateRoute } from "../../lib/auth/private_route";
-import { uploadFiles } from "../../lib/services/api/upload_file";
+import { privateRoute } from "../../lib/auth/private_route";
 
 export type PhotoUpload = {
   files: File[];
 }
 
-const dropzoneStyle = {
-  width: "100%",
-  height: "auto",
-  borderWidth: 2,
-  borderColor: "rgb(102, 102, 102)",
-  borderStyle: "dashed",
-  borderRadius: 5,
-}
-
-function Page({ auth }: AuthProps) {
+function Page() {
   const initialValues: PhotoUpload = { files: [] };
 
   const validate = (values: PhotoUpload) => {
@@ -33,17 +23,33 @@ function Page({ auth }: AuthProps) {
     return errors;
   };
 
-  const onSubmit = async (values: PhotoUpload, { setSubmitting, setStatus }: FormikActions<PhotoUpload>) => {
-    console.log({
-      onSubmit: "hello",
-      values,
-    });
-    await uploadFiles(auth.authorizationString, { userId: auth.user.id, files: values.files });
-    if ("") setStatus("set status");
-    setSubmitting(false);
-    return;
-
+  const onSubmit = (values: PhotoUpload) => {
+    alert(
+      JSON.stringify(
+        {
+          files: values.files.map(file => ({
+            fileName: file.name,
+            type: file.type,
+            size: `${file.size} bytes`,
+          })),
+        },
+        null,
+        2,
+      ),
+    );
   };
+
+
+  // const onSubmit = async (values: PhotoUpload, { setSubmitting, setStatus }: FormikActions<PhotoUpload>) => {
+  //   console.log({
+  //     onSubmit: "hello",
+  //     values,
+  //   });
+  //   await uploadFiles(auth.authorizationString, { userId: auth.user.id, files: values.files });
+  //   if ("") setStatus("set status");
+  //   setSubmitting(false);
+  //   return;
+  // };
 
   return <Formik
     initialValues={initialValues}
@@ -63,14 +69,14 @@ function Page({ auth }: AuthProps) {
       <p>{status ? status : null}</p>
 
 
-      <Dropzone style={dropzoneStyle} accept="image/*" onDrop={(acceptedFiles) => {
+      <Dropzone accept="image/*" onDrop={(acceptedFiles) => {
         // do nothing if no files
         if (acceptedFiles.length === 0) { return; }
 
         // on drop we add to the existing files
         setFieldValue("files", values.files.concat(acceptedFiles));
       }}>
-        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }: any) => {
+        {({ isDragActive, isDragReject }): any => {
           if (isDragActive) {
             return "This file is authorized";
           }
@@ -83,9 +89,10 @@ function Page({ auth }: AuthProps) {
             return <p>Try dragging a file here!</p>
           }
 
-          return values.files.map((file, i) => (<div key={i} file={file} />));
+          return values.files.map((file) => (file.name));
         }}
       </Dropzone>
+
 
       <FileInput label="Email"
                  name="file[]"

@@ -31,9 +31,13 @@ function Page() {
     return errors;
   };
 
-  const onSubmit = async (values, { setSubmitting, setStatus }) => {
-    setStatus("hi error");
-    await signUp(values);
+  const onSubmit = async (values: any, { setSubmitting, setStatus }: any) => {
+    const res: any = await signUp(values);
+    if (res.error) {
+      alert(res.error);
+    }
+    console.log(res, setStatus);
+    console.log('OH YEAH');
     setSubmitting(false);
   };
 

@@ -1,9 +1,14 @@
-export interface ErrorResponse {
+import { AxiosError } from "axios";
+
+export type ErrorResponse = {
   error: string
 }
 
-export function catchAxiosError(err: any): ErrorResponse {
-  let message: string;
+export function catchAxiosError(err: AxiosError): ErrorResponse {
+  // Something happened in setting up the request that triggered an Error
+  console.log("Error", err.message);
+  let message = "Something happened in setting up the request that triggered an Error";
+
   if (err.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -17,10 +22,7 @@ export function catchAxiosError(err: any): ErrorResponse {
     // http.ClientRequest in node.js
     console.log(err.request);
     message = "The request was made, but no response was received";
-  } else {
-    // Something happened in setting up the request that triggered an Error
-    console.log("Error", err.message);
-    message = "Something happened in setting up the request that triggered an Error";
   }
+
   return { error: message };
 }

@@ -1,3 +1,4 @@
+import { ServerResponse } from "http";
 import Cookie from "js-cookie";
 import decode from "jwt-decode";
 import Router from "next/router";
@@ -57,7 +58,7 @@ export class AuthService {
 
   static async login(inputs: LoginInputs | any): Promise<string | void> {
     try {
-      const res = await post<{ token: string }>("/login", inputs);
+      const res: any = await post<{ token: string }>("/login", inputs);
       if (res.data && res.data.token) {
         Cookie.set(COOKIES.authToken, res.data.token);
         Router.push("/app/dashboard");
@@ -74,7 +75,7 @@ export class AuthService {
     }
   }
 
-  static redirectToLogin(res?) {
+  static redirectToLogin(res?: ServerResponse) {
     if (res) {
       res.writeHead(302, {
         Location: "/login",

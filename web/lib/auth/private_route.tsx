@@ -12,9 +12,9 @@ export function privateRoute(WrappedComponent: any) {
   const authService = new AuthService(Cookie.get(COOKIES.authToken));
 
   return class extends Component {
-    static getInitialProps(ctx) {
+    static getInitialProps(props: any) {
       if (WrappedComponent.getInitialProps) {
-        return WrappedComponent.getInitialProps(ctx);
+        return WrappedComponent.getInitialProps(props);
       }
       return {};
     }

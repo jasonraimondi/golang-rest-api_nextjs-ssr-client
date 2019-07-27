@@ -34,7 +34,7 @@ function LoginForm() {
     return errors;
   };
 
-  const onSubmit = async (values, { setSubmitting, setStatus }: FormikActions<LoginInputs>) => {
+  const onSubmit = async (values: LoginInputs, { setSubmitting, setStatus }: FormikActions<LoginInputs>) => {
     const errorMessage = await AuthService.login(values);
     if (errorMessage) setStatus(errorMessage);
     setSubmitting(false);

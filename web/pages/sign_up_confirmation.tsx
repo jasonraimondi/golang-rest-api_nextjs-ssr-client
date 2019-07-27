@@ -13,12 +13,12 @@ class Page extends Component<Props, State> {
     isLoading: true,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     AuthService.redirectIfAuthenticated();
   }
 
-  static async getInitialProps({ res, query }) {
+  static async getInitialProps({ res, query }: any) {
     const { t, u } = query;
     if (!t || !u) AuthService.redirectToLogin(res);
     return { token: t, userId: u };
