@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) ListPhotos(c echo.Context) error {
-	r := h.App.RepositoryFactory
+	s := h.App.ServiceFactory
 
 	userId := c.QueryParam("userId")
 
@@ -22,33 +22,9 @@ func (h *Handler) ListPhotos(c echo.Context) error {
 	if err != nil {
 		itemsPerPage = 25
 	}
-	photos, err := r.PhotoRepository().ListForUser(userId, int64(page), int64(itemsPerPage))
+	paginator, err := s.ListPhotosService().ListPhotos(userId, int64(page), int64(itemsPerPage))
 	if err != nil {
 		return err
 	}
-	s := make([]interface{}, len(photos))
-	for i, v := range photos {
-		s[i] = v
-	}
-	totalItems, err := r.PhotoRepository().CountForUser(userId)
-	if err != nil {
-		return err
-	}
-	return jsonItems(c, int64(page), int64(itemsPerPage), totalItems, s)
-}
-
-type PaginationItems struct {
-	Page         int64
-	ItemsPerPage int64
-	TotalCount   int64
-	Data         []interface{}
-}
-
-func jsonItems(c echo.Context, page int64, itemsPerPage int64, totalItems int64, data []interface{}) error {
-	return c.JSON(http.StatusOK, &PaginationItems{
-		Page:         page,
-		ItemsPerPage: itemsPerPage,
-		Data:         data,
-		TotalCount:   totalItems,
-	})
+	return c.JSON(http.StatusOK, paginator)
 }

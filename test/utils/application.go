@@ -46,7 +46,6 @@ func NewTestApplication() (a *lib.Application) {
 	return a
 }
 
-
 func NewTestHandler() *handlers.Handler {
 	a := NewTestApplication()
 	return &handlers.Handler{

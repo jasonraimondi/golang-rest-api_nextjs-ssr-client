@@ -33,3 +33,9 @@ func (s *Factory) FileUploadService() *FileUploadService {
 		s3:             s.s3,
 	}
 }
+
+func (s *Factory) ListPhotosService() *ListPhotosService {
+	return &ListPhotosService{
+		photoRepository: s.repository.PhotoRepository(),
+	}
+}

@@ -28,7 +28,7 @@ func (r *PhotoRepository) CountForUser(userId string) (count int64, err error) {
 		return 0, err
 	}
 	for rows.Next() {
-		if err:= rows.Scan(&count); err != nil {
+		if err := rows.Scan(&count); err != nil {
 			return 0, err
 		}
 	}
