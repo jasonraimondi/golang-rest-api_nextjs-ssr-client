@@ -86,6 +86,7 @@ func main() {
 
 	e.POST("/sign_up", h.SignUp)
 	e.GET("/sign_up_confirmation", h.SignUpConfirmation)
+	e.GET("/list_photos", h.ListPhotos)
 
 	r := e.Group("/api")
 	r.Use(authRoute)
