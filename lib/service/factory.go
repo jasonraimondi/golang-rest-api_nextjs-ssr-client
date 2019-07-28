@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/Masterminds/squirrel"
 	"gopkg.in/go-playground/validator.v9"
 
 	"git.jasonraimondi.com/jason/jasontest/lib/repository"
@@ -36,6 +37,7 @@ func (s *Factory) FileUploadService() *FileUploadService {
 
 func (s *Factory) ListPhotosService() *ListPhotosService {
 	return &ListPhotosService{
-		photoRepository: s.repository.PhotoRepository(),
+		queryBuilder: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),
+		dbx: s.repository.DBx,
 	}
 }
