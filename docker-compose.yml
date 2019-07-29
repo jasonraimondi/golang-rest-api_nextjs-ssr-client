@@ -24,6 +24,10 @@ services:
       MINIO_ACCESS_KEY: miniominiominio
       MINIO_SECRET_KEY: miniominiominio
       MINIO_HTTP_TRACE: /dev/stdout
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9000"
+      - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /media"
 
 volumes:
   minio-data:

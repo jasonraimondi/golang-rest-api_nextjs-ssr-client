@@ -1,14 +1,30 @@
 version: "3.7"
 
 services:
-  app:
-    build: .
+  traefik:
+    image: traefik
+    command:
+      - --configfile=/etc/traefik/config/traefik.toml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml:ro
     ports:
-      - 1323:1323
-    environment:
-      DB_CONNECTION: host=postgres port=5432 user=print password=print dbname=print sslmode=disable
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
 
   web:
     build: ./web
-    ports:
-      - 3000:3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host: localhost"
+
+  app:
+    build: .
+    environment:
+      DB_CONNECTION: host=postgres port=5432 user=print password=print dbname=print sslmode=disable
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=1323"
+      - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /api"

@@ -4,6 +4,9 @@ MIGRATION_DIR := ./db/migrations
 
 MIGRATION := new-migration-name
 
+local:
+	docker-compose -f docker-compose.app.yml -f docker-compose.yml up -d
+
 test:
 	drone exec --branch master --event push
 
