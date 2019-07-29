@@ -1,4 +1,3 @@
-import ClientCookie from "js-cookie";
 import ServerCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
@@ -10,26 +9,28 @@ export type AuthProps = {
 }
 
 export function privateRoute(C: any) {
-  const authService = new AuthService(ClientCookie.get(COOKIES.authToken));
-
-  return class extends Component {
+  return class extends Component<AuthProps> {
     static async getInitialProps(ctx: any) {
-      const cookies = ServerCookie(ctx);
-      const props = { auth: new AuthService(cookies[COOKIES.authToken]) };
+      const jwt = ServerCookie(ctx)[COOKIES.authToken];
+      const props = { auth: new AuthService(jwt) };
       if (C.getInitialProps) return await C.getInitialProps(props);
       return props;
     }
 
+    get auth() {
+      return this.props.auth;
+    }
+
     componentDidMount(): void {
-      if (authService.isExpired) Router.push("/");
+      if (this.auth.isExpired) Router.push("/");
     }
 
     componentDidUpdate(): void {
-      if (authService.isExpired) Router.push("/");
+      if (this.auth.isExpired) Router.push("/");
     }
 
     render() {
-      return <C auth={authService} {...this.props} />;
+      return <C auth={this.auth} {...this.props} />;
     }
   };
 }

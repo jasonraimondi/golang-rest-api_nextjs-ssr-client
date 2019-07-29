@@ -5,11 +5,11 @@ import Header from "./parts/header";
 
 export function defaultLayout(WrappedComponent: any) {
   return class extends Component<{ auth?: AuthService }> {
-    static async getInitialProps(props: any) {
+    static async getInitialProps(ctx: any) {
       if (WrappedComponent.getInitialProps) {
-        return await WrappedComponent.getInitialProps(props);
+        return await WrappedComponent.getInitialProps(ctx);
       }
-      return {};
+      return { ...ctx };
     }
 
     render() {

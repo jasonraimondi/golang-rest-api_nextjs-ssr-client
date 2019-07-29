@@ -15,16 +15,18 @@ class Page extends Component<Props & AuthProps> {
     return { auth, photos: res.data };
   }
 
+  get photos() {
+    return this.props.photos.Data.map((photo: Photo) => {
+      const link = `http://localhost:9000/originals/${photo.relativeURL}`;
+      return <li key={photo.id}>
+        <a href={link}><Image src={link}/></a>
+      </li>;
+    });
+  }
+
   render() {
     return <ul className="flex">
-      {this.props.photos.Data.map((photo: Photo) => {
-        const link = `http://localhost:9000/originals/${photo.relativeURL}`;
-        return <li key={photo.id}>
-          <a href={link}>
-            <Image src={link}/>
-          </a>
-        </li>;
-      })}
+      {this.photos}
     </ul>;
   }
 }

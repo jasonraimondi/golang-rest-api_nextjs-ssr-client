@@ -37,8 +37,13 @@ function PrivateRoutes() {
       </Link>
     </li>
     <li>
-      <Link href="/app/upload_photos">
-        <a>Upload Photo</a>
+      <Link href="/app/photos">
+        <a>Photo</a>
+      </Link>
+    </li>
+    <li>
+      <Link href="/app/photos/upload">
+        <a>Upload</a>
       </Link>
     </li>
     <li>
