@@ -1,4 +1,5 @@
-import Cookie from "js-cookie";
+import ClientCookie from "js-cookie";
+import ServerCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
 import { COOKIES } from "../cookie";
@@ -8,15 +9,15 @@ export type AuthProps = {
   auth: AuthService
 }
 
-export function privateRoute(WrappedComponent: any) {
-  const authService = new AuthService(Cookie.get(COOKIES.authToken));
+export function privateRoute(C: any) {
+  const authService = new AuthService(ClientCookie.get(COOKIES.authToken));
 
   return class extends Component {
-    static getInitialProps(props: any) {
-      if (WrappedComponent.getInitialProps) {
-        return WrappedComponent.getInitialProps(props);
-      }
-      return {};
+    static async getInitialProps(ctx: any) {
+      const cookies = ServerCookie(ctx);
+      const props = { auth: new AuthService(cookies[COOKIES.authToken]) };
+      if (C.getInitialProps) return await C.getInitialProps(props);
+      return props;
     }
 
     componentDidMount(): void {
@@ -28,7 +29,7 @@ export function privateRoute(WrappedComponent: any) {
     }
 
     render() {
-      return <WrappedComponent auth={authService} {...this.props} />;
+      return <C auth={authService} {...this.props} />;
     }
   };
 }

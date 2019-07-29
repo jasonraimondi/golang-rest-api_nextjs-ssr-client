@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 
 export function MyDropzone({ values, setFiles }: any) {
   const handleAcceptedFiles = (acceptedFiles: File[]) => {
-    console.log(acceptedFiles)
+    console.log(acceptedFiles);
     setFiles(acceptedFiles);
   };
   const onDrop = useCallback(handleAcceptedFiles, []);
@@ -16,19 +16,21 @@ export function MyDropzone({ values, setFiles }: any) {
           <p>Drop the files here ...</p> :
           <p>Drag 'n' drop some files here, or click to select files</p>
       }
-      {values.files.map((file: any, i: any) => <Thumb key={i} file={file} />)}
+      {values.files.map((file: any, i: any) => <Thumb key={i} file={file}/>)}
     </div>
   );
 }
 
-class Thumb extends React.Component<{key: number, file: File}> {
+class Thumb extends React.Component<{ key: number, file: File }> {
   state = {
     loading: false,
     thumb: undefined,
   };
 
   componentWillReceiveProps(nextProps: any) {
-    if (!nextProps.file) { return; }
+    if (!nextProps.file) {
+      return;
+    }
 
     this.setState({ loading: true }, () => {
       let reader = new FileReader();
@@ -45,14 +47,18 @@ class Thumb extends React.Component<{key: number, file: File}> {
     const { file }: any = this.props;
     const { loading, thumb } = this.state;
 
-    if (!file) { return null; }
+    if (!file) {
+      return null;
+    }
 
-    if (loading) { return <p>loading...</p>; }
+    if (loading) {
+      return <p>loading...</p>;
+    }
 
     return (<img src={thumb}
                  alt={file.name}
                  className="img-thumbnail mt-2"
                  height={200}
-                 width={200} />);
+                 width={200}/>);
   }
 }

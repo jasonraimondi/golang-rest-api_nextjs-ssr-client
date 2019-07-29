@@ -1,11 +1,11 @@
 import { Formik, FormikActions, FormikProps } from "formik";
 import Router from "next/router";
 
-import { SubmitButton } from "../../elements/forms/button";
-import { MyDropzone } from "../../elements/forms/my_dropzone";
-import { defaultLayout } from "../../elements/layouts/default";
-import { AuthProps, privateRoute } from "../../lib/auth/private_route";
-import { uploadFiles } from "../../lib/services/api/upload_file";
+import { SubmitButton } from "../../../elements/forms/button";
+import { MyDropzone } from "../../../elements/forms/my_dropzone";
+import { defaultLayout } from "../../../elements/layouts/default";
+import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
+import { uploadFiles } from "../../../lib/services/api/upload_file";
 
 export type PhotoUpload = {
   files: File[];
@@ -28,7 +28,6 @@ function Page({ auth }: Props) {
 
   const onSubmit = async (values: PhotoUpload, { setSubmitting, setStatus }: FormikActions<PhotoUpload>) => {
     const res: any = await uploadFiles(auth.authorizationString, { userId: auth.user.id, files: values.files });
-    console.log(res);
     if (res.error) setStatus(res.error);
     setSubmitting(false);
     if (!res.error) Router.push("/app/dashboard");

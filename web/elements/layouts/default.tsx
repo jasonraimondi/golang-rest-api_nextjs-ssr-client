@@ -7,7 +7,7 @@ export function defaultLayout(WrappedComponent: any) {
   return class extends Component<{ auth?: AuthService }> {
     static async getInitialProps(props: any) {
       if (WrappedComponent.getInitialProps) {
-        return WrappedComponent.getInitialProps(props);
+        return await WrappedComponent.getInitialProps(props);
       }
       return {};
     }

@@ -34,10 +34,8 @@ function Page() {
   const onSubmit = async (values: any, { setSubmitting, setStatus }: any) => {
     const res: any = await signUp(values);
     if (res.error) {
-      alert(res.error);
+      setStatus(res.error);
     }
-    console.log(res, setStatus);
-    console.log('OH YEAH');
     setSubmitting(false);
   };
 

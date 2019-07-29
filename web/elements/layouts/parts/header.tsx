@@ -26,15 +26,10 @@ const Header = (props: Props) => {
   </header>;
 };
 
-Header.getInitialProps = async ({ req }: any) => {
-  console.log(req, "FETCHING");
-  const res = await fetch("https://api.github.com/repos/zeit/next.js");
-  const json = await res.json();
-  return { stars: json.stargazers_count };
+Header.getInitialProps = async () => {
 };
 
 function PrivateRoutes() {
-  console.log("hi private route");
   return <>
     <li>
       <Link href="/app/dashboard">
