@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React, { Component } from "react";
 import styled from "styled-components";
 import { defaultLayout } from "../../../elements/layouts/default";
@@ -25,9 +26,14 @@ class Page extends Component<Props & AuthProps> {
   }
 
   render() {
-    return <ul className="flex">
-      {this.photos}
-    </ul>;
+    return <>
+      <Head>
+        <title>My Photos</title>
+      </Head>
+      <ul className="flex">
+        {this.photos}
+      </ul>
+    </>;
   }
 }
 

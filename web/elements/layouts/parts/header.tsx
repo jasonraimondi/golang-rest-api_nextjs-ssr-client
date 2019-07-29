@@ -12,6 +12,8 @@ const Header = (props: Props) => {
     isAuthenticated = true;
   }
 
+  console.log(props.auth, isAuthenticated, Date.now());
+
   return <header>
     <nav>
       <ul className="flex justify-around">
@@ -26,8 +28,8 @@ const Header = (props: Props) => {
   </header>;
 };
 
-Header.getInitialProps = async () => {
-};
+// Header.getInitialProps = async () => {
+// };
 
 function PrivateRoutes() {
   return <>

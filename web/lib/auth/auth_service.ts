@@ -11,39 +11,30 @@ export interface DecodedToken {
 }
 
 export class AuthService {
+  public readonly user: any;
   public readonly authorizationString: string;
+  public readonly expiresAt: Date;
+  public readonly isExpired: boolean;
+  public readonly isAuthenticated: boolean;
 
-  private decodedJWT: DecodedToken;
+  private decodedToken: DecodedToken;
 
   constructor(private token?: string) {
     if (!this.token) this.token = "ERR";
     try {
-      this.decodedJWT = decode(this.token);
+      this.decodedToken = decode(this.token);
     } catch (e) {
-      this.decodedJWT = this.blankToken;
+      this.decodedToken = this.blankToken;
     }
-
-    this.authorizationString = `Bearer ${this.token}`;
-    this.logout = this.logout.bind(this);
-  }
-
-  get user() {
-    return {
-      id: this.decodedJWT.user_id,
-      email: this.decodedJWT.email,
+    this.user = {
+      id: this.decodedToken.user_id,
+      email: this.decodedToken.email,
     };
-  }
-
-  get isAuthenticated(): boolean {
-    return !this.isExpired;
-  }
-
-  get isExpired(): boolean {
-    return new Date() > this.expiresAt;
-  }
-
-  get expiresAt(): Date {
-    return new Date(this.decodedJWT.exp * 1000);
+    this.authorizationString = `Bearer ${this.token}`;
+    this.expiresAt = new Date(this.decodedToken.exp * 1000);
+    this.isExpired = new Date() > this.expiresAt;
+    this.isAuthenticated = !this.isExpired;
+    this.logout = this.logout.bind(this);
   }
 
   get blankToken(): DecodedToken {
@@ -74,7 +65,7 @@ export class AuthService {
 
   logout() {
     Cookie.remove(COOKIES.authToken);
-    this.decodedJWT = this.blankToken;
+    this.decodedToken = this.blankToken;
     Router.push("/login");
   }
 }

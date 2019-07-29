@@ -3,20 +3,22 @@ import { AuthService } from "../../lib/auth/auth_service";
 import { Head } from "./parts/head";
 import Header from "./parts/header";
 
-export function defaultLayout(WrappedComponent: any) {
-  return class extends Component<{ auth?: AuthService }> {
+type Props = { auth?: AuthService }
+
+export function defaultLayout(C: any) {
+  return class extends Component<Props> {
     static async getInitialProps(ctx: any) {
-      if (WrappedComponent.getInitialProps) {
-        return await WrappedComponent.getInitialProps(ctx);
-      }
-      return { ...ctx };
+      const props: Props = {};
+      if (ctx.auth) props.auth = ctx.auth;
+      if (C.getInitialProps) return await C.getInitialProps(props);
+      return props;
     }
 
     render() {
       return <>
         <Head/>
         <Header auth={this.props.auth}/>
-        <WrappedComponent {...this.props}/>
+        <C {...this.props}/>
       </>;
     }
   };

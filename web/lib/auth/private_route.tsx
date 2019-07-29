@@ -13,7 +13,7 @@ export function privateRoute(C: any) {
     static async getInitialProps(ctx: any) {
       const jwt = ServerCookie(ctx)[COOKIES.authToken];
       const props = { auth: new AuthService(jwt) };
-      if (C.getInitialProps) return await C.getInitialProps(props);
+      if (C.getInitialProps) return C.getInitialProps(props);
       return props;
     }
 
