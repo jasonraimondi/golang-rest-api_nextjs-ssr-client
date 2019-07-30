@@ -2,12 +2,12 @@ import axios, { AxiosRequestConfig } from "axios";
 import { catchAxiosError } from "./services/error";
 
 export interface StringProps {
-  [id: string]: string
+  [id: string]: string|number
 }
 
 export function get<T = any>(
   url: string,
-  params: URLSearchParams = new URLSearchParams(),
+  params: StringProps = {},
   headers: StringProps = {},
 ) {
   return axios.get<T>(url, mergeConfig({ headers, params })).catch(catchAxiosError);

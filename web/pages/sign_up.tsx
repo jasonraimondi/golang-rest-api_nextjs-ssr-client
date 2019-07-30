@@ -35,6 +35,8 @@ function Page() {
     const res: any = await signUp(values);
     if (res.error) {
       setStatus(res.error);
+    } else {
+      setStatus("Thank you for signing up!");
     }
     setSubmitting(false);
   };

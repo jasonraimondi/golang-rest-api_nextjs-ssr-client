@@ -5,6 +5,7 @@ import { SubmitButton } from "../../../elements/forms/button";
 import { MyDropzone } from "../../../elements/forms/my_dropzone";
 import { defaultLayout } from "../../../elements/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
+import { APP_ROUTES } from "../../../lib/routes";
 import { uploadFiles } from "../../../lib/services/api/upload_file";
 
 export type PhotoUpload = {
@@ -30,7 +31,7 @@ function Page({ auth }: Props) {
     const res: any = await uploadFiles(auth.authorizationString, { userId: auth.user.id, files: values.files });
     if (res.error) setStatus(res.error);
     setSubmitting(false);
-    if (!res.error) Router.push("/app/dashboard");
+    if (!res.error) await Router.push(APP_ROUTES.dashboard);
   };
 
   return <Formik
@@ -50,14 +51,8 @@ function Page({ auth }: Props) {
     }: FormikProps<PhotoUpload>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
       <p>{status ? status : null}</p>
 
-      <pre><code>{JSON.stringify(values)}</code></pre>
-
       <MyDropzone values={values} setFiles={(acceptedFiles: File[]) => {
-        // do nothing if no files
-        if (acceptedFiles.length === 0) {
-          return;
-        }
-        // on drop we add to the existing files
+        if (acceptedFiles.length === 0) return;
         setFieldValue("files", values.files.concat(acceptedFiles));
       }}/>
 

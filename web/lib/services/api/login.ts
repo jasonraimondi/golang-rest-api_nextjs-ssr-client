@@ -3,6 +3,7 @@ import Router from "next/router";
 import { LoginInputs } from "../../../pages/login";
 import { COOKIES } from "../../cookie";
 import { post } from "../../rest_client";
+import { APP_ROUTES } from "../../routes";
 
 export async function login(inputs: LoginInputs): Promise<string | void> {
   const res: any = await post<{ token: string }>("/login", new URLSearchParams(inputs));
@@ -16,5 +17,5 @@ export async function login(inputs: LoginInputs): Promise<string | void> {
   }
 
   Cookie.set(COOKIES.authToken, res.data.token);
-  Router.push("/app/dashboard");
+  await Router.push(APP_ROUTES.dashboard);
 }

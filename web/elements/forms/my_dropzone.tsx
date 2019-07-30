@@ -3,7 +3,6 @@ import { useDropzone } from "react-dropzone";
 
 export function MyDropzone({ values, setFiles }: any) {
   const handleAcceptedFiles = (acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
     setFiles(acceptedFiles);
   };
   const onDrop = useCallback(handleAcceptedFiles, []);
@@ -23,25 +22,9 @@ export function MyDropzone({ values, setFiles }: any) {
 
 class Thumb extends React.Component<{ key: number, file: File }> {
   state = {
-    loading: false,
+    loading: true,
     thumb: undefined,
   };
-
-  componentWillReceiveProps(nextProps: any) {
-    if (!nextProps.file) {
-      return;
-    }
-
-    this.setState({ loading: true }, () => {
-      let reader = new FileReader();
-
-      reader.onloadend = () => {
-        this.setState({ loading: false, thumb: reader.result });
-      };
-
-      reader.readAsDataURL(nextProps.file);
-    });
-  }
 
   render() {
     const { file }: any = this.props;

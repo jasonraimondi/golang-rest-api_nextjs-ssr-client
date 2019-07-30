@@ -3,6 +3,7 @@ import Cookie from "js-cookie";
 import decode from "jwt-decode";
 import Router from "next/router";
 import { COOKIES } from "../cookie";
+import { APP_ROUTES } from "../routes";
 
 export interface DecodedToken {
   user_id: string;
@@ -48,24 +49,24 @@ export class AuthService {
   static redirectToLogin(res?: ServerResponse) {
     if (res) {
       res.writeHead(302, {
-        Location: "/login",
+        Location: APP_ROUTES.login,
       });
       res.end();
     } else {
-      Router.push("/login");
+      Router.push(APP_ROUTES.login);
     }
   }
 
-  static redirectIfAuthenticated() {
+  static async redirectIfAuthenticated() {
     const authService = new AuthService(Cookie.get(COOKIES.authToken));
     if (authService.isAuthenticated) {
-      Router.push("/app/dashboard");
+      await Router.push(APP_ROUTES.dashboard);
     }
   }
 
   logout() {
     Cookie.remove(COOKIES.authToken);
     this.decodedToken = this.blankToken;
-    Router.push("/login");
+    Router.push(APP_ROUTES.login);
   }
 }

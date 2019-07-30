@@ -6,5 +6,5 @@ export async function signUp(inputs: SignUpInputs) {
 }
 
 export async function signUpConfirmation(inputs: { u: string, t: string }) {
-  return await get("/sign_up_confirmation", new URLSearchParams(inputs));
+  return await get("/sign_up_confirmation", inputs);
 }

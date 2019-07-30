@@ -2,8 +2,8 @@ import { Component } from "react";
 import { AuthProps, privateRoute } from "../lib/auth/private_route";
 
 class Page extends Component<AuthProps> {
-  componentDidMount(): void {
-    this.props.auth.logout();
+  static async getInitialProps({ auth }: AuthProps) {
+    auth.logout();
   }
 
   render() {

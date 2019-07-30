@@ -3,10 +3,10 @@ import { get } from "../../rest_client";
 export async function listPhotos(userId: string, page: number, itemsPerPage: number) {
   const inputs = {
     userId,
-    page: page.toString(),
-    itemsPerPage: itemsPerPage.toString(),
+    page,
+    itemsPerPage,
   };
-  const res: any = await get("/list_photos", new URLSearchParams(inputs));
+  const res: any = await get("/list_photos", inputs);
   if (res.error) {
     return res.error;
   }

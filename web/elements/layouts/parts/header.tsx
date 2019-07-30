@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { AuthService } from "../../../lib/auth/auth_service";
+import { APP_ROUTES } from "../../../lib/routes";
 
 interface Props {
   auth?: AuthService,
@@ -12,13 +13,11 @@ const Header = (props: Props) => {
     isAuthenticated = true;
   }
 
-  console.log(props.auth, isAuthenticated, Date.now());
-
   return <header>
     <nav>
       <ul className="flex justify-around">
         <li>
-          <Link href="/">
+          <Link href={APP_ROUTES.home}>
             <a>Home</a>
           </Link>
         </li>
@@ -28,28 +27,25 @@ const Header = (props: Props) => {
   </header>;
 };
 
-// Header.getInitialProps = async () => {
-// };
-
 function PrivateRoutes() {
   return <>
     <li>
-      <Link href="/app/dashboard">
+      <Link href={APP_ROUTES.dashboard}>
         <a>Dashboard</a>
       </Link>
     </li>
     <li>
-      <Link href="/app/photos">
+      <Link href={APP_ROUTES.photos}>
         <a>Photo</a>
       </Link>
     </li>
     <li>
-      <Link href="/app/photos/upload">
+      <Link href={APP_ROUTES.photosUpload}>
         <a>Upload</a>
       </Link>
     </li>
     <li>
-      <Link href="/logout">
+      <Link href={APP_ROUTES.logout}>
         <a>Logout</a>
       </Link>
     </li>
@@ -59,13 +55,13 @@ function PrivateRoutes() {
 function PublicRoutes() {
   return <>
     <li>
-      <Link href="/login">
+      <Link href={APP_ROUTES.login}>
         <a>Login</a>
       </Link>
     </li>
     <li>
-      <Link href="/sign_up">
-        <a>SignUp</a>
+      <Link href={APP_ROUTES.signUp}>
+        <a>Sign Up</a>
       </Link>
     </li>
   </>;

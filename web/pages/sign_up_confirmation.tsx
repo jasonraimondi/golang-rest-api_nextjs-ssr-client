@@ -2,6 +2,7 @@ import Router from "next/router";
 import React, { Component } from "react";
 import { defaultLayout } from "../elements/layouts/default";
 import { AuthService } from "../lib/auth/auth_service";
+import { APP_ROUTES } from "../lib/routes";
 import { signUpConfirmation } from "../lib/services/api/sign_up";
 
 type State = { isValid: boolean, isLoading: boolean };
@@ -35,7 +36,7 @@ class Page extends Component<Props, State> {
       AuthService.redirectToLogin();
     } else {
       this.setState({ isValid: false, isLoading: false });
-      Router.push("/sign_up");
+      await Router.push(APP_ROUTES.signUp);
     }
   }
 
