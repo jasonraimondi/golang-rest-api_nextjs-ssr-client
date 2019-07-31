@@ -11,10 +11,6 @@ export type AuthProps = {
 
 export function privateRoute(C: any) {
   return class extends Component<AuthProps> {
-    get auth() {
-      return this.props.auth;
-    }
-
     static async getInitialProps(ctx: any) {
       const jwt = ServerCookie(ctx)[COOKIES.authToken];
       const props = { auth: new AuthService(jwt) };
@@ -23,15 +19,15 @@ export function privateRoute(C: any) {
     }
 
     componentDidMount(): void {
-      if (this.auth.isExpired) Router.push(APP_ROUTES.home);
+      if (this.props.auth.isExpired) Router.push(APP_ROUTES.home);
     }
 
     componentDidUpdate(): void {
-      if (this.auth.isExpired) Router.push(APP_ROUTES.home);
+      if (this.props.auth.isExpired) Router.push(APP_ROUTES.home);
     }
 
     render() {
-      return <C auth={this.auth} {...this.props} />;
+      return <C auth={this.props.auth} {...this.props} />;
     }
   };
 }

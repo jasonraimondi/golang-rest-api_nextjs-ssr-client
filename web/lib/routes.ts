@@ -1,11 +1,15 @@
 export const APP_ROUTES = {
   home: "/",
-  login: "/login",
-  signUp: "/login",
+  signUp: "/sign-up",
   dashboard: "/app/dashboard",
-  photos: "/app/photos",
-  photosUpload: "/app/photos/upload",
-  logout: "/logout",
+  photos: {
+    index: "/app/photos",
+    upload: "/app/photos/upload",
+  },
+  auth: {
+    login: "/login",
+    logout: "/logout",
+  },
 };
 
 export const API_ROUTES = {

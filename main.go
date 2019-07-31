@@ -82,10 +82,10 @@ func main() {
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
-	e.POST("/login", h.Login)
+	e.POST("/login", h.Login).Name = "login"
 
-	e.POST("/sign_up", h.SignUp)
-	e.GET("/sign_up_confirmation", h.SignUpConfirmation)
+	e.POST("/sign_up", h.SignUp).Name = "sign-up"
+	e.GET("/sign_up_confirmation", h.SignUpConfirmation).Name = "sign-up-confirmation"
 	e.GET("/list_photos", h.ListPhotos)
 
 	r := e.Group("/api")

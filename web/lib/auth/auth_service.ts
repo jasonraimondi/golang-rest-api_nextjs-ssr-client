@@ -49,11 +49,11 @@ export class AuthService {
   static redirectToLogin(res?: ServerResponse) {
     if (res) {
       res.writeHead(302, {
-        Location: APP_ROUTES.login,
+        Location: APP_ROUTES.auth.login,
       });
       res.end();
     } else {
-      Router.push(APP_ROUTES.login);
+      Router.push(APP_ROUTES.auth.login);
     }
   }
 
@@ -67,6 +67,7 @@ export class AuthService {
   logout() {
     Cookie.remove(COOKIES.authToken);
     this.decodedToken = this.blankToken;
-    Router.push(APP_ROUTES.login);
+    console.log("LOGOUT")
+    // Router.push(APP_ROUTES.auth.login);
   }
 }

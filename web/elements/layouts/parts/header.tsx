@@ -35,17 +35,17 @@ function PrivateRoutes() {
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.photos}>
+      <Link href={APP_ROUTES.photos.index}>
         <a>Photo</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.photosUpload}>
+      <Link href={APP_ROUTES.photos.upload}>
         <a>Upload</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.logout}>
+      <Link href={APP_ROUTES.auth.logout}>
         <a>Logout</a>
       </Link>
     </li>
@@ -55,7 +55,7 @@ function PrivateRoutes() {
 function PublicRoutes() {
   return <>
     <li>
-      <Link href={APP_ROUTES.login}>
+      <Link href={APP_ROUTES.auth.login}>
         <a>Login</a>
       </Link>
     </li>
