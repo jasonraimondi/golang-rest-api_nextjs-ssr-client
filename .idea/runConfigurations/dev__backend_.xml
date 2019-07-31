@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="dev (backend)" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="jasontest" />
-    <working_directory value="$PROJECT_DIR$" />
+    <working_directory value="$PROJECT_DIR$/server" />
     <envs>
       <env name="DEBUG" value="true" />
     </envs>
     <kind value="FILE" />
-    <filePath value="$PROJECT_DIR$/main.go" />
+    <filePath value="$PROJECT_DIR$/server/main.go" />
     <package value="git.jasonraimondi.com/jason/jasontest" />
     <directory value="$PROJECT_DIR$/" />
     <method v="2" />

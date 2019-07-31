@@ -1,5 +1,11 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <GoCodeStyleSettings>
+      <option name="MOVE_ALL_IMPORTS_IN_ONE_DECLARATION" value="true" />
+      <option name="MOVE_ALL_STDLIB_IMPORTS_IN_ONE_GROUP" value="true" />
+      <option name="GROUP_STDLIB_IMPORTS" value="true" />
+      <option name="GROUP_CURRENT_PROJECT_IMPORTS" value="true" />
+    </GoCodeStyleSettings>
     <TypeScriptCodeStyleSettings version="1">
       <option name="FORCE_SEMICOLON_STYLE" value="true" />
       <option name="FORCE_QUOTE_STYlE" value="true" />

@@ -21,7 +21,7 @@ services:
       - "traefik.frontend.rule=Host: localhost"
 
   app:
-    build: .
+    build: ./server
     environment:
       DB_CONNECTION: host=postgres port=5432 user=print password=print dbname=print sslmode=disable
     labels:

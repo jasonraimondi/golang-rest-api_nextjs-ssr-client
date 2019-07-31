@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/Masterminds/squirrel v1.1.0
-	github.com/aws/aws-sdk-go v1.21.0
+	github.com/aws/aws-sdk-go v1.21.8
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
