@@ -11,7 +11,6 @@ import (
 )
 
 type Application struct {
-	JwtSecureKey      string
 	MigrationDir      string
 	RepositoryFactory *repository.Factory
 	ServiceFactory    *service.Factory
@@ -21,11 +20,11 @@ func NewApplication(dbx *sqlx.DB, s3Config *s3.S3Config, jwtSecureKey string, di
 	v := validator.New()
 	_ = v.RegisterValidation("password-strength", ValidatePasswordStrength)
 	r := repository.NewFactory(dbx)
-	s := service.NewService(r, v, s3Config)
+	s := service.NewService(r, v, s3Config, jwtSecureKey)
 	return &Application{
 		RepositoryFactory: r,
 		ServiceFactory:    s,
-		JwtSecureKey:      jwtSecureKey,
 		MigrationDir:      dir,
 	}
 }
+

@@ -1,10 +1,9 @@
 package handlers
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/dgrijalva/jwt-go"
-
 	"git.jasonraimondi.com/jason/jasontest/lib"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/labstack/echo"
 )
 
 type Handler struct {
@@ -18,8 +17,20 @@ func NewHandler(a *lib.Application) *Handler {
 	}
 }
 
-type JwtCustomClaims struct {
-	UserID string `json:"user_id"`
-	Email  string `json:"email"`
-	jwt.StandardClaims
+func (h *Handler) SignUp() *SignUpHandler {
+	return &SignUpHandler{
+		signUp: h.App.ServiceFactory.SignUpService(),
+	}
+}
+
+func (h *Handler) Auth() *AuthHandler {
+	return &AuthHandler{
+		factory: h.App.ServiceFactory,
+	}
+}
+
+func sendMessage(c echo.Context, statusCode int, message string) error {
+	return c.JSON(statusCode, map[string]interface{}{
+		"message": message,
+	})
 }

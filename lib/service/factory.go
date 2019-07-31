@@ -9,13 +9,14 @@ import (
 )
 
 type Factory struct {
-	repository *repository.Factory
-	validate   *validator.Validate
-	s3         *s3.S3Config
+	repository   *repository.Factory
+	validate     *validator.Validate
+	s3           *s3.S3Config
+	jwtSecureKey string
 }
 
-func NewService(r *repository.Factory, v *validator.Validate, c *s3.S3Config) *Factory {
-	return &Factory{r, v, c}
+func NewService(r *repository.Factory, v *validator.Validate, c *s3.S3Config, j string) *Factory {
+	return &Factory{r, v, c, j}
 }
 
 func (s *Factory) SignUpService() *SignUpService {
@@ -37,7 +38,18 @@ func (s *Factory) FileUploadService() *FileUploadService {
 
 func (s *Factory) ListPhotosService() *ListPhotosService {
 	return &ListPhotosService{
-		queryBuilder: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),
-		dbx: s.repository.DBx,
+		queryBuilder: s.getPGQueryBuilder(),
+		dbx:          s.repository.DBx,
 	}
+}
+
+func (s *Factory) AuthService() *AuthService {
+	return &AuthService{
+		userRepository: s.repository.User(),
+		jwtSecureKey:   s.jwtSecureKey,
+	}
+}
+
+func (s *Factory) getPGQueryBuilder() squirrel.StatementBuilderType {
+	return squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar)
 }

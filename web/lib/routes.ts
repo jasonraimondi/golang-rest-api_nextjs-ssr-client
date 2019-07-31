@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
   home: "/",
-  signUp: "/sign-up",
+  signUp: "/sign_up",
   dashboard: "/app/dashboard",
   photos: {
     index: "/app/photos",

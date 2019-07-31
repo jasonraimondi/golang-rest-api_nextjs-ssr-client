@@ -1,6 +1,7 @@
 package main
 
 import (
+	"git.jasonraimondi.com/jason/jasontest/lib/service"
 	"net/http"
 	"os"
 
@@ -76,22 +77,20 @@ func main() {
 	}))
 
 	config := middleware.JWTConfig{
-		Claims:       &handlers.JwtCustomClaims{},
+		Claims:       &service.JwtCustomClaims{},
 		SigningKey:   []byte(jwtSecureKey),
 		ErrorHandler: func(err error) error { return err },
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
-	e.POST("/login", h.Login).Name = "login"
-
-	e.POST("/sign_up", h.SignUp).Name = "sign-up"
-	e.GET("/sign_up_confirmation", h.SignUpConfirmation).Name = "sign-up-confirmation"
+	e.POST("/login", h.Auth().Login)
+	e.POST("/sign_up", h.SignUp().SignUp)
+	e.GET("/sign_up_confirmation", h.SignUp().SignUpConfirmation)
 	e.GET("/list_photos", h.ListPhotos)
 
-	r := e.Group("/api")
-	r.Use(authRoute)
-	r.POST("/upload", h.Upload)
-	r.GET("", h.Restricted)
+	guard := e.Group("/guard")
+	guard.Use(authRoute)
+	guard.POST("/upload", h.Upload)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
