@@ -25,7 +25,6 @@ export function postMultipart(url: string, data: FormData = new FormData(), head
   return axios.post(url, data, mergeConfig({ headers: mergeHeaders(headers) })).catch(catchAxiosError);
 }
 
-
 function mergeHeaders(headers: StringProps) {
   return {
     ...headers,

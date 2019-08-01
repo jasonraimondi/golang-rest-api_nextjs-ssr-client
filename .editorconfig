@@ -14,6 +14,7 @@ ij_smart_tabs = false
 ij_wrap_on_typing = false
 
 [*.css]
+tab_width = 2
 ij_css_align_closing_brace_with_properties = false
 ij_css_blank_lines_around_nested_selector = 1
 ij_css_blank_lines_between_blocks = 1
@@ -52,6 +53,7 @@ ij_editorconfig_space_before_comma = false
 ij_editorconfig_spaces_around_assignment_operators = true
 
 [{*.cjs,*.js}]
+tab_width = 2
 ij_continuation_indent_size = 4
 ij_javascript_align_imports = false
 ij_javascript_align_multiline_array_initializer_expression = false

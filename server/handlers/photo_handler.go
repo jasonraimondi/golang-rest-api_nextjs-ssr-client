@@ -9,18 +9,18 @@ import (
 )
 
 type PhotoHandler struct {
-	photoService *service.ListPhotosService
-	photoUpload  *service.FileUploadService
+	listPhotoService *service.PhotoListService
+	photoUpload      *service.PhotoUploadService
 }
 
-func (h *PhotoHandler) ListPhotos(c echo.Context) error {
+func (h *PhotoHandler) List(c echo.Context) error {
 
 	userId := c.QueryParam("userId")
 
 	page := strToInt(c.QueryParam("page"), 1)
 	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
 
-	paginator, err := h.photoService.ListPhotos(userId, int64(page), int64(itemsPerPage))
+	paginator, err := h.listPhotoService.ForUser(userId, int64(page), int64(itemsPerPage))
 	if err != nil {
 		return err
 	}

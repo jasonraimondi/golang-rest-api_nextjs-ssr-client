@@ -7,12 +7,12 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
-type ListPhotosService struct {
+type PhotoListService struct {
 	queryBuilder squirrel.StatementBuilderType
 	dbx          *sqlx.DB
 }
 
-func (s *ListPhotosService) ListPhotos(userId string, currentPage int64, itemsPerPage int64) (*Paginator, error) {
+func (s *PhotoListService) ForUser(userId string, currentPage int64, itemsPerPage int64) (*Paginator, error) {
 	query := s.queryBuilder.Select().From("photos").Where(squirrel.Eq{
 		"user_id": userId,
 	})

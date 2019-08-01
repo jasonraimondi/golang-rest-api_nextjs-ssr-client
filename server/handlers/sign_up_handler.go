@@ -18,10 +18,10 @@ func (h *SignUpHandler) SignUp(c echo.Context) error {
 	lastName := c.FormValue("last")
 	password := c.FormValue("password")
 
-	if user, httpError := h.signUp.CreateUser(email, firstName, lastName, password); httpError != nil {
-		return httpError
-	} else if _, httpError = h.signUp.CreateSignUpConfirmation(user); httpError != nil {
-		return httpError
+	if user, err := h.signUp.CreateUser(email, firstName, lastName, password); err != nil {
+		return err
+	} else if _, err = h.signUp.CreateSignUpConfirmation(user); err != nil {
+		return err
 	}
 
 	return sendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))
@@ -31,8 +31,8 @@ func (h *SignUpHandler) SignUpConfirmation(c echo.Context) error {
 	token := c.QueryParam("t")
 	userId := c.QueryParam("u")
 
-	if httpErr := h.signUp.ValidateEmailSignUpConfirmation(token, userId); httpErr != nil {
-		return httpErr
+	if err := h.signUp.ValidateEmailSignUpConfirmation(token, userId); err != nil {
+		return err
 	}
 
 	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))

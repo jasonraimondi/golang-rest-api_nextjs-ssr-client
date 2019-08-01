@@ -36,7 +36,7 @@ func (r *PhotoRepository) GetById(id string) (photo *models.Photo, err error) {
 //	return count, nil
 //}
 //
-//func (r *PhotoRepository) ListForUser(userId string, page int64, itemsPerPage int64) ([]models.Photo, error) {
+//func (r *PhotoRepository) ForUser(userId string, page int64, itemsPerPage int64) ([]models.Photo, error) {
 //	limit := itemsPerPage
 //	offset := limit * (page - 1)
 //

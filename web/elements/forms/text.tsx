@@ -1,56 +1,48 @@
 import React from "react";
-import styled from "styled-components";
 
 interface TextInputFields {
-  type: "text" | "password" | "email";
-  label: string;
-  name: string;
-  value: string;
-  error?: string;
-  validating?: boolean;
-  submitting?: boolean
-  required?: boolean;
-  touched?: boolean;
+    type: "text" | "password" | "email";
+    label: string;
+    name: string;
+    value: string;
+    error?: string;
+    validating?: boolean;
+    submitting?: boolean
+    required?: boolean;
+    touched?: boolean;
 
-  handleBlur(e: React.FocusEvent<any>): void;
+    handleBlur(e: React.FocusEvent<any>): void;
 
-  handleChange(e: React.ChangeEvent<any>): void;
+    handleChange(e: React.ChangeEvent<any>): void;
 }
 
 export function TextInput({
-  type,
-  label,
-  name,
-  value,
-  error,
-  touched,
-  validating,
-  submitting,
-  required,
-  handleBlur,
-  handleChange,
+    type,
+    label,
+    name,
+    value,
+    error,
+    touched,
+    validating,
+    submitting,
+    required,
+    handleBlur,
+    handleChange,
 }: TextInputFields) {
-  return <Label className="block mt-3">
-    <span className="block">
-      {label}:
-    </span>
-    <input className="border-solid border-2 border-gray-600 rounded w-full py-1 px-2"
-           type={type}
-           name={name}
-           disabled={submitting || validating}
-           onBlur={handleBlur}
-           onChange={handleChange}
-           value={value}
-           required={required}
-    />
-    <span className="block text-sm">
+    return <div className="mt-2">
+        <label htmlFor={name}>{label}{required ? <small> <sup>*</sup></small> : null}</label>
+        <input className="border-solid border-2 border-gray-600 rounded w-full py-1 px-2"
+               type={type}
+               name={name}
+               id={name}
+               disabled={submitting || validating}
+               onBlur={handleBlur}
+               onChange={handleChange}
+               value={value}
+               required={!!required}
+        />
+        <span className="block text-sm">
           {error && touched && error}
     </span>
-  </Label>;
+    </div>;
 }
-
-const Label = styled.label`
-  &:first-child {
-    margin-top: 0;
-  }
-`;

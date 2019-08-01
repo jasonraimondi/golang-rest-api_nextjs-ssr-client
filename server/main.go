@@ -86,11 +86,11 @@ func main() {
 	e.POST("/login", h.Auth().Login)
 	e.POST("/sign_up", h.SignUp().SignUp)
 	e.GET("/sign_up_confirmation", h.SignUp().SignUpConfirmation)
-	e.GET("/list_photos", h.ListPhotos)
+	e.GET("/list_photos", h.Photo().List)
 
 	guard := e.Group("/guard")
 	guard.Use(authRoute)
-	guard.POST("/upload", h.Upload)
+	guard.POST("/upload", h.Photo().Upload)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

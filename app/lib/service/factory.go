@@ -27,8 +27,8 @@ func (s *Factory) SignUpService() *SignUpService {
 	}
 }
 
-func (s *Factory) FileUploadService() *FileUploadService {
-	return &FileUploadService{
+func (s *Factory) FileUploadService() *PhotoUploadService {
+	return &PhotoUploadService{
 		originals:      "originals",
 		repository:     s.repository,
 		userRepository: s.repository.User(),
@@ -36,8 +36,8 @@ func (s *Factory) FileUploadService() *FileUploadService {
 	}
 }
 
-func (s *Factory) ListPhotosService() *ListPhotosService {
-	return &ListPhotosService{
+func (s *Factory) ListPhotosService() *PhotoListService {
+	return &PhotoListService{
 		queryBuilder: s.getPGQueryBuilder(),
 		dbx:          s.repository.DBx,
 	}

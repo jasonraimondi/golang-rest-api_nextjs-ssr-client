@@ -22,14 +22,14 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type FileUploadService struct {
+type PhotoUploadService struct {
 	originals      string
 	repository     *repository.Factory
 	userRepository *repository.UserRepository
 	s3             *awsupload.S3Config
 }
 
-func (s *FileUploadService) FileUpload(form *multipart.Form, userId string) *echo.HTTPError {
+func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *echo.HTTPError {
 	files := form.File["file[]"]
 
 	user, err := s.userRepository.GetById(userId)

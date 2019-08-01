@@ -46,7 +46,7 @@ func TestPhotoRepository_GetById(t *testing.T) {
 //	assert.NoError(t, repository.CreatePhotoTx(tx, photos5))
 //	assert.NoError(t, tx.Commit())
 //
-//	r.PhotoRepository().ListForUser(user.ID.String(), 1, 3)
+//	r.PhotoRepository().ForUser(user.ID.String(), 1, 3)
 //	//if assert.NoError(t, err) {
 //	//	assert.Equal(t, photos.FileSize, sut1.FileSize)
 //	//	assert.Equal(t, photos.FileName, sut1.FileName)
