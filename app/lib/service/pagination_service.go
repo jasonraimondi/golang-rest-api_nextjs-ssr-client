@@ -2,9 +2,10 @@ package service
 
 import (
 	"fmt"
+	"math"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
-	"math"
 )
 
 type Paginator struct {

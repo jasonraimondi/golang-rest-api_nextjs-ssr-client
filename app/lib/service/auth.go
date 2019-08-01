@@ -1,11 +1,13 @@
 package service
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/labstack/echo"
 	"net/http"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/labstack/echo"
+
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 )
 
 type AuthService struct {

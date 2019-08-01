@@ -1,10 +1,12 @@
 package service
 
 import (
+	"net/http"
+
+	"gopkg.in/go-playground/validator.v9"
+
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
-	"gopkg.in/go-playground/validator.v9"
-	"net/http"
 
 	"github.com/labstack/echo"
 )

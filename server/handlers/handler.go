@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strconv"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/labstack/echo"
 
@@ -30,9 +32,22 @@ func (h *Handler) Auth() *AuthHandler {
 	}
 }
 
+func (h *Handler) Photo() *PhotoHandler {
+	return &PhotoHandler{
+		photoService: h.App.ServiceFactory.ListPhotosService(),
+	}
+}
+
 func sendMessage(c echo.Context, statusCode int, message string) error {
 	return c.JSON(statusCode, map[string]interface{}{
 		"message": message,
 	})
 }
 
+func strToInt(s string, d int) int64 {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		i = d
+	}
+	return int64(i)
+}

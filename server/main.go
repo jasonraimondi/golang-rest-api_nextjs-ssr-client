@@ -1,12 +1,13 @@
 package main
 
 import (
+	"net/http"
+	"os"
+
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	"git.jasonraimondi.com/jason/jasontest/server/handlers"
-	"net/http"
-	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"

@@ -1,10 +1,11 @@
 package repository_test
 
 import (
+	"testing"
+
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"git.jasonraimondi.com/jason/jasontest/app/test/utils"
-	"testing"
 
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"

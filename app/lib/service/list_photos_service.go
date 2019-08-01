@@ -1,9 +1,10 @@
 package service
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
+
+	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
 type ListPhotosService struct {

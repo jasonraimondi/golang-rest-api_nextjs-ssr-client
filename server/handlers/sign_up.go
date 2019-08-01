@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	"net/http"
+
+	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 
 	"github.com/labstack/echo"
 )

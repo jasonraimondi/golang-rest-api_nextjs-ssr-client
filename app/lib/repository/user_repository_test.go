@@ -1,9 +1,10 @@
 package repository_test
 
 import (
+	"testing"
+
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"git.jasonraimondi.com/jason/jasontest/app/test/utils"
-	"testing"
 
 	"github.com/stretchr/testify/assert"
 )

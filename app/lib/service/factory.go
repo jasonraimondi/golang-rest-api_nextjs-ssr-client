@@ -1,10 +1,11 @@
 package service
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
-	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
 	"github.com/Masterminds/squirrel"
 	"gopkg.in/go-playground/validator.v9"
+
+	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 )
 
 type Factory struct {

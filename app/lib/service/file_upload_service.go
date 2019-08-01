@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
+	"io"
+	"mime/multipart"
+	"net/http"
 
 	"github.com/aws/aws-sdk-go/service/s3"
 
@@ -11,10 +14,6 @@ import (
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
-
-	"io"
-	"mime/multipart"
-	"net/http"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"

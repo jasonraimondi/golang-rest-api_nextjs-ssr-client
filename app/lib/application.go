@@ -1,12 +1,13 @@
 package lib
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
-	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
-	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
 	"gopkg.in/go-playground/validator.v9"
+
+	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
+	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 )
 
 type Application struct {

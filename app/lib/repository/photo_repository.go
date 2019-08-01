@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"github.com/jmoiron/sqlx"
+
+	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
 type PhotoRepository struct {
