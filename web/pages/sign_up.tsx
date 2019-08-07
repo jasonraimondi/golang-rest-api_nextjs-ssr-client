@@ -17,7 +17,7 @@ export type SignUpInputs = {
 function Page() {
     AuthService.redirectIfAuthenticated();
 
-    const initialValues = { email: "", password: "", first: "", last: "" };
+    const initialValues: SignUpInputs = { email: "", password: "", first: "", last: "" };
 
     const validate = (values: SignUpInputs) => {
         let errors: Partial<SignUpInputs> = {};
@@ -45,7 +45,7 @@ function Page() {
     const gridStyle: CSSProperties = {
         display: "grid",
         gridGap: 10,
-        gridTemplateColumns: "1fr 1fr"
+        gridTemplateColumns: "1fr 1fr",
     };
 
     return <>

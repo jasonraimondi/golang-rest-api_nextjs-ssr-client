@@ -10,6 +10,7 @@ html, body, #__next {
 a {
     @apply text-blue-500;
 }
+
 a:hover {
     @apply text-blue-700 underline;
 }

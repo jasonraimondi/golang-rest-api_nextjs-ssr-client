@@ -6,9 +6,9 @@ import { COOKIES } from "../cookie";
 import { APP_ROUTES } from "../routes";
 
 export interface DecodedToken {
-  user_id: string;
-  email: string;
-  exp: number;
+  readonly user_id: string;
+  readonly email: string;
+  readonly exp: number;
 }
 
 export class AuthService {

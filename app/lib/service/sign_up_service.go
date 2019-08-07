@@ -1,12 +1,13 @@
 package service
 
 import (
-	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
-	"git.jasonraimondi.com/jason/jasontest/app/models"
-	"gopkg.in/go-playground/validator.v9"
 	"net/http"
 
 	"github.com/labstack/echo"
+	"gopkg.in/go-playground/validator.v9"
+
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
+	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
 type SignUpService struct {
@@ -38,6 +39,7 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 
 func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
 	c = models.NewSignUpConfirmation(*u)
+	go Example()
 	tx := s.repository.DBx.MustBegin()
 	if err := repository.CreateUserTx(tx, u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)

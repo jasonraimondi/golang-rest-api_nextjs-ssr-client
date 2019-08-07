@@ -54,5 +54,15 @@ class Page extends Component<Props, State> {
   }
 }
 
+function redirectToLogin(res?: ServerResponse) {
+    if (res) {
+        res.writeHead(302, {
+            Location: APP_ROUTES.auth.login,
+        });
+        res.end();
+    } else {
+        Router.push(APP_ROUTES.auth.login);
+    }
+}
 
 export default defaultLayout(Page);

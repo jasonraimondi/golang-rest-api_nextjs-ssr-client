@@ -29,6 +29,12 @@ services:
       - "traefik.port=9000"
       - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /media"
 
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+
 volumes:
   minio-data:
   minio-config:
