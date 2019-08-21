@@ -1,9 +1,10 @@
+import { NextPageContext } from "next";
 import Router from "next/router";
 import React, { Component } from "react";
 import { defaultLayout } from "../elements/layouts/default";
-import { AuthService } from "../lib/auth/auth_service";
 import { APP_ROUTES } from "../lib/routes";
 import { signUpConfirmation } from "../lib/services/api/sign_up";
+import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";
 
 type State = { isValid: boolean, isLoading: boolean };
 type Props = { userId: string, token: string };
@@ -16,12 +17,13 @@ class Page extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    AuthService.redirectIfAuthenticated();
   }
 
-  static async getInitialProps({ res, query }: any) {
-    const { t, u } = query;
-    if (!t || !u) AuthService.redirectToLogin(res);
+  static async getInitialProps(ctx: NextPageContext) {
+    await redirectIfAuthenticated(ctx);
+
+    const { t, u } = ctx.query;
+    if (!t || !u) redirectToLogin(ctx.res);
     return { token: t, userId: u };
   };
 
@@ -33,7 +35,7 @@ class Page extends Component<Props, State> {
 
     if (res.status === 202) {
       this.setState({ isValid: true, isLoading: false });
-      AuthService.redirectToLogin();
+      redirectToLogin();
     } else {
       this.setState({ isValid: false, isLoading: false });
       await Router.push(APP_ROUTES.signUp);
@@ -52,17 +54,6 @@ class Page extends Component<Props, State> {
 
     return <div>Token is invalid.</div>;
   }
-}
-
-function redirectToLogin(res?: ServerResponse) {
-    if (res) {
-        res.writeHead(302, {
-            Location: APP_ROUTES.auth.login,
-        });
-        res.end();
-    } else {
-        Router.push(APP_ROUTES.auth.login);
-    }
 }
 
 export default defaultLayout(Page);

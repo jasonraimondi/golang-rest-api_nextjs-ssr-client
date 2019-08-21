@@ -27,8 +27,10 @@ func (s *AuthService) AttemptLogin(email string, password string) (string, *echo
 	}
 
 	claims := &JwtCustomClaims{
-		UserID: p.ID.String(),
-		Email:  p.Email,
+		UserID:      p.ID.String(),
+		Email:       p.Email,
+		IsVerified:  p.IsVerified,
+		IsConfirmed: p.IsVerified, // @todo add is_confirmed column to user
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
 		},
@@ -44,7 +46,9 @@ func (s *AuthService) AttemptLogin(email string, password string) (string, *echo
 }
 
 type JwtCustomClaims struct {
-	UserID string `json:"user_id"`
-	Email  string `json:"email"`
+	UserID      string `json:"userId"`
+	Email       string `json:"email"`
+	IsVerified  bool   `json:"isVerified"`
+	IsConfirmed bool   `json:"isConfirmed"`
 	jwt.StandardClaims
 }

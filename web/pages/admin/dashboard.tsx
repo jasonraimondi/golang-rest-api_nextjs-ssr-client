@@ -6,7 +6,7 @@ type Props = {}
 
 function Page({ auth }: Props & AuthProps) {
   return <>
-    <pre>{JSON.stringify(auth.user)}</pre>
+    <pre>{JSON.stringify(auth)}</pre>
   </>;
 }
 

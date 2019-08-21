@@ -1,10 +1,12 @@
 export const APP_ROUTES = {
   home: "/",
   signUp: "/sign_up",
-  dashboard: "/app/dashboard",
-  photos: {
-    index: "/app/photos",
-    upload: "/app/photos/upload",
+  admin: {
+    dashboard: "/admin/dashboard",
+    photos: {
+      index: "/admin/photos",
+      upload: "/admin/photos/upload",
+    },
   },
   auth: {
     login: "/login",

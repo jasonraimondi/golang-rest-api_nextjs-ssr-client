@@ -52,7 +52,7 @@ ij_editorconfig_space_before_colon = false
 ij_editorconfig_space_before_comma = false
 ij_editorconfig_spaces_around_assignment_operators = true
 
-[{*.cjs,*.js}]
+[{*.cjs,*.js,*.jsx}]
 tab_width = 2
 ij_continuation_indent_size = 4
 ij_javascript_align_imports = false
@@ -247,7 +247,7 @@ ij_html_space_around_equality_in_attribute = false
 ij_html_space_inside_empty_tag = false
 ij_html_text_wrap = normal
 
-[{*.ts,*.ats}]
+[{*.ts,*.tsx,*.ats}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2

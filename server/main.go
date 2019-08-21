@@ -88,7 +88,7 @@ func main() {
 	e.GET("/sign_up_confirmation", h.SignUp().SignUpConfirmation)
 	e.GET("/list_photos", h.Photo().List)
 
-	guard := e.Group("/guard")
+	guard := e.Group("/api")
 	guard.Use(authRoute)
 	guard.POST("/upload", h.Photo().Upload)
 

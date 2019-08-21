@@ -34,7 +34,8 @@ func (h *Handler) Auth() *AuthHandler {
 
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
-		listPhotoService: h.App.ServiceFactory.ListPhotosService(),
+		listPhotoService: h.App.RepositoryFactory.ListPhotosRepository(),
+		photoUpload: h.App.ServiceFactory.FileUploadService(),
 	}
 }
 

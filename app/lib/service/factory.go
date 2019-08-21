@@ -36,20 +36,9 @@ func (s *Factory) FileUploadService() *PhotoUploadService {
 	}
 }
 
-func (s *Factory) ListPhotosService() *PhotoListService {
-	return &PhotoListService{
-		queryBuilder: s.getPGQueryBuilder(),
-		dbx:          s.repository.DBx,
-	}
-}
-
 func (s *Factory) AuthService() *AuthService {
 	return &AuthService{
 		userRepository: s.repository.User(),
 		jwtSecureKey:   s.jwtSecureKey,
 	}
-}
-
-func (s *Factory) getPGQueryBuilder() squirrel.StatementBuilderType {
-	return squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar)
 }

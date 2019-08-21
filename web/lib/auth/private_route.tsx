@@ -1,33 +1,45 @@
-import ServerCookie from "next-cookies";
-import Router from "next/router";
+import { NextPageContext } from "next";
 import React, { Component } from "react";
-import { COOKIES } from "../cookie";
-import { APP_ROUTES } from "../routes";
-import { AuthService } from "./auth_service";
+import { AuthToken } from "../services/auth_token";
+import { redirectToLogin } from "../services/redirect_service";
 
-export type AuthProps = {
-  auth: AuthService
+
+export type AuthProps = Props & {
+  auth: AuthToken
 }
 
-export function privateRoute(C: any) {
+type Props = {
+  token: string;
+}
+
+export function privateRoute(WrappedComponent: any) {
   return class extends Component<AuthProps> {
-    static async getInitialProps(ctx: any) {
-      const jwt = ServerCookie(ctx)[COOKIES.authToken];
-      const props = { auth: new AuthService(jwt) };
-      if (C.getInitialProps) return C.getInitialProps(props);
-      return props;
+    state = {
+      auth: new AuthToken(this.props.auth.token),
+    };
+
+    static async getInitialProps(ctx: NextPageContext) {
+      const auth = AuthToken.fromNext(ctx);
+      const initialProps = { auth };
+      if (auth.isExpired) redirectToLogin(ctx.res);
+      if (WrappedComponent.getInitialProps) {
+        const wrappedProps = await WrappedComponent.getInitialProps(initialProps);
+        // make sure our `auth: AuthToken` is always returned
+        return { ...wrappedProps, auth };
+      }
+      return initialProps;
     }
 
     componentDidMount(): void {
-      if (this.props.auth.isExpired) Router.push(APP_ROUTES.home);
-    }
-
-    componentDidUpdate(): void {
-      if (this.props.auth.isExpired) Router.push(APP_ROUTES.home);
+      // since getInitialProps returns our props after they've JSON.stringify
+      // we need to reinitialize it as an AuthToken to have the full class
+      // with all instance methods available
+      this.setState({ auth: new AuthToken(this.props.auth.token) });
     }
 
     render() {
-      return <C auth={this.props.auth} {...this.props} />;
+      const { auth, ...propsWithoutAuth } = this.props;
+      return <WrappedComponent auth={this.state.auth} {...propsWithoutAuth} />;
     }
   };
 }

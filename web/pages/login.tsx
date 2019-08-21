@@ -1,17 +1,22 @@
 import { Formik, FormikActions, FormikProps } from "formik";
+import { NextPageContext } from "next";
 import React from "react";
 import { SubmitButton } from "../elements/forms/button";
 import { TextInput } from "../elements/forms/text";
 import { defaultLayout } from "../elements/layouts/default";
-import { AuthService } from "../lib/auth/auth_service";
 import { login } from "../lib/services/api/login";
+import { redirectIfAuthenticated } from "../lib/services/redirect_service";
 
 function Page() {
-  AuthService.redirectIfAuthenticated();
   return <>
     <LoginForm/>
   </>;
 }
+
+Page.getInitialProps = async (ctx: NextPageContext) => {
+  await redirectIfAuthenticated(ctx);
+  return {};
+};
 
 export const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 

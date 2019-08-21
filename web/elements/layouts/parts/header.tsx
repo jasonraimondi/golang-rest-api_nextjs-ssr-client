@@ -1,15 +1,15 @@
 import Link from "next/link";
 import React from "react";
-import { AuthService } from "../../../lib/auth/auth_service";
 import { APP_ROUTES } from "../../../lib/routes";
+import { AuthToken } from "../../../lib/services/auth_token";
 
 interface Props {
-  auth?: AuthService,
+  auth?: AuthToken,
 }
 
 const Header = (props: Props) => {
   let isAuthenticated = false;
-  if (props.auth && props.auth.isAuthenticated) {
+  if (props.auth && props.auth.isValid) {
     isAuthenticated = true;
   }
 
@@ -30,17 +30,17 @@ const Header = (props: Props) => {
 function PrivateRoutes() {
   return <>
     <li>
-      <Link href={APP_ROUTES.dashboard}>
+      <Link href={APP_ROUTES.admin.dashboard}>
         <a>Dashboard</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.photos.index}>
+      <Link href={APP_ROUTES.admin.photos.index}>
         <a>Photo</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.photos.upload}>
+      <Link href={APP_ROUTES.admin.photos.upload}>
         <a>Upload</a>
       </Link>
     </li>

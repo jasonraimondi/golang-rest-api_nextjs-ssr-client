@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { catchAxiosError } from "./services/error";
 
 export interface StringProps {
-  [id: string]: string|number
+  [id: string]: string | number
 }
 
 export function get<T = any>(

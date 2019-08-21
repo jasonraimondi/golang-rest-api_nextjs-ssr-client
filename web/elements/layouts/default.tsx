@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { AuthService } from "../../lib/auth/auth_service";
+import { AuthToken } from "../../lib/services/auth_token";
 import { Head } from "./parts/head";
 import Header from "./parts/header";
 
-type Props = { auth?: AuthService }
+type Props = { auth?: AuthToken }
 
 export function defaultLayout(C: any) {
   return class extends Component<Props> {

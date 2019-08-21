@@ -5,11 +5,12 @@ import (
 
 	"github.com/labstack/echo"
 
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 )
 
 type PhotoHandler struct {
-	listPhotoService *service.PhotoListService
+	listPhotoService *repository.ListPhotosRepository
 	photoUpload      *service.PhotoUploadService
 }
 

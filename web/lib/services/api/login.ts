@@ -17,5 +17,5 @@ export async function login(inputs: LoginInputs): Promise<string | void> {
   }
 
   Cookie.set(COOKIES.authToken, res.data.token);
-  await Router.push(APP_ROUTES.dashboard);
+  await Router.push(APP_ROUTES.admin.dashboard);
 }

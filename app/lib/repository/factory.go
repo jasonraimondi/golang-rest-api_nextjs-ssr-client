@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -22,4 +23,22 @@ func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
 
 func (r *Factory) PhotoRepository() *PhotoRepository {
 	return &PhotoRepository{r.DBx}
+}
+
+func (r *Factory) ListPhotosRepository() *ListPhotosRepository {
+	return &ListPhotosRepository{
+		queryBuilder: getPGQueryBuilder(),
+		dbx:          r.DBx,
+	}
+}
+
+func (r *Factory) ListTagsRepository() *ListTagsRepository {
+	return &ListTagsRepository{
+		queryBuilder: getPGQueryBuilder(),
+		dbx:          r.DBx,
+	}
+}
+
+func getPGQueryBuilder() squirrel.StatementBuilderType {
+	return squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar)
 }

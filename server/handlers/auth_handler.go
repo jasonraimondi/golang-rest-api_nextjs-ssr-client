@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo"
 
@@ -14,7 +15,7 @@ type AuthHandler struct {
 
 func (h *AuthHandler) Login(c echo.Context) (err error) {
 	token, httpErr := h.factory.AuthService().AttemptLogin(
-		c.FormValue("email"),
+		strings.ToLower(c.FormValue("email")),
 		c.FormValue("password"),
 	)
 	if httpErr != nil {

@@ -1,4 +1,4 @@
-package service
+package repository
 
 import (
 	"github.com/Masterminds/squirrel"
@@ -7,12 +7,12 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
-type PhotoListService struct {
+type ListPhotosRepository struct {
 	queryBuilder squirrel.StatementBuilderType
 	dbx          *sqlx.DB
 }
 
-func (s *PhotoListService) ForUser(userId string, currentPage int64, itemsPerPage int64) (*Paginator, error) {
+func (s *ListPhotosRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) (*Paginator, error) {
 	query := s.queryBuilder.Select().From("photos").Where(squirrel.Eq{
 		"user_id": userId,
 	})
@@ -37,6 +37,7 @@ func (s *PhotoListService) ForUser(userId string, currentPage int64, itemsPerPag
 		}
 		results = append(results, p)
 	}
+	// @todo env var for base url
 	baseURL := "http://localhost:1323/list_photos?userId=" + userId
 	return NewPaginator(baseURL, totalCount, itemsPerPage, currentPage, results)
 }
