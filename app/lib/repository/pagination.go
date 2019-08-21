@@ -27,9 +27,7 @@ type Link struct {
 func PaginateQuery(itemsPerPage int64, currentPage int64, query squirrel.SelectBuilder) (string, []interface{}, error) {
 	limit := itemsPerPage
 	offset := limit * (currentPage - 1)
-
-	return query.Column("*").
-		OrderBy("created_at DESC").
+	return query.
 		Limit(uint64(limit)).
 		Offset(uint64(offset)).
 		ToSql()

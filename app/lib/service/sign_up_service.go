@@ -39,7 +39,7 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 
 func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
 	c = models.NewSignUpConfirmation(*u)
-	tx := s.repository.DBx.MustBegin()
+	tx := s.repository.DB().MustBegin()
 	if err := repository.CreateUserTx(tx, u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
@@ -51,7 +51,7 @@ func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.Sign
 }
 
 func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
-	tx := s.repository.DBx.MustBegin()
+	tx := s.repository.DB().MustBegin()
 	signUpConfirmation, err := repository.GetByTokenTx(tx, token)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "token not found")
@@ -65,7 +65,7 @@ func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId str
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
-	tx = s.repository.DBx.MustBegin()
+	tx = s.repository.DB().MustBegin()
 	repository.UpdateUserTx(tx, user)
 	repository.DeleteSignUpConfirmationTx(tx, signUpConfirmation)
 	if err := tx.Commit(); err != nil {

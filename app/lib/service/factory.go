@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/Masterminds/squirrel"
 	"gopkg.in/go-playground/validator.v9"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
@@ -42,3 +41,10 @@ func (s *Factory) AuthService() *AuthService {
 		jwtSecureKey:   s.jwtSecureKey,
 	}
 }
+
+func (s *Factory) TagService() *TagService {
+	return &TagService{
+		repository: s.repository,
+	}
+}
+

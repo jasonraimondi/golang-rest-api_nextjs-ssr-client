@@ -13,13 +13,19 @@ type ListPhotosRepository struct {
 }
 
 func (s *ListPhotosRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) (*Paginator, error) {
-	query := s.queryBuilder.Select().From("photos").Where(squirrel.Eq{
-		"user_id": userId,
-	})
+	query := s.queryBuilder.
+		Select().
+		From("photos").
+		Where(squirrel.Eq{
+			"user_id": userId,
+		}).
+		OrderBy("created_at DESC")
+
 	totalCount, err := TotalCountForQuery(s.dbx, query)
 	if err != nil {
 		return nil, err
 	}
+	query = query.Column("*")
 	sql, args, err := PaginateQuery(itemsPerPage, currentPage, query)
 	if err != nil {
 		return nil, err
@@ -38,6 +44,6 @@ func (s *ListPhotosRepository) ForUser(userId string, currentPage int64, itemsPe
 		results = append(results, p)
 	}
 	// @todo env var for base url
-	baseURL := "http://localhost:1323/list_photos?userId=" + userId
+	baseURL := "http://localhost:1323/photos/user/" + userId
 	return NewPaginator(baseURL, totalCount, itemsPerPage, currentPage, results)
 }

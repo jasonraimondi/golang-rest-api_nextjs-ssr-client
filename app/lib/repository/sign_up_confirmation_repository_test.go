@@ -15,7 +15,7 @@ func TestSignUpConfirmationRepository_GetByToken(t *testing.T) {
 	user := models.NewUser("jason@raimondi.us")
 	confirmation := models.NewSignUpConfirmation(*user)
 
-	tx := r.DBx.MustBegin()
+	tx := r.DB().MustBegin()
 	assert.NoError(t, repository.CreateUserTx(tx, user))
 	repository.CreateSignUpConfirmationTx(tx, confirmation)
 	assert.NoError(t, tx.Commit())

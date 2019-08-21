@@ -16,7 +16,7 @@ func TestPhotoRepository_GetById(t *testing.T) {
 	user := models.NewUser("jason@raimondi.us")
 	photos := models.NewPhoto(uuid.NewV4(), user, "filename", "image title", "", 213241)
 
-	tx := r.DBx.MustBegin()
+	tx := r.DB().MustBegin()
 	assert.NoError(t, repository.CreateUserTx(tx, user))
 	assert.NoError(t, repository.CreatePhotoTx(tx, photos))
 	assert.NoError(t, tx.Commit())
@@ -37,7 +37,7 @@ func TestPhotoRepository_GetById(t *testing.T) {
 //	photos4 := models.NewPhoto(uuid.NewV4(), user, "filename", "image title", "", 213241)
 //	photos5 := models.NewPhoto(uuid.NewV4(), user, "filename", "image title", "", 213241)
 //
-//	tx := r.DBx.MustBegin()
+//	tx := r.DB().MustBegin()
 //	assert.NoError(t, repository.CreateUserTx(tx, user))
 //	assert.NoError(t, repository.CreatePhotoTx(tx, photos))
 //	assert.NoError(t, repository.CreatePhotoTx(tx, photos2))

@@ -40,7 +40,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 	newSession, _ := session.NewSession(s.s3.Config)
 	s3Client := s3.New(newSession)
 
-	tx := s.repository.DBx.MustBegin()
+	tx := s.repository.DB().MustBegin()
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
@@ -74,7 +74,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 }
 
 func createPhoto(tx *sqlx.Tx, user *models.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *models.Photo, err error) {
-	fileSHA256, _ := getFileSHA256(f)
+	fileSHA256, _ := GetFileSHA256(f)
 	photo = models.NewPhoto(
 		uuid.NewV4(),
 		user,
@@ -89,7 +89,7 @@ func createPhoto(tx *sqlx.Tx, user *models.User, f multipart.File, fileHeader *m
 	return photo, nil
 }
 
-func getFileSHA256(file io.Reader) (result string, err error) {
+func GetFileSHA256(file io.Reader) (result string, err error) {
 	hash := sha256.New()
 	if _, err = io.Copy(hash, file); err != nil {
 		return result, err

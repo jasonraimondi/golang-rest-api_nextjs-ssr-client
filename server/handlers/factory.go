@@ -32,10 +32,17 @@ func (h *Handler) Auth() *AuthHandler {
 	}
 }
 
+func (h *Handler) Tag() *TagHandler {
+	return &TagHandler{
+		tagService: h.App.ServiceFactory.TagService(),
+	}
+}
+
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
+		listTagService:   h.App.RepositoryFactory.ListTagsRepository(),
 		listPhotoService: h.App.RepositoryFactory.ListPhotosRepository(),
-		photoUpload: h.App.ServiceFactory.FileUploadService(),
+		photoUpload:      h.App.ServiceFactory.FileUploadService(),
 	}
 }
 

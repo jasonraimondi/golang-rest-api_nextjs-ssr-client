@@ -15,7 +15,7 @@ func xTestService_ValidateEmailSignUpConfirmation(t *testing.T) {
 	user := models.NewUser("jason@raimondi.us")
 	confirmation := models.NewSignUpConfirmation(*user)
 
-	tx := a.RepositoryFactory.DBx.MustBegin()
+	tx := a.RepositoryFactory.DB().MustBegin()
 	assert.NoError(t, repository.CreateUserTx(tx, user))
 	repository.CreateSignUpConfirmationTx(tx, confirmation)
 	assert.NoError(t, tx.Commit())
