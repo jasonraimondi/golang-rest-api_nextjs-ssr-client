@@ -1,8 +1,7 @@
 CREATE TABLE tags
 (
-    id   BIGINT       NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE photo_tag

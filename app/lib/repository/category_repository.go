@@ -6,24 +6,24 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
-type CategoryRepository struct {
+type AppRepository struct {
 	dbx *sqlx.DB
 }
 
-var createCategory = `
-	INSERT INTO categories (id, name)
+var createApp = `
+	INSERT INTO apps (id, name)
 	VALUES (:id, :name)
 `
 
-func (r *CategoryRepository) GetById(id string) (tag *models.Category, err error) {
-	tag = &models.Category{}
-	if err = r.dbx.Get(tag, `SELECT * FROM categories WHERE id=$1`, id); err != nil {
+func (r *AppRepository) GetById(id string) (tag *models.App, err error) {
+	tag = &models.App{}
+	if err = r.dbx.Get(tag, `SELECT * FROM apps WHERE id=$1`, id); err != nil {
 		return nil, err
 	}
 	return tag, nil
 }
 
-func CreateCategoryTx(tx *sqlx.Tx, u *models.Category) (err error) {
-	_, err = tx.NamedExec(createCategory, u)
+func CreateAppTx(tx *sqlx.Tx, u *models.App) (err error) {
+	_, err = tx.NamedExec(createApp, u)
 	return err
 }

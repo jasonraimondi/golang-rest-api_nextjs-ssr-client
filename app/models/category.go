@@ -4,21 +4,21 @@ import (
 	"fmt"
 )
 
-type Category struct {
+type App struct {
 	ID   int64  `db:"id"`
 	Name string `db:"name"`
 }
 
-func NewCategory(
+func NewApp(
 	id int64,
 	name string,
-) *Category {
-	return &Category{
+) *App {
+	return &App{
 		ID:   id,
 		Name: name,
 	}
 }
 
-func (p *Category) GetID() string {
+func (p *App) GetID() string {
 	return fmt.Sprintf("%d", p.ID)
 }

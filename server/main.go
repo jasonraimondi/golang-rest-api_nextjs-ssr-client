@@ -88,7 +88,7 @@ func main() {
 	e.GET("/sign_up_confirmation", h.SignUp().SignUpConfirmation)
 	e.GET("/photos/user/:userId", h.Photo().List)
 	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
-	e.POST("/tags", h.Tag().Tag)
+	e.POST("/photos/:photoId/tags", h.Tag().Tag)
 
 	guard := e.Group("/api")
 	guard.Use(authRoute)

@@ -13,10 +13,16 @@ type TagHandler struct {
 }
 
 func (h *TagHandler) Tag(c echo.Context) error {
-	tags := []string{"one", "two", "foo", "bar"}
-	err := h.tagService.AddTagsToPhoto(tags)
+	photoId := c.Param("photoId")
+	//tags := []string{"one", "two", "foo", "bar"}
+
+	tags2, _ := c.FormParams()
+
+	tags := tags2["tag[]"]
+
+	err := h.tagService.AddTagsToPhoto(photoId, tags)
 	if err != nil {
-		return err;
+	return err;
 	}
-	return sendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))
+	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
