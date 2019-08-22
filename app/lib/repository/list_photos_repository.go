@@ -18,14 +18,13 @@ func (s *ListPhotosRepository) ForUser(userId string, currentPage int64, itemsPe
 		From("photos").
 		Where(squirrel.Eq{
 			"user_id": userId,
-		}).
-		OrderBy("created_at DESC")
+		})
 
 	totalCount, err := TotalCountForQuery(s.dbx, query)
 	if err != nil {
 		return nil, err
 	}
-	query = query.Column("*")
+	query = query.Column("*").OrderBy("created_at DESC")
 	sql, args, err := PaginateQuery(itemsPerPage, currentPage, query)
 	if err != nil {
 		return nil, err

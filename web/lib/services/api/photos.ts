@@ -2,11 +2,10 @@ import { get } from "../../rest_client";
 
 export async function listPhotos(userId: string, page: number, itemsPerPage: number) {
   const inputs = {
-    userId,
     page,
     itemsPerPage,
   };
-  const res: any = await get("/list_photos", inputs);
+  const res: any = await get(`/photos/user/${userId}`, inputs);
   if (res.error) {
     return res.error;
   }
