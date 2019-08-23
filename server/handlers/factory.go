@@ -20,13 +20,13 @@ func NewHandler(a *lib.Application) *Handler {
 	}
 }
 
-func (h *Handler) SignUp() *SignUpHandler {
+func (h *Handler) SignUpHandler() *SignUpHandler {
 	return &SignUpHandler{
 		signUp: h.App.ServiceFactory.SignUpService(),
 	}
 }
 
-func (h *Handler) Auth() *AuthHandler {
+func (h *Handler) AuthHandler() *AuthHandler {
 	return &AuthHandler{
 		factory: h.App.ServiceFactory,
 	}
@@ -34,15 +34,17 @@ func (h *Handler) Auth() *AuthHandler {
 
 func (h *Handler) Tag() *TagHandler {
 	return &TagHandler{
-		tagService: h.App.ServiceFactory.TagService(),
+		tagService: h.App.ServiceFactory.PhotoAppService(),
 	}
 }
 
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
-		listTagService:   h.App.RepositoryFactory.ListTagsRepository(),
-		listPhotoService: h.App.RepositoryFactory.ListPhotosRepository(),
-		photoUpload:      h.App.ServiceFactory.FileUploadService(),
+		photoAppService:      h.App.ServiceFactory.PhotoAppService(),
+		listAppsRepository:   h.App.RepositoryFactory.ListAppsRepository(),
+		listTagsRepository:   h.App.RepositoryFactory.ListTagsRepository(),
+		listPhotosRepository: h.App.RepositoryFactory.ListPhotosRepository(),
+		photoUploadService:   h.App.ServiceFactory.FileUploadService(),
 	}
 }
 

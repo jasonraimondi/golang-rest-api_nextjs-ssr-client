@@ -37,16 +37,22 @@ func (r *Factory) PhotoRepository() *PhotoRepository {
 	return &PhotoRepository{r.DB()}
 }
 
+func (r *Factory) AppRepository() *AppRepository {
+	return &AppRepository{r.qb, r.dbx}
+}
+
+func (r *Factory) TagRepository() *TagRepository {
+	return &TagRepository{r.qb, r.dbx}
+}
+
 func (r *Factory) ListPhotosRepository() *ListPhotosRepository {
-	return &ListPhotosRepository{
-		queryBuilder: r.qb,
-		dbx:          r.DB(),
-	}
+	return &ListPhotosRepository{r.qb, r.dbx}
 }
 
 func (r *Factory) ListTagsRepository() *ListTagsRepository {
-	return &ListTagsRepository{
-		queryBuilder: r.qb,
-		dbx:          r.DB(),
-	}
+	return &ListTagsRepository{r.qb, r.dbx}
+}
+
+func (r *Factory) ListAppsRepository() *ListAppsRepository {
+	return &ListAppsRepository{r.qb, r.dbx}
 }

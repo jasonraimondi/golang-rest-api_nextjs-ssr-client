@@ -11,7 +11,7 @@ package models
 //
 //func NewPhotoTag(
 //	p *Photo,
-//	t *Tag,
+//	t *TagHandler,
 //) *PhotoTag {
 //	return &PhotoTag{
 //		PhotoId: p.ID,

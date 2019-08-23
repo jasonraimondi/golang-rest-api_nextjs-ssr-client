@@ -25,7 +25,7 @@ func TestCreateUser(t *testing.T) {
 	c := e.NewContext(req, rec)
 	h := utils.NewTestHandler()
 
-	if assert.NoError(t, h.SignUp().SignUp(c)) {
+	if assert.NoError(t, h.SignUpHandler().SignUp(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		assert.Equal(t, `{"message":"Created"}
 `, rec.Body.String())

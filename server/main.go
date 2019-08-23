@@ -83,16 +83,23 @@ func main() {
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
-	e.POST("/login", h.Auth().Login)
-	e.POST("/sign_up", h.SignUp().SignUp)
-	e.GET("/sign_up_confirmation", h.SignUp().SignUpConfirmation)
-	e.GET("/photos/user/:userId", h.Photo().List)
+	e.POST("/login", h.AuthHandler().Login)
+	e.POST("/sign_up", h.SignUpHandler().SignUp)
+	e.GET("/sign_up_confirmation", h.SignUpHandler().SignUpConfirmation)
+	e.GET("/photos/user/:userId", h.Photo().ListForUser)
+
 	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
-	e.POST("/photos/:photoId/tags", h.Tag().Tag)
+	e.POST("/photos/:photoId/tags", h.Photo().LinkTags)
+	e.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
+
+
+	e.GET("/photos/:photoId/apps", h.Photo().ListApps)
+	e.POST("/photos/:photoId/apps", h.Photo().LinkApps)
+	e.DELETE("/photos/:photoId/apps/:appId", h.Photo().RemoveApp)
 
 	guard := e.Group("/api")
 	guard.Use(authRoute)
-	guard.POST("/upload", h.Photo().Upload)
+	guard.POST("/upload", h.Photo().Create)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

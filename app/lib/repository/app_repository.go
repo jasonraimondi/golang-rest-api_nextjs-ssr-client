@@ -5,13 +5,13 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type TagRepository struct {
+type AppRepository struct {
 	queryBuilder squirrel.StatementBuilderType
 	dbx          *sqlx.DB
 }
 
-func (r *TagRepository) Delete(id string) error {
-	sql, args, err := r.queryBuilder.Delete("tags").Where(squirrel.Eq{"id": id}).ToSql()
+func (r *AppRepository) Delete(id string) error {
+	sql, args, err := r.queryBuilder.Delete("apps").Where(squirrel.Eq{"id": id}).ToSql()
 	if err != nil {
 		return err
 	}
@@ -19,11 +19,11 @@ func (r *TagRepository) Delete(id string) error {
 	return nil
 }
 
-func (r *TagRepository) UnlinkFromPhoto(photoId string, tagId int64) error {
+func (r *AppRepository) UnlinkFromPhoto(photoId string, appId int64) error {
 	sql, args, err := r.queryBuilder.
-		Delete("photo_tag").
+		Delete("photo_app").
 		Where(squirrel.Eq{
-			"tag_id":   tagId,
+			"app_id":   appId,
 			"photo_id": photoId,
 		}).ToSql()
 	if err != nil {

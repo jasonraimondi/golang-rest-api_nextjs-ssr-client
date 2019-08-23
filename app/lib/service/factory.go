@@ -42,9 +42,16 @@ func (s *Factory) AuthService() *AuthService {
 	}
 }
 
-func (s *Factory) TagService() *TagService {
-	return &TagService{
+func (s *Factory) PhotoAppService() *PhotoAppService {
+	return &PhotoAppService{
 		repository: s.repository,
 	}
 }
+
+//func (s *Factory) PhotoTagService() *PhotoTagService {
+//	return &PhotoTagService{
+//		repository: s.repository,
+//	}
+//}
+
 
