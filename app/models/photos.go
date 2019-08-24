@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"time"
 
-	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 )
 
 type Photo struct {
-	gorm.Model
-	//ID          uuid.UUID `gorm:"primary_key"`
+	ID          uuid.UUID `gorm:"primary_key"`
 	FileName    string
 	RelativeURL string
 	SHA256      string
@@ -22,6 +21,9 @@ type Photo struct {
 	Height      sql.NullInt64
 	UserID      uuid.UUID
 	Tags        []*Tag `gorm:"many2many:photo_tag"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   *time.Time `sql:"index"`
 }
 
 //func (p *Photo) BeforeCreate(scope *gorm.Scope) error {
@@ -38,8 +40,8 @@ func NewPhoto(
 ) *Photo {
 	s := id.String()
 	return &Photo{
-		//ID:          id,
-		UserID:      u.GetID(),
+		ID:          id,
+		UserID:      u.ID,
 		FileName:    fileName,
 		RelativeURL: fmt.Sprintf("%s/%s%s", s[:2], s, strings.ToLower(filepath.Ext(fileName))),
 		SHA256:      sha256,
@@ -48,7 +50,10 @@ func NewPhoto(
 	}
 }
 
+func (p *Photo) AddTag(tag Tag) {
+	p.Tags = append(p.Tags, &tag)
+}
+
 func (p *Photo) GetID() string {
-	//return p.ID.String()
-	return ""
+	return p.ID.String()
 }

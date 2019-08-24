@@ -61,7 +61,7 @@ func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId str
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
-	if err = s.repository.User().Update(&user); err != nil {
+	if err = s.repository.User().Update(user); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
 	} else if err = s.repository.SignUpConfirmation().Delete(&signUpConfirmation); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")

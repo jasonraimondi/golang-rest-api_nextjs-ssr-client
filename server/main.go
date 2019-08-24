@@ -87,9 +87,12 @@ func main() {
 	authRoute := middleware.JWTWithConfig(config)
 
 	e.GET("/migrate", func(c echo.Context) (err error) {
-		h.App.RepositoryFactory.DB().AutoMigrate(&models.Photo{})
-		h.App.RepositoryFactory.DB().AutoMigrate(&models.Tag{})
-		h.App.RepositoryFactory.DB().AutoMigrate(&models.User{})
+		h.App.RepositoryFactory.DB().AutoMigrate(
+			&models.Photo{},
+			&models.Tag{},
+			&models.User{},
+			&models.SignUpConfirmation{},
+		)
 		return c.JSON(http.StatusOK, "hi")
 	})
 
@@ -102,7 +105,6 @@ func main() {
 	//e.GET("/photos/:photoId/tags", h.Photo().ListTags)
 	e.POST("/photos/:photoId/tags", h.Photo().LinkTags)
 	e.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
-
 
 	//e.GET("/photos/:photoId/apps", h.Photo().ListApps)
 	e.POST("/photos/:photoId/apps", h.Photo().LinkApps)

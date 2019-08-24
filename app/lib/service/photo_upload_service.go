@@ -48,7 +48,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 		buffer := make([]byte, size)
 		_, _ = file.Read(buffer)
 
-		photo, err := s.createPhoto(&user, file, fileHeader)
+		photo, err := s.createPhoto(user, file, fileHeader)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err)
 		}

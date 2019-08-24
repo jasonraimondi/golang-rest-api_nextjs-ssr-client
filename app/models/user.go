@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -12,10 +13,13 @@ type User struct {
 	ID           uuid.UUID `gorm:"primary_key"`
 	First        sql.NullString
 	Last         sql.NullString
-	Email        string
+	Email        string `gorm:"size:255"`
 	PasswordHash sql.NullString
 	IsVerified   bool
 	Photos       []Photo
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	DeletedAt    *time.Time `sql:"index"`
 }
 
 func NewUser(email string) (u *User) {
@@ -26,6 +30,7 @@ func NewUser(email string) (u *User) {
 		Email:        strings.ToLower(email),
 		PasswordHash: ToNullString(""),
 		IsVerified:   false,
+		CreatedAt: 	  time.Now(),
 	}
 }
 

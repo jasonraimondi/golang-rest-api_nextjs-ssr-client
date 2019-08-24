@@ -95,11 +95,11 @@ func (h *PhotoHandler) RemoveApp(c echo.Context) error {
 
 func (h *PhotoHandler) RemoveTag(c echo.Context) error {
 	photoId := c.Param("photoId")
-	tagId, err := strconv.ParseInt(c.Param("tagId"), 10, 64)
+	tagId, err := strconv.Atoi(c.Param("tagId"))
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid tagId")
 	}
-	if err := h.photoAppService.RemoveTagFromPhoto(photoId, tagId); err != nil {
+	if err := h.photoAppService.RemoveTagFromPhoto(photoId, uint(tagId)); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))

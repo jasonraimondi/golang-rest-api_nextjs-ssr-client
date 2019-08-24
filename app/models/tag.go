@@ -2,13 +2,11 @@ package models
 
 import (
 	"fmt"
-
-	"github.com/jinzhu/gorm"
 )
 
 type Tag struct {
-	gorm.Model
-	Name   string
+	ID     uint     `gorm:"primary_key"`
+	Name   string   `gorm:"size:255"`
 	Photos []*Photo `gorm:"many2many:photo_tag"`
 }
 

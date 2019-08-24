@@ -1,6 +1,6 @@
 package models
 
 type Role struct {
-	ID   int32  `db:"id"`
-	Name string `db:"name"`
+	ID   uint   `gorm:"primary_key"`
+	Name string `gorm:"size:255"`
 }
