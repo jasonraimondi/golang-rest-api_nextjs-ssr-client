@@ -2,12 +2,12 @@ package repository
 
 import (
 	"github.com/Masterminds/squirrel"
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 )
 
 type TagRepository struct {
 	queryBuilder squirrel.StatementBuilderType
-	dbx          *sqlx.DB
+	dbx          *gorm.DB
 }
 
 func (r *TagRepository) Delete(id string) error {
@@ -15,8 +15,7 @@ func (r *TagRepository) Delete(id string) error {
 	if err != nil {
 		return err
 	}
-	r.dbx.MustExec(sql, args...)
-	return nil
+	return r.dbx.Raw(sql, args...).Error
 }
 
 func (r *TagRepository) UnlinkFromPhoto(photoId string, tagId int64) error {
@@ -29,6 +28,5 @@ func (r *TagRepository) UnlinkFromPhoto(photoId string, tagId int64) error {
 	if err != nil {
 		return err
 	}
-	r.dbx.MustExec(sql, args...)
-	return nil
+	return r.dbx.Raw(sql, args...).Error
 }

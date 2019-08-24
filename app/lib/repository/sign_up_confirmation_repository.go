@@ -1,43 +1,33 @@
 package repository
 
 import (
-	"github.com/jmoiron/sqlx"
+	"github.com/Masterminds/squirrel"
+	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
 type SignUpConfirmationRepository struct {
-	dbx *sqlx.DB
+	qb squirrel.StatementBuilderType
+	dbx *gorm.DB
 }
 
-func (r *SignUpConfirmationRepository) GetByToken(t string) (s *models.SignUpConfirmation, err error) {
+func (r *SignUpConfirmationRepository) GetByToken(t string) (s models.SignUpConfirmation, err error) {
 	token := uuid.FromStringOrNil(t)
-	s = &models.SignUpConfirmation{}
-	if err = r.dbx.Get(s, `SELECT * FROM sign_up_confirmation WHERE token=$1`, token); err != nil {
-		return nil, err
+	s = models.SignUpConfirmation{}
+	err = r.dbx.First(&token, "token = ?", token).Error
+	return s, err
+}
+
+func (r *SignUpConfirmationRepository) Delete(s *models.SignUpConfirmation) error {
+	eq := squirrel.Eq{"token": s.Token}
+	sql, args, err := r.qb.Delete("sign_up_confirmation").Where(eq).ToSql()
+	if err != nil {
+		return err
 	}
-	return s, nil
+	return r.dbx.Raw(sql, args...).Error
 }
-
-func DeleteSignUpConfirmationTx(tx *sqlx.Tx, s *models.SignUpConfirmation) {
-	tx.MustExec(`DELETE FROM sign_up_confirmation WHERE token=$1`, s.Token)
-}
-
-func GetByTokenTx(tx *sqlx.Tx, t string) (s *models.SignUpConfirmation, err error) {
-	token := uuid.FromStringOrNil(t)
-	s = &models.SignUpConfirmation{}
-	if err = tx.Get(s, `SELECT * FROM sign_up_confirmation WHERE token=$1`, token); err != nil {
-		return nil, err
-	}
-	return s, nil
-}
-
-func CreateSignUpConfirmationTx(tx *sqlx.Tx, s *models.SignUpConfirmation) {
-	tx.MustExec(
-		"INSERT INTO sign_up_confirmation (token, user_id, created_at) VALUES ($1, $2, $3)",
-		s.Token,
-		s.UserId,
-		s.CreatedAt,
-	)
+func (r *SignUpConfirmationRepository) Create(s *models.SignUpConfirmation) error {
+	return r.dbx.Create(s).Error
 }

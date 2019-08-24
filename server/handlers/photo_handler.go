@@ -6,72 +6,71 @@ import (
 
 	"github.com/labstack/echo"
 
-	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 )
 
 type PhotoHandler struct {
-	listTagsRepository   *repository.ListTagsRepository
-	listAppsRepository   *repository.ListAppsRepository
-	listPhotosRepository *repository.ListPhotosRepository
+	//listTagsRepository   *repository.ListTagsRepository
+	//listAppsRepository   *repository.ListAppsRepository
+	//listPhotosRepository *repository.ListPhotosRepository
 	photoUploadService   *service.PhotoUploadService
 	photoAppService      *service.PhotoAppService
 }
 
-func (h *PhotoHandler) ListForUser(c echo.Context) error {
-	userId := c.Param("userId")
-
-	page := strToInt(c.QueryParam("page"), 1)
-	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-
-	paginator, err := h.listPhotosRepository.ForUser(userId, page, itemsPerPage)
-	if err != nil {
-		return err
-	}
-	return c.JSON(http.StatusOK, paginator)
-}
-
-func (h *PhotoHandler) ListForTags(c echo.Context) error {
-	tagNames := c.QueryParams()["tagNames[]"]
-	if tagNames == nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "missing tagNames[]")
-	}
-	page := strToInt(c.QueryParam("page"), 1)
-	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-
-	paginator, err := h.listPhotosRepository.ForTags(tagNames, page, itemsPerPage)
-	if err != nil {
-		return err
-	}
-	return c.JSON(http.StatusOK, paginator)
-}
-
-// Move To Apps Handler
-func (h *PhotoHandler) ListApps(c echo.Context) error {
-	photoId := c.Param("photoId")
-
-	page := strToInt(c.QueryParam("page"), 1)
-	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-
-	paginator, err := h.listAppsRepository.ForPhoto(photoId, page, itemsPerPage)
-	if err != nil {
-		return err
-	}
-	return c.JSON(http.StatusOK, paginator)
-}
-
-func (h *PhotoHandler) ListTags(c echo.Context) error {
-	photoId := c.Param("photoId")
-
-	page := strToInt(c.QueryParam("page"), 1)
-	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-
-	paginator, err := h.listTagsRepository.ForPhoto(photoId, page, itemsPerPage)
-	if err != nil {
-		return err
-	}
-	return c.JSON(http.StatusOK, paginator)
-}
+//func (h *PhotoHandler) ListForUser(c echo.Context) error {
+//	userId := c.Param("userId")
+//
+//	page := strToInt(c.QueryParam("page"), 1)
+//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+//
+//	paginator, err := h.listPhotosRepository.ForUser(userId, page, itemsPerPage)
+//	if err != nil {
+//		return err
+//	}
+//	return c.JSON(http.StatusOK, paginator)
+//}
+//
+//func (h *PhotoHandler) ListForTags(c echo.Context) error {
+//	tagNames := c.QueryParams()["tagNames[]"]
+//	if tagNames == nil {
+//		return echo.NewHTTPError(http.StatusBadRequest, "missing tagNames[]")
+//	}
+//	page := strToInt(c.QueryParam("page"), 1)
+//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+//
+//	paginator, err := h.listPhotosRepository.ForTags(tagNames, page, itemsPerPage)
+//	if err != nil {
+//		return err
+//	}
+//	return c.JSON(http.StatusOK, paginator)
+//}
+//
+//// Move To Apps Handler
+//func (h *PhotoHandler) ListApps(c echo.Context) error {
+//	photoId := c.Param("photoId")
+//
+//	page := strToInt(c.QueryParam("page"), 1)
+//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+//
+//	paginator, err := h.listAppsRepository.ForPhoto(photoId, page, itemsPerPage)
+//	if err != nil {
+//		return err
+//	}
+//	return c.JSON(http.StatusOK, paginator)
+//}
+//
+//func (h *PhotoHandler) ListTags(c echo.Context) error {
+//	photoId := c.Param("photoId")
+//
+//	page := strToInt(c.QueryParam("page"), 1)
+//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+//
+//	paginator, err := h.listTagsRepository.ForPhoto(photoId, page, itemsPerPage)
+//	if err != nil {
+//		return err
+//	}
+//	return c.JSON(http.StatusOK, paginator)
+//}
 
 func (h *PhotoHandler) LinkTags(c echo.Context) error {
 	photoId := c.Param("photoId")

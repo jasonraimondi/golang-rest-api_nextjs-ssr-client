@@ -4,14 +4,16 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/jinzhu/gorm"
+
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
+	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"git.jasonraimondi.com/jason/jasontest/server/handlers"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
@@ -48,10 +50,11 @@ func init() {
 	s3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
 	s3SecretKey = env("S3_SECRET_KEY", "miniominiominio")
 
-	dbx, err := sqlx.Connect(dbDriver, dbConnection)
+	db, err := gorm.Open(dbDriver, dbConnection)
 	if err != nil {
-		panic(err)
+		panic("failed to connect to database")
 	}
+
 	sessionToken := "" // @todo what is session token?
 	s3Config := awsupload.NewS3Config("originals", &aws.Config{
 		Credentials:      credentials.NewStaticCredentials(s3IdentifierKey, s3SecretKey, sessionToken),
@@ -59,7 +62,7 @@ func init() {
 		Region:           aws.String(s3Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
-	app = lib.NewApplication(dbx, s3Config, jwtSecureKey, dbMigrationsDir)
+	app = lib.NewApplication(db, s3Config, jwtSecureKey, dbMigrationsDir)
 	h = handlers.NewHandler(app)
 }
 
@@ -83,18 +86,25 @@ func main() {
 	}
 	authRoute := middleware.JWTWithConfig(config)
 
+	e.GET("/migrate", func(c echo.Context) (err error) {
+		h.App.RepositoryFactory.DB().AutoMigrate(&models.Photo{})
+		h.App.RepositoryFactory.DB().AutoMigrate(&models.Tag{})
+		h.App.RepositoryFactory.DB().AutoMigrate(&models.User{})
+		return c.JSON(http.StatusOK, "hi")
+	})
+
 	e.POST("/login", h.AuthHandler().Login)
 	e.POST("/sign_up", h.SignUpHandler().SignUp)
 	e.GET("/sign_up_confirmation", h.SignUpHandler().SignUpConfirmation)
-	e.GET("/photos/user/:userId", h.Photo().ListForUser)
-	e.GET("/photos/tags", h.Photo().ListForTags)
+	//e.GET("/photos/user/:userId", h.Photo().ListForUser)
+	//e.GET("/photos/tags", h.Photo().ListForTags)
 
-	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
+	//e.GET("/photos/:photoId/tags", h.Photo().ListTags)
 	e.POST("/photos/:photoId/tags", h.Photo().LinkTags)
 	e.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
 
 
-	e.GET("/photos/:photoId/apps", h.Photo().ListApps)
+	//e.GET("/photos/:photoId/apps", h.Photo().ListApps)
 	e.POST("/photos/:photoId/apps", h.Photo().LinkApps)
 	e.DELETE("/photos/:photoId/apps/:appId", h.Photo().RemoveApp)
 

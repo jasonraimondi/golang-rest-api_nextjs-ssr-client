@@ -2,33 +2,28 @@ package repository
 
 import (
 	"github.com/Masterminds/squirrel"
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 )
 
 type AppRepository struct {
-	queryBuilder squirrel.StatementBuilderType
-	dbx          *sqlx.DB
+	qb  squirrel.StatementBuilderType
+	dbx *gorm.DB
 }
 
 func (r *AppRepository) Delete(id string) error {
-	sql, args, err := r.queryBuilder.Delete("apps").Where(squirrel.Eq{"id": id}).ToSql()
+	eq := squirrel.Eq{"id": id}
+	sql, args, err := r.qb.Delete("apps").Where(eq).ToSql()
 	if err != nil {
 		return err
 	}
-	r.dbx.MustExec(sql, args...)
-	return nil
+	return r.dbx.Raw(sql, args...).Error
 }
 
 func (r *AppRepository) UnlinkFromPhoto(photoId string, appId int64) error {
-	sql, args, err := r.queryBuilder.
-		Delete("photo_app").
-		Where(squirrel.Eq{
-			"app_id":   appId,
-			"photo_id": photoId,
-		}).ToSql()
+	eq := squirrel.Eq{"app_id": appId, "photo_id": photoId}
+	sql, args, err := r.qb.Delete("photo_app").Where(eq).ToSql()
 	if err != nil {
 		return err
 	}
-	r.dbx.MustExec(sql, args...)
-	return nil
+	return r.dbx.Raw(sql, args...).Error
 }

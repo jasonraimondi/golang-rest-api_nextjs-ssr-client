@@ -5,25 +5,28 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
-	"time"
 
+	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 )
 
 type Photo struct {
-	ID          uuid.UUID     `db:"id"`
-	FileName    string        `db:"file_name"`
-	RelativeURL string        `db:"relative_url"`
-	SHA256      string        `db:"sha256"`
-	MimeType    string        `db:"mime_type"`
-	FileSize    int64         `db:"file_size"`
-	Width       sql.NullInt64 `db:"width"`
-	Height      sql.NullInt64 `db:"height"`
-	UserId      uuid.UUID     `db:"user_id"`
-	CreatedAt   int64         `db:"created_at"`
-	ModifiedAt  sql.NullInt64 `db:"modified_at"`
-	Tags        *[]Tag        `db:"tags"`
+	gorm.Model
+	//ID          uuid.UUID `gorm:"primary_key"`
+	FileName    string
+	RelativeURL string
+	SHA256      string
+	MimeType    string
+	FileSize    int64
+	Width       sql.NullInt64
+	Height      sql.NullInt64
+	UserID      uuid.UUID
+	Tags        []*Tag `gorm:"many2many:photo_tag"`
 }
+
+//func (p *Photo) BeforeCreate(scope *gorm.Scope) error {
+//	return scope.SetColumn("ID", uuid.NewV4().String())
+//}
 
 func NewPhoto(
 	id uuid.UUID,
@@ -35,18 +38,17 @@ func NewPhoto(
 ) *Photo {
 	s := id.String()
 	return &Photo{
-		ID:          id,
-		UserId:      u.GetID(),
+		//ID:          id,
+		UserID:      u.GetID(),
 		FileName:    fileName,
 		RelativeURL: fmt.Sprintf("%s/%s%s", s[:2], s, strings.ToLower(filepath.Ext(fileName))),
 		SHA256:      sha256,
 		MimeType:    mimeType,
 		FileSize:    fileSize,
-		ModifiedAt:  ToNullInt64(""),
-		CreatedAt:   time.Now().Unix(),
 	}
 }
 
 func (p *Photo) GetID() string {
-	return p.ID.String()
+	//return p.ID.String()
+	return ""
 }

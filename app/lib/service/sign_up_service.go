@@ -39,36 +39,31 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 
 func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
 	c = models.NewSignUpConfirmation(*u)
-	tx := s.repository.DB().MustBegin()
-	if err := repository.CreateUserTx(tx, u); err != nil {
+	if err := s.userRepository.Create(u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
-	repository.CreateSignUpConfirmationTx(tx, c)
-	if err := tx.Commit(); err != nil {
-		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error transaction commit user", err)
+	if err := s.repository.SignUpConfirmation().Create(c); err != nil {
+		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating sign up confirmation", err)
 	}
 	return c, httpErr
 }
 
 func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
-	tx := s.repository.DB().MustBegin()
-	signUpConfirmation, err := repository.GetByTokenTx(tx, token)
+	signUpConfirmation, err := s.repository.SignUpConfirmation().GetByToken(token)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "token not found")
 	}
-	user, err := repository.GetByIdTx(tx, userId)
+	user, err := s.repository.User().GetById(userId)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "user not found")
-	} else if err := tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed", err)
-	} else if signUpConfirmation.UserId.String() != userId {
+	}
+	if signUpConfirmation.UserID.String() != userId {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
-	tx = s.repository.DB().MustBegin()
-	repository.UpdateUserTx(tx, user)
-	repository.DeleteSignUpConfirmationTx(tx, signUpConfirmation)
-	if err := tx.Commit(); err != nil {
+	if err = s.repository.User().Update(&user); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
+	} else if err = s.repository.SignUpConfirmation().Delete(&signUpConfirmation); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
 	}
 	return nil

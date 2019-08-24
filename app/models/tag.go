@@ -2,21 +2,14 @@ package models
 
 import (
 	"fmt"
+
+	"github.com/jinzhu/gorm"
 )
 
 type Tag struct {
-	ID   int64  `db:"id"`
-	Name string `db:"name"`
-}
-
-func NewTag(
-	id int64,
-	name string,
-) *Tag {
-	return &Tag{
-		ID:   id,
-		Name: name,
-	}
+	gorm.Model
+	Name   string
+	Photos []*Photo `gorm:"many2many:photo_tag"`
 }
 
 func (p *Tag) GetID() string {

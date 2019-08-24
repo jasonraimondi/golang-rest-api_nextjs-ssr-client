@@ -17,7 +17,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	uuid "github.com/satori/go.uuid"
 )
@@ -40,7 +39,6 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 	newSession, _ := session.NewSession(s.s3.Config)
 	s3Client := s3.New(newSession)
 
-	tx := s.repository.DB().MustBegin()
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
@@ -50,7 +48,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 		buffer := make([]byte, size)
 		_, _ = file.Read(buffer)
 
-		photo, err := createPhoto(tx, user, file, fileHeader)
+		photo, err := s.createPhoto(&user, file, fileHeader)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err)
 		}
@@ -67,13 +65,10 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 			return echo.NewHTTPError(http.StatusInternalServerError, err)
 		}
 	}
-	if err = tx.Commit(); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
 	return nil
 }
 
-func createPhoto(tx *sqlx.Tx, user *models.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *models.Photo, err error) {
+func (s *PhotoUploadService) createPhoto(user *models.User, f multipart.File, fileHeader *multipart.FileHeader) (photo *models.Photo, err error) {
 	fileSHA256, _ := GetFileSHA256(f)
 	photo = models.NewPhoto(
 		uuid.NewV4(),
@@ -83,7 +78,7 @@ func createPhoto(tx *sqlx.Tx, user *models.User, f multipart.File, fileHeader *m
 		fileHeader.Header.Get("Content-Type"),
 		fileHeader.Size,
 	)
-	if err := repository.CreatePhotoTx(tx, photo); err != nil {
+	if err := s.repository.PhotoRepository().Create(photo); err != nil {
 		return nil, err
 	}
 	return photo, nil

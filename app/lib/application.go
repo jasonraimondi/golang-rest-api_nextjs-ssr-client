@@ -2,7 +2,7 @@ package lib
 
 import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 	"gopkg.in/go-playground/validator.v9"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
@@ -16,7 +16,7 @@ type Application struct {
 	ServiceFactory    *service.Factory
 }
 
-func NewApplication(dbx *sqlx.DB, s3Config *awsupload.S3Config, jwtSecureKey string, dir string) *Application {
+func NewApplication(dbx *gorm.DB, s3Config *awsupload.S3Config, jwtSecureKey string, dir string) *Application {
 	v := validator.New()
 	_ = v.RegisterValidation("password-strength", ValidatePasswordStrength)
 	r := repository.NewFactory(dbx)

@@ -1,69 +1,31 @@
 package repository
 
 import (
-	"github.com/jmoiron/sqlx"
+	"github.com/jinzhu/gorm"
 
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
 type UserRepository struct {
-	dbx *sqlx.DB
+	dbx *gorm.DB
 }
 
-var (
-	createUser = `
-				INSERT INTO users (id, first, last, email, password_hash, is_verified, created_at, modified_at)
-				VALUES (:id, :first, :last, :email, :password_hash, :is_verified, :created_at, :modified_at)
-	`
-	updateUser = `
-				UPDATE users 
-				SET 
-					id=:id,
-					first=:first, 
-					last=:last,
-					email=:email,
-					password_hash=:password_hash,
-					is_verified=:is_verified,
-					modified_at=:modified_at
-				WHERE id=$1
-	`
-)
-
-func (r *UserRepository) GetById(id string) (*models.User, error) {
-	user := &models.User{}
-	if err := r.dbx.Get(user, `SELECT * FROM users WHERE id=$1`, id); err != nil {
-		return nil, err
-	}
-	return user, nil
-}
-
-func (r *UserRepository) GetByEmail(email string) (*models.User, error) {
-	user := &models.User{}
-	err := r.dbx.Get(user, `SELECT * FROM users WHERE email=$1`, email)
+func (r *UserRepository) GetById(id string) (user models.User, err error) {
+	user = models.User{}
+	err = r.dbx.First(&user, id).Error
 	return user, err
 }
 
+func (r *UserRepository) GetByEmail(email string) (user models.User, err error) {
+	user = models.User{}
+	err = r.dbx.First(&user, "email = ?", email).Error
+	return user, err
+}
+
+func (r *UserRepository) Update(u *models.User) (err error) {
+	return r.dbx.Update(u).Error
+}
+
 func (r *UserRepository) Create(u *models.User) (err error) {
-	_, err = r.dbx.NamedExec(createUser, u)
-	return err
-}
-
-func UpdateUserTx(tx *sqlx.Tx, u *models.User) {
-	u.ModifiedAt = models.ToNullInt64Now()
-	if _, err := tx.NamedExec(updateUser, u); err != nil {
-		panic(err)
-	}
-}
-
-func CreateUserTx(tx *sqlx.Tx, u *models.User) (err error) {
-	_, err = tx.NamedExec(createUser, u)
-	return err
-}
-
-func GetByIdTx(tx *sqlx.Tx, token string) (*models.User, error) {
-	user := &models.User{}
-	if err := tx.Get(user, `SELECT * FROM users WHERE id=$1`, token); err != nil {
-		return nil, err
-	}
-	return user, nil
+	return r.dbx.Create(u).Error
 }
