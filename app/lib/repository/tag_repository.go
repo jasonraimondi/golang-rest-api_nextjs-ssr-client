@@ -20,14 +20,6 @@ func (r *TagRepository) Delete(id string) error {
 	return r.dbx.Delete(tag).Error
 }
 
-func (r *TagRepository) UnlinkFromPhoto(photoId string, tagId uint) error {
-	var tag models.Tag
-	var photo models.Photo
-	r.dbx.First(&tag, "id = ?", tagId)
-	r.dbx.First(&photo, "id = ?", uuid.FromStringOrNil(photoId))
-	return r.dbx.Model(&photo).Association("tags").Delete(tag).Error
-}
-
 func (s *TagRepository) ForPhoto(photoId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var tags []models.Tag
 	db := s.dbx.Joins("left join photo_tag on photo_tag.tag_id=tags.id").Where("photo_tag.photo_id = ?", uuid.FromStringOrNil(photoId))

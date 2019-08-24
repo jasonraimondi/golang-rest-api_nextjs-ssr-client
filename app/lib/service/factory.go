@@ -44,7 +44,8 @@ func (s *Factory) AuthService() *AuthService {
 
 func (s *Factory) PhotoAppService() *PhotoAppService {
 	return &PhotoAppService{
-		repository: s.repository,
+		db:              s.repository.DB(),
+		photoRepository: s.repository.PhotoRepository(),
 	}
 }
 
@@ -53,5 +54,3 @@ func (s *Factory) PhotoAppService() *PhotoAppService {
 //		repository: s.repository,
 //	}
 //}
-
-

@@ -41,5 +41,5 @@ func (r *Factory) TagRepository() *TagRepository {
 
 //
 //func (r *Factory) ListAppsRepository() *ListAppsRepository {
-//	return &ListAppsRepository{r.qb, r.dbx}
+//	return &ListAppsRepository{r.qb, r.db}
 //}

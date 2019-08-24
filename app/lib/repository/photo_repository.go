@@ -3,31 +3,40 @@ package repository
 import (
 	"github.com/biezhi/gorm-paginator/pagination"
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
 type PhotoRepository struct {
-	dbx *gorm.DB
+	db *gorm.DB
 }
 
 func (r *PhotoRepository) GetById(id string) (photo models.Photo, err error) {
 	photo = models.Photo{}
-	err = r.dbx.First(photo).Error
+	err = r.db.First(photo).Error
 	return photo, err
 }
 
 func (r *PhotoRepository) Update(u *models.Photo) (err error) {
-	return r.dbx.Update(u).Error
+	return r.db.Update(u).Error
 }
 
 func (r *PhotoRepository) Create(u *models.Photo) (err error) {
-	return r.dbx.Create(u).Error
+	return r.db.Create(u).Error
 }
 
-func (s *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
+func (r *PhotoRepository) UnlinkFromPhoto(photoId string, tagId uint) error {
+	var tag models.Tag
+	var photo models.Photo
+	r.db.First(&tag, "id = ?", tagId)
+	r.db.First(&photo, "id = ?", uuid.FromStringOrNil(photoId))
+	return r.db.Model(&photo).Association("tags").Delete(tag).Error
+}
+
+func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var photos []models.Photo
-	db := s.dbx.Where("user_id = ?", userId)
+	db := r.db.Where("user_id = ?", userId)
 	return pagination.Paging(&pagination.Param{
 		DB: db,
 		Page: int(currentPage),
@@ -37,9 +46,9 @@ func (s *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage
 	}, &photos)
 }
 
-func (s *PhotoRepository) ForTags(tags []string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
+func (r *PhotoRepository) ForTags(tags []string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var photos []models.Photo
-	db := s.dbx.Preload("tags").Joins("left join photo_tag on photo_tag.photo_id=photos.id").Joins("left join tags on tags.id=photo_tag.tag_id").Where("tags.name IN (?)", tags)
+	db := r.db.Preload("tags").Joins("left join photo_tag on photo_tag.photo_id=photos.id").Joins("left join tags on tags.id=photo_tag.tag_id").Where("tags.name IN (?)", tags)
 	return pagination.Paging(&pagination.Param{
 		DB: db,
 		Page: int(currentPage),
