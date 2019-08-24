@@ -100,17 +100,12 @@ func main() {
 	e.POST("/sign_up", h.SignUpHandler().SignUp)
 	e.GET("/sign_up_confirmation", h.SignUpHandler().SignUpConfirmation)
 	e.GET("/photos/user/:userId", h.Photo().ListForUser)
-	//e.GET("/photos/tags", h.Photo().ListForTags)
 
-	//e.GET("/photos/:photoId/tags", h.Photo().ListTags)
-
-	//e.GET("/photos/:photoId/apps", h.Photo().ListApps)
-	//e.POST("/photos/:photoId/apps", h.Photo().LinkApps)
-	//e.DELETE("/photos/:photoId/apps/:appId", h.Photo().RemoveApp)
+	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
 
 	admin := e.Group("/admin")
 	//admin.Use(authRoute)
-	admin.POST("/photos", h.Photo().Create)
+	admin.POST("/photos/user/:userId", h.Photo().Create)
 	admin.POST("/photos/:photoId/tags", h.Photo().LinkTags)
 	admin.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
 

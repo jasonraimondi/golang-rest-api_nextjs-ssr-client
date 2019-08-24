@@ -39,13 +39,13 @@ func (r *Factory) TagRepository() *TagRepository {
 	return &TagRepository{r.qb, r.dbx}
 }
 
-//func (r *Factory) ListPhotosRepository() *ListPhotosRepository {
-//	return &ListPhotosRepository{r.qb, r.dbx}
-//}
-//
-//func (r *Factory) ListTagsRepository() *ListTagsRepository {
-//	return &ListTagsRepository{r.qb, r.dbx}
-//}
+func (r *Factory) ListPhotosRepository() *ListPhotosRepository {
+	return &ListPhotosRepository{r.qb, r.dbx}
+}
+
+func (r *Factory) ListTagsRepository() *ListTagsRepository {
+	return &ListTagsRepository{r.qb, r.dbx}
+}
 //
 //func (r *Factory) ListAppsRepository() *ListAppsRepository {
 //	return &ListAppsRepository{r.qb, r.dbx}

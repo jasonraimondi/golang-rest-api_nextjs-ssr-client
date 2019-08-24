@@ -2,9 +2,7 @@ package repository
 
 import (
 	"github.com/jinzhu/gorm"
-	paginator "github.com/pilagod/gorm-cursor-paginator"
 
-	"git.jasonraimondi.com/jason/jasontest/app/lib/pagination"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 

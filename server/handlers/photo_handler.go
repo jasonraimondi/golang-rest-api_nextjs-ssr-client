@@ -4,36 +4,33 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
-	paginator "github.com/pilagod/gorm-cursor-paginator"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 )
 
 type PhotoHandler struct {
-	//listTagsRepository   *repository.ListTagsRepository
 	//listAppsRepository   *repository.ListAppsRepository
-	//listPhotosRepository *repository.ListPhotosRepository
-	photoRepository    *repository.PhotoRepository
-	photoUploadService *service.PhotoUploadService
-	photoAppService    *service.PhotoAppService
-}
+	listTagsRepository   *repository.ListTagsRepository
+	listPhotosRepository *repository.ListPhotosRepository
+	photoRepository      *repository.PhotoRepository
+	photoUploadService   *service.PhotoUploadService
+	photoAppService      *service.PhotoAppService
 }
 
-//func (h *PhotoHandler) ListForUser(c echo.Context) error {
-//	userId := c.Param("userId")
-//
-//	page := strToInt(c.QueryParam("page"), 1)
-//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-//
-//	paginator, err := h.listPhotosRepository.ForUser(userId, page, itemsPerPage)
-//	if err != nil {
-//		return err
-//	}
-//	return c.JSON(http.StatusOK, paginator)
-//}
+func (h *PhotoHandler) ListForUser(c echo.Context) error {
+	userId := c.Param("userId")
+
+	page := strToInt(c.QueryParam("page"), 1)
+	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+
+	paginator, err := h.listPhotosRepository.ForUser(userId, page, itemsPerPage)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, paginator)
+}
 //
 //func (h *PhotoHandler) ListForTags(c echo.Context) error {
 //	tagNames := c.QueryParams()["tagNames[]"]
@@ -64,18 +61,18 @@ type PhotoHandler struct {
 //	return c.JSON(http.StatusOK, paginator)
 //}
 //
-//func (h *PhotoHandler) ListTags(c echo.Context) error {
-//	photoId := c.Param("photoId")
-//
-//	page := strToInt(c.QueryParam("page"), 1)
-//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-//
-//	paginator, err := h.listTagsRepository.ForPhoto(photoId, page, itemsPerPage)
-//	if err != nil {
-//		return err
-//	}
-//	return c.JSON(http.StatusOK, paginator)
-//}
+func (h *PhotoHandler) ListTags(c echo.Context) error {
+	photoId := c.Param("photoId")
+
+	page := strToInt(c.QueryParam("page"), 1)
+	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+
+	paginator, err := h.listTagsRepository.ForPhoto(photoId, page, itemsPerPage)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, paginator)
+}
 
 func (h *PhotoHandler) LinkTags(c echo.Context) error {
 	photoId := c.Param("photoId")
@@ -95,10 +92,8 @@ func (h *PhotoHandler) RemoveTag(c echo.Context) error {
 	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
-
 func (h *PhotoHandler) Create(c echo.Context) error {
-	// Read form fields
-	userId := c.FormValue("userId")
+	userId := c.Param("userId")
 
 	if form, err := c.MultipartForm(); err != nil {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "form error")
@@ -108,7 +103,6 @@ func (h *PhotoHandler) Create(c echo.Context) error {
 
 	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
-
 
 //func (h *PhotoHandler) RemoveApp(c echo.Context) error {
 //	photoId := c.Param("photoId")
