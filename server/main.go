@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -54,6 +55,9 @@ func init() {
 	if err != nil {
 		panic("failed to connect to database")
 	}
+	if enableDebugging {
+		db.SetLogger(log.New(os.Stdout, "\r\n", 0))
+	}
 
 	sessionToken := "" // @todo what is session token?
 	s3Config := awsupload.NewS3Config("originals", &aws.Config{
@@ -100,6 +104,7 @@ func main() {
 	e.POST("/sign_up", h.SignUpHandler().SignUp)
 	e.GET("/sign_up_confirmation", h.SignUpHandler().SignUpConfirmation)
 	e.GET("/photos/user/:userId", h.Photo().ListForUser)
+	e.GET("/photos/tags", h.Photo().ListForTags)
 
 	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
 

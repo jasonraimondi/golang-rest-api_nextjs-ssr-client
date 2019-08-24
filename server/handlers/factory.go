@@ -41,11 +41,10 @@ func (h *Handler) Tag() *TagHandler {
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
 		//listAppsRepository:   h.App.RepositoryFactory.ListAppsRepository(),
-		listTagsRepository:   h.App.RepositoryFactory.ListTagsRepository(),
-		listPhotosRepository: h.App.RepositoryFactory.ListPhotosRepository(),
-		photoRepository:      h.App.RepositoryFactory.PhotoRepository(),
-		photoAppService:      h.App.ServiceFactory.PhotoAppService(),
-		photoUploadService:   h.App.ServiceFactory.FileUploadService(),
+		tagRepository:      h.App.RepositoryFactory.TagRepository(),
+		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
+		photoAppService:    h.App.ServiceFactory.PhotoAppService(),
+		photoUploadService: h.App.ServiceFactory.FileUploadService(),
 	}
 }
 

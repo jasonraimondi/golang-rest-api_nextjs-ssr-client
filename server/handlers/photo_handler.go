@@ -11,12 +11,10 @@ import (
 )
 
 type PhotoHandler struct {
-	//listAppsRepository   *repository.ListAppsRepository
-	listTagsRepository   *repository.ListTagsRepository
-	listPhotosRepository *repository.ListPhotosRepository
-	photoRepository      *repository.PhotoRepository
-	photoUploadService   *service.PhotoUploadService
-	photoAppService      *service.PhotoAppService
+	tagRepository      *repository.TagRepository
+	photoRepository    *repository.PhotoRepository
+	photoUploadService *service.PhotoUploadService
+	photoAppService    *service.PhotoAppService
 }
 
 func (h *PhotoHandler) ListForUser(c echo.Context) error {
@@ -25,27 +23,21 @@ func (h *PhotoHandler) ListForUser(c echo.Context) error {
 	page := strToInt(c.QueryParam("page"), 1)
 	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
 
-	paginator, err := h.listPhotosRepository.ForUser(userId, page, itemsPerPage)
-	if err != nil {
-		return err
-	}
+	paginator := h.photoRepository.ForUser(userId, page, itemsPerPage)
 	return c.JSON(http.StatusOK, paginator)
 }
 //
-//func (h *PhotoHandler) ListForTags(c echo.Context) error {
-//	tagNames := c.QueryParams()["tagNames[]"]
-//	if tagNames == nil {
-//		return echo.NewHTTPError(http.StatusBadRequest, "missing tagNames[]")
-//	}
-//	page := strToInt(c.QueryParam("page"), 1)
-//	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
-//
-//	paginator, err := h.listPhotosRepository.ForTags(tagNames, page, itemsPerPage)
-//	if err != nil {
-//		return err
-//	}
-//	return c.JSON(http.StatusOK, paginator)
-//}
+func (h *PhotoHandler) ListForTags(c echo.Context) error {
+	tags := c.QueryParams()["tags[]"]
+	if tags == nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "missing tags[]")
+	}
+	page := strToInt(c.QueryParam("page"), 1)
+	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+
+	paginator := h.photoRepository.ForTags(tags, page, itemsPerPage)
+	return c.JSON(http.StatusOK, paginator)
+}
 //
 //// Move To Apps Handler
 //func (h *PhotoHandler) ListApps(c echo.Context) error {
@@ -67,10 +59,7 @@ func (h *PhotoHandler) ListTags(c echo.Context) error {
 	page := strToInt(c.QueryParam("page"), 1)
 	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
 
-	paginator, err := h.listTagsRepository.ForPhoto(photoId, page, itemsPerPage)
-	if err != nil {
-		return err
-	}
+	paginator := h.tagRepository.ForPhoto(photoId, page, itemsPerPage)
 	return c.JSON(http.StatusOK, paginator)
 }
 

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/Masterminds/squirrel"
+	"github.com/biezhi/gorm-paginator/pagination"
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 
@@ -25,4 +26,16 @@ func (r *TagRepository) UnlinkFromPhoto(photoId string, tagId uint) error {
 	r.dbx.First(&tag, "id = ?", tagId)
 	r.dbx.First(&photo, "id = ?", uuid.FromStringOrNil(photoId))
 	return r.dbx.Model(&photo).Association("tags").Delete(tag).Error
+}
+
+func (s *TagRepository) ForPhoto(photoId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
+	var tags []models.Tag
+	db := s.dbx.Joins("left join photo_tag on photo_tag.tag_id=tags.id").Where("photo_tag.photo_id = ?", uuid.FromStringOrNil(photoId))
+	return pagination.Paging(&pagination.Param{
+		DB:      db,
+		Page:    int(currentPage),
+		Limit:   int(itemsPerPage),
+		OrderBy: []string{"tags.name asc"},
+		ShowSQL: true,
+	}, &tags)
 }
