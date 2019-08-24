@@ -4,8 +4,11 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
+	paginator "github.com/pilagod/gorm-cursor-paginator"
 
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 )
 
@@ -13,8 +16,10 @@ type PhotoHandler struct {
 	//listTagsRepository   *repository.ListTagsRepository
 	//listAppsRepository   *repository.ListAppsRepository
 	//listPhotosRepository *repository.ListPhotosRepository
-	photoUploadService   *service.PhotoUploadService
-	photoAppService      *service.PhotoAppService
+	photoRepository    *repository.PhotoRepository
+	photoUploadService *service.PhotoUploadService
+	photoAppService    *service.PhotoAppService
+}
 }
 
 //func (h *PhotoHandler) ListForUser(c echo.Context) error {
