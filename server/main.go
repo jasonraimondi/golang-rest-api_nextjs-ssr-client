@@ -87,6 +87,7 @@ func main() {
 	e.POST("/sign_up", h.SignUpHandler().SignUp)
 	e.GET("/sign_up_confirmation", h.SignUpHandler().SignUpConfirmation)
 	e.GET("/photos/user/:userId", h.Photo().ListForUser)
+	e.GET("/photos/tags", h.Photo().ListForTags)
 
 	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
 	e.POST("/photos/:photoId/tags", h.Photo().LinkTags)

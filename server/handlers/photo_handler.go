@@ -31,6 +31,22 @@ func (h *PhotoHandler) ListForUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, paginator)
 }
 
+func (h *PhotoHandler) ListForTags(c echo.Context) error {
+	tagNames := c.QueryParams()["tagNames[]"]
+	if tagNames == nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "missing tagNames[]")
+	}
+	page := strToInt(c.QueryParam("page"), 1)
+	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+
+	paginator, err := h.listPhotosRepository.ForTags(tagNames, page, itemsPerPage)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, paginator)
+}
+
+// Move To Apps Handler
 func (h *PhotoHandler) ListApps(c echo.Context) error {
 	photoId := c.Param("photoId")
 

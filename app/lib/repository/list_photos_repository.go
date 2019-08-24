@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"strings"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
 
@@ -19,12 +21,36 @@ func (s *ListPhotosRepository) ForUser(userId string, currentPage int64, itemsPe
 		Where(squirrel.Eq{
 			"user_id": userId,
 		})
+	baseURL := "http://localhost:1323/photos/user/" + userId
+	return s.listPhotos(query, "*", itemsPerPage, currentPage, baseURL)
+}
 
+func (s *ListPhotosRepository) ForTags(tagNames []string, currentPage int64, itemsPerPage int64) (*Paginator, error) {
+	query := s.queryBuilder.
+		Select().
+		From("photos").
+		LeftJoin("photo_tag on photo_tag.photo_id=photos.id").
+		LeftJoin("tags on photo_tag.tag_id=tags.id").
+		Where(squirrel.Eq{
+			"tags.name": tagNames,
+		})
+	baseURL := "http://localhost:1323/photos/user/" + strings.Join(tagNames, " ")
+	subq := s.queryBuilder.
+		Select("tags.*").
+		From("tags").
+		LeftJoin("photo_tag on photo_tag.tag_id=tags.id").
+		Where(squirrel.Eq{
+			"photo_tag.photo_id":
+		})
+	return s.listPhotos(query, "photos.*", itemsPerPage, currentPage, baseURL)
+}
+
+func (s *ListPhotosRepository) listPhotos(query squirrel.SelectBuilder, sel string, itemsPerPage int64, currentPage int64, baseURL string) (*Paginator, error) {
 	totalCount, err := TotalCountForQuery(s.dbx, query)
 	if err != nil {
 		return nil, err
 	}
-	query = query.Column("*").OrderBy("created_at DESC")
+	query = query.Column(sel).OrderBy("created_at DESC")
 	sql, args, err := PaginateQuery(itemsPerPage, currentPage, query)
 	if err != nil {
 		return nil, err
@@ -43,6 +69,5 @@ func (s *ListPhotosRepository) ForUser(userId string, currentPage int64, itemsPe
 		results = append(results, p)
 	}
 	// @todo env var for base url
-	baseURL := "http://localhost:1323/photos/user/" + userId
 	return NewPaginator(baseURL, totalCount, itemsPerPage, currentPage, results)
 }

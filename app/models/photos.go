@@ -22,6 +22,7 @@ type Photo struct {
 	UserId      uuid.UUID     `db:"user_id"`
 	CreatedAt   int64         `db:"created_at"`
 	ModifiedAt  sql.NullInt64 `db:"modified_at"`
+	Tags        *[]Tag        `db:"tags"`
 }
 
 func NewPhoto(
