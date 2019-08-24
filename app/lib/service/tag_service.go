@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/Masterminds/squirrel"
 	uuid "github.com/satori/go.uuid"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
@@ -12,13 +11,6 @@ type PhotoAppService struct {
 	repository *repository.Factory
 }
 
-func (s *PhotoAppService) AddAppsToPhoto(photoId string, tags []string) error {
-	return s.linkToPhoto("app", photoId, tags)
-}
-func (s *PhotoAppService) RemoveAppFromPhoto(photoId string, appId int64) error {
-	return s.repository.AppRepository().UnlinkFromPhoto(photoId, appId)
-}
-
 func (s *PhotoAppService) AddTagsToPhoto(photoId string, tags []string) error {
 	return s.linkToPhoto("tag", photoId, tags)
 }
@@ -27,69 +19,50 @@ func (s *PhotoAppService) RemoveTagFromPhoto(photoId string, tagId uint) error {
 	return s.repository.TagRepository().UnlinkFromPhoto(photoId, tagId)
 }
 
-func (s *PhotoAppService) linkToPhoto(table string, photoId string, relate []string) error {
-	queryBuilder := s.repository.QueryBuilder()
+func (s *PhotoAppService) linkToPhoto(table string, photoId string, names []string) error {
 	var photo models.Photo
 	s.repository.DB().First(&photo, "id = ?", uuid.FromStringOrNil(photoId))
-	if newNames, err := s.getTagNamesToCreate(table, queryBuilder, relate); err != nil {
-		return err
-	} else {
-		s.createNameRecords(table, queryBuilder, newNames)
-	}
-
-	if namesToLink, err := s.existingPhotoTag(table, queryBuilder, relate, photoId); err != nil {
-		return err
-	} else if len(namesToLink) > 0 {
-		if tagsToLink, err := s.getIdsToLink(table, queryBuilder, namesToLink); err != nil {
-			return err
-		} else {
-			for _, tag := range tagsToLink {
-				photo.AddTag(tag)
-			}
-			s.repository.DB().Save(photo)
-		}
-		//} else if err = s.createLinkedRecords(table, queryBuilder, photoId, tagsToLink); err != nil {
-		//	return err
-		//}
-	}
-
-	return nil
-}
-
-func (s *PhotoAppService) createLinkedRecords(table string, q squirrel.StatementBuilderType, photoId string, idsToLink []models.Tag) error {
-	insert := q.Insert("photo_"+table).Columns("photo_id", table+"_id")
-	for _, id := range idsToLink {
-		uid := uuid.FromStringOrNil(photoId)
-		insert = insert.Values(uid, id.ID)
-	}
-	sql, args, err := insert.ToSql()
+	newNames, err := s.getTagNamesToCreate(names)
 	if err != nil {
 		return err
 	}
-	return s.repository.DB().Raw(sql, args...).Error
+	s.createNameRecords(newNames)
+	tagsToLink, err := s.existingPhotoTag(names, photoId)
+	if err != nil {
+		return err
+	}
+	if len(tagsToLink) > 0 {
+		tagsToLink, err := s.getIdsToLink(tagsToLink)
+		if err != nil {
+			return err
+		}
+		photo.AddTags(tagsToLink)
+		s.repository.DB().Save(photo)
+	}
+	return nil
+}
+
+func (s *PhotoAppService) createLinkedRecords(photoId string, tagsToLink []models.Tag) error {
+	return s.repository.DB().Association("tags").Append(tagsToLink).Error
 }
 
 type Result struct {
 	Id int64
 }
 
-func (s *PhotoAppService) getIdsToLink(table string, q squirrel.StatementBuilderType, names []string) ([]models.Tag, error) {
+func (s *PhotoAppService) getIdsToLink(names []string) ([]models.Tag, error) {
 	tagsToLink := []models.Tag{}
 	err := s.repository.DB().Find(&tagsToLink, "name IN (?)", names).Error
 	return tagsToLink, err
 }
 
-func (s *PhotoAppService) createNameRecords(table string, q squirrel.StatementBuilderType, names []string) {
+func (s *PhotoAppService) createNameRecords(names []string) {
 	for _, name := range names {
 		s.repository.DB().Create(&models.Tag{Name: name})
 	}
 }
 
-type existingNames struct {
-	Name string
-}
-
-func (s *PhotoAppService) getTagNamesToCreate(table string, q squirrel.StatementBuilderType, names []string) (newTags []string, err error) {
+func (s *PhotoAppService) getTagNamesToCreate(names []string) (result []string, err error) {
 	var tags []models.Tag
 	if err = s.repository.DB().Where("name IN (?)", names).Find(&tags).Error; err != nil {
 		return nil, err
@@ -98,26 +71,17 @@ func (s *PhotoAppService) getTagNamesToCreate(table string, q squirrel.Statement
 	for _, t := range tags {
 		existingTagString = append(existingTagString, t.Name)
 	}
-	newTags = Difference(names, existingTagString)
-	return newTags, err
+	result = Difference(names, existingTagString)
+	return result, err
 }
 
-func (s *PhotoAppService) existingPhotoTag(table string, q squirrel.StatementBuilderType, tags []string, photoId string) ([]string, error) {
-	sql, args, err := q.Select("name").From("tags").LeftJoin("photo_tag on photo_tag.tag_id=tags.id").Where(squirrel.Eq{
-		"photo_tag.photo_id": photoId,
-	}).ToSql()
-	if err != nil {
-		return nil, err
-	}
-	existingLinkedTags := []existingNames{}
-	if err = s.repository.DB().Raw(sql, args...).Scan(&existingLinkedTags).Error; err != nil {
-		return nil, err
-	}
+func (s *PhotoAppService) existingPhotoTag(name []string, photoId string) ([]string, error) {
 	var existingTagString []string
-	for _, t := range existingLinkedTags {
-		existingTagString = append(existingTagString, t.Name)
+	err := s.repository.DB().Model(&models.Tag{}).Joins("left join photo_tag on photo_tag.tag_id=tags.id").Where("photo_tag.photo_id = ?", photoId).Pluck("tags.name", &existingTagString).Error
+	if err != nil {
+		return []string{}, err
 	}
-	existingTags := Difference(tags, existingTagString)
+	existingTags := Difference(name, existingTagString)
 	if existingTags == nil {
 		existingTags = []string{}
 	}

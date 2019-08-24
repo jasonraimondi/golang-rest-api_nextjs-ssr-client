@@ -35,10 +35,6 @@ func (r *Factory) PhotoRepository() *PhotoRepository {
 	return &PhotoRepository{r.dbx}
 }
 
-func (r *Factory) AppRepository() *AppRepository {
-	return &AppRepository{r.qb, r.dbx}
-}
-
 func (r *Factory) TagRepository() *TagRepository {
 	return &TagRepository{r.qb, r.dbx}
 }

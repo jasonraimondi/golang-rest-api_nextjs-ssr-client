@@ -26,27 +26,29 @@ type Photo struct {
 	DeletedAt   *time.Time `sql:"index"`
 }
 
-//func (p *Photo) BeforeCreate(scope *gorm.Scope) error {
-//	return scope.SetColumn("ID", uuid.NewV4().String())
-//}
-
 func NewPhoto(
-	id uuid.UUID,
+	uid uuid.UUID,
 	u *User,
 	fileName string,
 	sha256 string,
 	mimeType string,
 	fileSize int64,
 ) *Photo {
-	s := id.String()
+	id := uid.String()
 	return &Photo{
-		ID:          id,
+		ID:          uid,
 		UserID:      u.ID,
 		FileName:    fileName,
-		RelativeURL: fmt.Sprintf("%s/%s%s", s[:2], s, strings.ToLower(filepath.Ext(fileName))),
+		RelativeURL: fmt.Sprintf("%s/%s%s", id[:2], id, strings.ToLower(filepath.Ext(fileName))),
 		SHA256:      sha256,
 		MimeType:    mimeType,
 		FileSize:    fileSize,
+	}
+}
+
+func (p *Photo) AddTags(tags []Tag) {
+	for _, tag := range tags {
+		p.AddTag(tag)
 	}
 }
 

@@ -8,7 +8,7 @@ interface UploadFileFields {
 export async function uploadFiles(bearer: string, { userId, files }: UploadFileFields) {
   const formData = new FormData();
   formData.append("userId", userId);
-  files.forEach(file => formData.append("file[]", file));
+  files.forEach(file => formData.append("files[]", file));
   return await postMultipart("/api/upload", formData, {
     Authorization: bearer,
   });

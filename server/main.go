@@ -103,16 +103,20 @@ func main() {
 	//e.GET("/photos/tags", h.Photo().ListForTags)
 
 	//e.GET("/photos/:photoId/tags", h.Photo().ListTags)
-	e.POST("/photos/:photoId/tags", h.Photo().LinkTags)
-	e.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
 
 	//e.GET("/photos/:photoId/apps", h.Photo().ListApps)
-	e.POST("/photos/:photoId/apps", h.Photo().LinkApps)
-	e.DELETE("/photos/:photoId/apps/:appId", h.Photo().RemoveApp)
+	//e.POST("/photos/:photoId/apps", h.Photo().LinkApps)
+	//e.DELETE("/photos/:photoId/apps/:appId", h.Photo().RemoveApp)
 
-	guard := e.Group("/api")
-	guard.Use(authRoute)
-	guard.POST("/upload", h.Photo().Create)
+	admin := e.Group("/admin")
+	//admin.Use(authRoute)
+	admin.POST("/photos", h.Photo().Create)
+	admin.POST("/photos/:photoId/tags", h.Photo().LinkTags)
+	admin.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
+
+	// @todo remove this
+	fake := e.Group("/fake")
+	fake.Use(authRoute)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
