@@ -2,7 +2,7 @@ import Head from "next/head";
 import React, { Component } from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { listPhotos, Photo, PHOTO_BASE_PATH } from "../../../lib/services/api/photos";
+import { listPhotosForUser, Photo, PHOTO_BASE_PATH } from "../../../lib/services/api/photos";
 
 type Props = {
   photos: any
@@ -21,7 +21,7 @@ class Page extends Component<Props & AuthProps> {
   }
 
   static async getInitialProps({ auth }: AuthProps) {
-    const res: any = await listPhotos(auth.user.id, 1, 25);
+    const res: any = await listPhotosForUser(auth.user.id, 1, 250);
     return { auth, photos: res };
   }
 
@@ -30,7 +30,7 @@ class Page extends Component<Props & AuthProps> {
       <Head>
         <title>My Photos</title>
       </Head>
-      <ul className="flex flex-wrap justify-between">
+      <ul>
         {this.photos}
       </ul>
     </>;

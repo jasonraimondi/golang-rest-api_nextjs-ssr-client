@@ -2,10 +2,10 @@ package repository
 
 import (
 	"github.com/Masterminds/squirrel"
-	"github.com/biezhi/gorm-paginator/pagination"
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
 
+	"git.jasonraimondi.com/jason/jasontest/app/lib/pagination"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 

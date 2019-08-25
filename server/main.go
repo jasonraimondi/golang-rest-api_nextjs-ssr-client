@@ -95,7 +95,6 @@ func main() {
 			&models.Photo{},
 			&models.Tag{},
 			&models.User{},
-			&models.PhotoTag{},
 			&models.SignUpConfirmation{},
 		)
 		return c.JSON(http.StatusOK, "hi")
