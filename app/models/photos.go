@@ -16,6 +16,7 @@ type Photo struct {
 	RelativeURL string
 	SHA256      string
 	MimeType    string
+	Description sql.NullString
 	FileSize    int64
 	Width       sql.NullInt64
 	Height      sql.NullInt64

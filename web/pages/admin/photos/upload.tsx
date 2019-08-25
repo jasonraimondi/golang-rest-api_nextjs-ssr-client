@@ -1,9 +1,9 @@
 import { Formik, FormikActions, FormikProps } from "formik";
 import Router from "next/router";
 
-import { SubmitButton } from "../../../elements/forms/button";
-import { MyDropzone } from "../../../elements/forms/my_dropzone";
-import { defaultLayout } from "../../../elements/layouts/default";
+import { SubmitButton } from "../../../components/forms/button";
+import { MyDropzone } from "../../../components/forms/my_dropzone";
+import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
 import { uploadFiles } from "../../../lib/services/api/upload_file";

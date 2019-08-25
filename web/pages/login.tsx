@@ -1,9 +1,9 @@
 import { Formik, FormikActions, FormikProps } from "formik";
 import { NextPageContext } from "next";
 import React from "react";
-import { SubmitButton } from "../elements/forms/button";
-import { TextInput } from "../elements/forms/text";
-import { defaultLayout } from "../elements/layouts/default";
+import { SubmitButton } from "../components/forms/button";
+import { TextInput } from "../components/forms/text";
+import { defaultLayout } from "../components/layouts/default";
 import { login } from "../lib/services/api/login";
 import { redirectIfAuthenticated } from "../lib/services/redirect_service";
 

@@ -1,22 +1,26 @@
 import { NextPageContext } from "next";
 import React from "react";
-import { defaultLayout } from "../../../elements/layouts/default";
+import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { getPhoto } from "../../../lib/services/api/photos";
+import { getPhoto, Photo, PHOTO_BASE_PATH } from "../../../lib/services/api/photos";
 
-type Props = {} & AuthProps
+type Props = {
+  photo: Photo;
+} & AuthProps
 
-function Page({ }: Props) {
+function Page({ photo }: Props) {
   return <>
-    Hi ya slugg
+    <img src={PHOTO_BASE_PATH + photo.relativeURL} alt={photo.description.string} title={photo.description.string}/>
+    <p>{photo.fileSize}</p>
+    <p>{photo.mimeType}</p>
+    <p>{photo.fileName}</p>
   </>;
 }
 
 Page.getInitialProps = async ({ query }: NextPageContext) => {
   const id: any = query["id"];
-  const res = await getPhoto(id);
-  console.log(res);
-  return {}
+  const photo = await getPhoto(id);
+  return { photo };
 };
 
 export default privateRoute(defaultLayout(Page));

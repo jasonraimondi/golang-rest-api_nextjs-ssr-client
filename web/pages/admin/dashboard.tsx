@@ -1,5 +1,5 @@
 import React from "react";
-import { defaultLayout } from "../../elements/layouts/default";
+import { defaultLayout } from "../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../lib/auth/private_route";
 
 type Props = {}

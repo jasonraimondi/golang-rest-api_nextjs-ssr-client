@@ -1,8 +1,8 @@
 import Head from "next/head";
 import React, { Component } from "react";
-import { defaultLayout } from "../../../elements/layouts/default";
+import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { listPhotos, Photo } from "../../../lib/services/api/photos";
+import { listPhotos, Photo, PHOTO_BASE_PATH } from "../../../lib/services/api/photos";
 
 type Props = {
   photos: any
@@ -12,7 +12,7 @@ class Page extends Component<Props & AuthProps> {
   get photos() {
     if (!this.props.photos) return;
     return this.props.photos.map((photo: Photo) => {
-      const photoSrc = `http://localhost:9000/originals/${photo.relativeURL}`;
+      const photoSrc = `${PHOTO_BASE_PATH}${photo.relativeURL}`;
       const link = `/admin/photos/${photo.id}`;
       return <li key={photo.id}>
         <a href={link}><img className="max-w-xs" src={photoSrc}/></a>

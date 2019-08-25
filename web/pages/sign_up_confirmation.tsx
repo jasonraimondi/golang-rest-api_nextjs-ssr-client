@@ -1,7 +1,7 @@
 import { NextPageContext } from "next";
 import Router from "next/router";
 import React, { Component } from "react";
-import { defaultLayout } from "../elements/layouts/default";
+import { defaultLayout } from "../components/layouts/default";
 import { APP_ROUTES } from "../lib/routes";
 import { signUpConfirmation } from "../lib/services/api/sign_up";
 import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";

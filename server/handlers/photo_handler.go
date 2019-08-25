@@ -70,8 +70,8 @@ func (h *PhotoHandler) Create(c echo.Context) error {
 }
 
 func (h *PhotoHandler) Show(c echo.Context) error {
-	userId := c.Param("photoId")
-	photo, err := h.photoRepository.GetById(userId)
+	photoId := c.Param("photoId")
+	photo, err := h.photoRepository.GetById(photoId)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
