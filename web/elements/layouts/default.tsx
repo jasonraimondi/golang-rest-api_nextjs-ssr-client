@@ -1,3 +1,4 @@
+import { NextPageContext } from "next";
 import React, { Component } from "react";
 import { AuthToken } from "../../lib/services/auth_token";
 import { Head } from "./parts/head";
@@ -7,11 +8,12 @@ type Props = { auth?: AuthToken }
 
 export function defaultLayout(C: any) {
   return class extends Component<Props> {
-    static async getInitialProps(ctx: any) {
-      const props: Props = {};
-      if (ctx.auth) props.auth = ctx.auth;
-      if (C.getInitialProps) return await C.getInitialProps(props);
-      return props;
+    static async getInitialProps(ctx: NextPageContext) {
+      if (C.getInitialProps) {
+        const wrappedProps = await C.getInitialProps(ctx);
+        return { ...wrappedProps }
+      }
+      return ctx;
     }
 
     render() {

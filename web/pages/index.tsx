@@ -1,4 +1,3 @@
-import { NextPageContext } from "next";
 import React from "react";
 import { defaultLayout } from "../elements/layouts/default";
 
@@ -8,8 +7,7 @@ function Page() {
   </div>;
 }
 
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  console.log(ctx);
+Page.getInitialProps = async () => {
   return {};
 };
 

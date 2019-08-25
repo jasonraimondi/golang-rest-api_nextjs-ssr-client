@@ -47,7 +47,7 @@ func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage
 }
 
 func (r *PhotoRepository) ForTags(tags []string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
-	var photos []models.Photo
+	var photos []models.PhotoTag
 	db := r.db.Preload("tags").Joins("left join photo_tag on photo_tag.photo_id=photos.id").Joins("left join tags on tags.id=photo_tag.tag_id").Where("tags.name IN (?)", tags)
 	return pagination.Paging(&pagination.Param{
 		DB: db,

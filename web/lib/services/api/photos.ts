@@ -1,5 +1,10 @@
 import { get } from "../../rest_client";
 
+export async function getPhoto(photoId: string) {
+  const res: any = await get(`/photos/${photoId}`);
+  return res.data
+}
+
 export async function listPhotos(userId: string, page: number, itemsPerPage: number) {
   const inputs = {
     page,
@@ -9,7 +14,7 @@ export async function listPhotos(userId: string, page: number, itemsPerPage: num
   if (res.error) {
     return res.error;
   }
-  res.data.Data = res.data.Data.map((photo: any) => ({
+  return res.data.records.map((photo: any) => ({
     id: photo.ID,
     fileName: photo.FileName,
     relativeURL: photo.RelativeURL,
@@ -22,7 +27,6 @@ export async function listPhotos(userId: string, page: number, itemsPerPage: num
     createdAt: photo.CreatedAt,
     modifiedAt: photo.ModifiedAt,
   } as Photo));
-  return res;
 }
 
 export interface Photo {

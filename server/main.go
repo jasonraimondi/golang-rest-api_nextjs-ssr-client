@@ -95,6 +95,7 @@ func main() {
 			&models.Photo{},
 			&models.Tag{},
 			&models.User{},
+			&models.PhotoTag{},
 			&models.SignUpConfirmation{},
 		)
 		return c.JSON(http.StatusOK, "hi")
@@ -105,13 +106,14 @@ func main() {
 	e.GET("/sign_up_confirmation", h.SignUpHandler().SignUpConfirmation)
 	e.GET("/photos/user/:userId", h.Photo().ListForUser)
 	e.GET("/photos/tags", h.Photo().ListForTags)
+	e.GET("/photos/:photoId", h.Photo().Show)
 
-	e.GET("/photos/:photoId/tags", h.Photo().ListTags)
+	e.GET("/tags/photo/:photoId", h.Tag().ListForPhoto)
 
 	admin := e.Group("/admin")
 	//admin.Use(authRoute)
 	admin.POST("/photos/user/:userId", h.Photo().Create)
-	admin.POST("/photos/:photoId/tags", h.Photo().LinkTags)
+	admin.POST("/photos/:photoId/tags", h.Photo().AttachTags)
 	admin.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
 
 	// @todo remove this

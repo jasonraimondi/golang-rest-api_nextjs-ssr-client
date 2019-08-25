@@ -34,14 +34,13 @@ func (h *Handler) AuthHandler() *AuthHandler {
 
 func (h *Handler) Tag() *TagHandler {
 	return &TagHandler{
-		tagService: h.App.ServiceFactory.PhotoAppService(),
+		tagRepository: h.App.RepositoryFactory.TagRepository(),
 	}
 }
 
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
 		//listAppsRepository:   h.App.RepositoryFactory.ListAppsRepository(),
-		tagRepository:      h.App.RepositoryFactory.TagRepository(),
 		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
 		photoAppService:    h.App.ServiceFactory.PhotoAppService(),
 		photoUploadService: h.App.ServiceFactory.FileUploadService(),

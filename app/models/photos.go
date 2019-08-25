@@ -20,7 +20,7 @@ type Photo struct {
 	Width       sql.NullInt64
 	Height      sql.NullInt64
 	UserID      uuid.UUID
-	Tags        []*Tag `gorm:"many2many:photo_tag"`
+	Tags        []Tag `gorm:"many2many:photo_tag"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time `sql:"index"`
@@ -53,7 +53,7 @@ func (p *Photo) AddTags(tags []Tag) {
 }
 
 func (p *Photo) AddTag(tag Tag) {
-	p.Tags = append(p.Tags, &tag)
+	p.Tags = append(p.Tags, tag)
 }
 
 func (p *Photo) GetID() string {

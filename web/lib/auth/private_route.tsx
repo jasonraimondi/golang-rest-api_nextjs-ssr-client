@@ -20,7 +20,7 @@ export function privateRoute(WrappedComponent: any) {
 
     static async getInitialProps(ctx: NextPageContext) {
       const auth = AuthToken.fromNext(ctx);
-      const initialProps = { auth };
+      const initialProps = { ...ctx, auth };
       if (auth.isExpired) redirectToLogin(ctx.res);
       if (WrappedComponent.getInitialProps) {
         const wrappedProps = await WrappedComponent.getInitialProps(initialProps);

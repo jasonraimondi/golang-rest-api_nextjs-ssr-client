@@ -11,17 +11,18 @@ type Props = {
 class Page extends Component<Props & AuthProps> {
   get photos() {
     if (!this.props.photos) return;
-    return this.props.photos.Data.map((photo: Photo) => {
-      const link = `http://localhost:9000/originals/${photo.relativeURL}`;
+    return this.props.photos.map((photo: Photo) => {
+      const photoSrc = `http://localhost:9000/originals/${photo.relativeURL}`;
+      const link = `/admin/photos/${photo.id}`;
       return <li key={photo.id}>
-        <a href={link}><img className="max-w-xs" src={link}/></a>
+        <a href={link}><img className="max-w-xs" src={photoSrc}/></a>
       </li>;
     });
   }
 
   static async getInitialProps({ auth }: AuthProps) {
     const res: any = await listPhotos(auth.user.id, 1, 25);
-    return { auth, photos: res.data };
+    return { auth, photos: res };
   }
 
   render() {
