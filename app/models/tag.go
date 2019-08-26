@@ -5,8 +5,8 @@ import (
 )
 
 type Tag struct {
-	ID     uint     `gorm:"primary_key"`
-	Name   string   `gorm:"size:255"`
+	ID     uint    `gorm:"primary_key"`
+	Name   string  `gorm:"size:255"`
 	Photos []Photo `gorm:"many2many:photo_tag"json:"-"`
 }
 

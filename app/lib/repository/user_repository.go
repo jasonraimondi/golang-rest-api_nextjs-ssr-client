@@ -27,10 +27,10 @@ func (r *UserRepository) GetByEmail(email string) (user models.User, err error) 
 	return user, err
 }
 
-func (r *UserRepository) Update(u *models.User) (err error) {
-	return r.dbx.Update(&u).Error
+func (r *UserRepository) Update(u models.User) (err error) {
+	return r.dbx.Save(&u).Error
 }
 
-func (r *UserRepository) Create(u *models.User) (err error) {
+func (r *UserRepository) Create(u models.User) (err error) {
 	return r.dbx.Create(&u).Error
 }

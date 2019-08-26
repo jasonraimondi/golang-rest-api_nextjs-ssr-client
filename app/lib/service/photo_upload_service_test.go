@@ -8,16 +8,16 @@ import (
 )
 
 func TestGetFileSHA256(t *testing.T) {
-	expected := "6ffd6e5978fece70f17fce35a0346322c101fd6db74495aef33ed8d762775ea1"
-	dat, err := os.Open("/tmp/adobegc.log")
+	expected := "bc23f77592655381c789040b1d3d5c0c8cb82b510cd87fcac9c90d09336dd343"
+	dat, err := os.Open("../../test/attachments/codecraft-2018.jpg")
 	if err != nil {
-		t.Errorf("error opening file")
+		t.Fatalf("error opening file")
 	}
 	sha, err := service.GetFileSHA256(dat)
 	if err != nil {
-		t.Errorf("error opening file")
+		t.Fatalf("error getting file sha256")
 	}
 	if sha != expected {
-		t.Errorf("actual: %v != expected: %v", sha, expected)
+		t.Fatalf("actual: %v != expected: %v", sha, expected)
 	}
 }

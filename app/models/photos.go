@@ -22,7 +22,7 @@ type Photo struct {
 	Height      sql.NullInt64
 	UserID      uuid.UUID
 	Tags        []Tag `gorm:"many2many:photo_tag"`
-CreatedAt   time.Time
+	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time `sql:"index"`
 }

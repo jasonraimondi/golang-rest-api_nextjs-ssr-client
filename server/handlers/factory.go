@@ -32,9 +32,11 @@ func (h *Handler) AuthHandler() *AuthHandler {
 	}
 }
 
-func (h *Handler) Tag() *TagHandler {
-	return &TagHandler{
-		tagRepository: h.App.RepositoryFactory.TagRepository(),
+func (h *Handler) AdminPhoto() *AdminPhotoHandler {
+	return &AdminPhotoHandler{
+		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
+		photoAppService:    h.App.ServiceFactory.PhotoAppService(),
+		photoUploadService: h.App.ServiceFactory.FileUploadService(),
 	}
 }
 

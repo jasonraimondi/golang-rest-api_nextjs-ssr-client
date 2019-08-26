@@ -7,10 +7,10 @@ import (
 	"strings"
 	"testing"
 
+	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"git.jasonraimondi.com/jason/jasontest/app/test/utils"
 
 	"github.com/labstack/echo"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateUser(t *testing.T) {
@@ -23,11 +23,20 @@ func TestCreateUser(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	h := utils.NewTestHandler()
+	tables := []interface{}{
+		&models.User{},
+		&models.SignUpConfirmation{},
+	}
+	h := utils.NewTestHandler(tables)
+	if err := h.SignUpHandler().SignUp(c); err != nil {
+		t.Fatalf("error signing up")
+	}
+	if rec.Code != http.StatusCreated {
+		t.Fatalf("invalid status code")
+	}
 
-	if assert.NoError(t, h.SignUpHandler().SignUp(c)) {
-		assert.Equal(t, http.StatusCreated, rec.Code)
-		assert.Equal(t, `{"message":"Created"}
-`, rec.Body.String())
+	content := strings.Trim(rec.Body.String(), "\n")
+	if content != `{"message":"Created"}` {
+		t.Fatalf("invalid body content (%s)", content)
 	}
 }

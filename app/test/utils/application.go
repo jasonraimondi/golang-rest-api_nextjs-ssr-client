@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"database/sql"
+	"github.com/jinzhu/gorm"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
@@ -9,23 +9,15 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database"
-	"github.com/golang-migrate/migrate/v4/database/sqlite3"
-	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func NewTestApplication() (a *lib.Application) {
-	db, err := sql.Open("sqlite3", ":memory:")
+func NewTestApplication(tables []interface{}) (a *lib.Application) {
+	db, err := gorm.Open("sqlite3", ":memory:")
 	if err != nil {
-		panic(err)
+		panic("failed to connect to database")
 	}
-	dbx := sqlx.NewDb(db, "sqlite3")
-	databaseInstance, err := sqlite3.WithInstance(dbx.DB, &sqlite3.Config{})
-	if err != nil {
-		panic(err)
-	}
+	db.AutoMigrate(tables...)
 	sessionToken := ""
 	config := &aws.Config{
 		Credentials:      credentials.NewStaticCredentials("", "", sessionToken),
@@ -35,32 +27,16 @@ func NewTestApplication() (a *lib.Application) {
 	}
 	s3Config := awsupload.NewS3Config("test-originals", config)
 	a = lib.NewApplication(
-		dbx,
+		db,
 		s3Config,
 		"jwtSecureKey-test",
 		"/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations",
 	)
-	if err = MigrateNow(&databaseInstance, a.MigrationDir); err != nil {
-		panic(err)
-	}
 	return a
 }
 
-func MigrateNow(driver *database.Driver, dir string) error {
-	m, err := Migrate(*driver, dir)
-	if err != nil {
-		return err
-	}
-	return m.Up()
-}
-
-func Migrate(databaseInstance database.Driver, dir string) (*migrate.Migrate, error) {
-	dir = "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations"
-	return migrate.NewWithDatabaseInstance("file://"+dir, "ql", databaseInstance)
-}
-
-func NewTestHandler() *handlers.Handler {
-	a := NewTestApplication()
+func NewTestHandler(tables []interface{}) *handlers.Handler {
+	a := NewTestApplication(tables)
 	return &handlers.Handler{
 		App: a,
 	}

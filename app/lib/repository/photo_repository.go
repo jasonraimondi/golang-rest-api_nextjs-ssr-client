@@ -38,9 +38,9 @@ func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage
 	var photos []models.Photo
 	db := r.db.Preload("Tags").Where("user_id = ?", userId)
 	return pagination.Paging(&pagination.Param{
-		DB: db,
-		Page: int(currentPage),
-		Limit: int(itemsPerPage),
+		DB:      db,
+		Page:    int(currentPage),
+		Limit:   int(itemsPerPage),
 		OrderBy: []string{"created_at desc"},
 		ShowSQL: true,
 	}, &photos)
@@ -55,9 +55,9 @@ func (r *PhotoRepository) ForTags(tags []string, currentPage int64, itemsPerPage
 		Joins("left join tags on tags.id=photo_tag.tag_id").
 		Where("tags.name IN (?)", tags)
 	return pagination.Paging(&pagination.Param{
-		DB: db,
-		Page: int(currentPage),
-		Limit: int(itemsPerPage),
+		DB:      db,
+		Page:    int(currentPage),
+		Limit:   int(itemsPerPage),
 		OrderBy: []string{"photos.created_at desc"},
 		ShowSQL: true,
 	}, &photos)

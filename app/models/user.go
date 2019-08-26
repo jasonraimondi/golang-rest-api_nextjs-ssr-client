@@ -30,7 +30,7 @@ func NewUser(email string) (u *User) {
 		Email:        strings.ToLower(email),
 		PasswordHash: ToNullString(""),
 		IsVerified:   false,
-		CreatedAt: 	  time.Now(),
+		CreatedAt:    time.Now(),
 	}
 }
 

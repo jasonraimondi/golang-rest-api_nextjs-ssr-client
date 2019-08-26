@@ -68,7 +68,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 		}
 	}
 	if len(errs) > 0 {
-		return echo.NewHTTPError(http.StatusPartialContent, fmt.Sprint("%d errors out of %d uploaded", len(errs), len(files)))
+		return echo.NewHTTPError(http.StatusPartialContent, fmt.Sprintf("%d errors out of %d uploaded", len(errs), len(files)))
 	}
 	return nil
 }

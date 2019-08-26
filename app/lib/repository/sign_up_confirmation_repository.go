@@ -9,14 +9,14 @@ import (
 )
 
 type SignUpConfirmationRepository struct {
-	qb squirrel.StatementBuilderType
+	qb  squirrel.StatementBuilderType
 	dbx *gorm.DB
 }
 
 func (r *SignUpConfirmationRepository) GetByToken(t string) (s models.SignUpConfirmation, err error) {
 	token := uuid.FromStringOrNil(t)
 	s = models.SignUpConfirmation{}
-	err = r.dbx.First(&token, "token = ?", token).Error
+	err = r.dbx.First(&s, "token = ?", token).Error
 	return s, err
 }
 

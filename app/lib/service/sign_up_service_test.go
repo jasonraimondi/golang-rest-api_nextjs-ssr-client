@@ -1,27 +1,29 @@
 package service_test
-//
-//import (
-//	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
-//	"git.jasonraimondi.com/jason/jasontest/app/models"
-//	"git.jasonraimondi.com/jason/jasontest/app/test/utils"
-//
-//	"testing"
-//
-//	"github.com/stretchr/testify/assert"
-//)
-//
-//func xTestService_ValidateEmailSignUpConfirmation(t *testing.T) {
-//	a := utils.NewTestApplication()
-//	user := models.NewUser("jason@raimondi.us")
-//	confirmation := models.NewSignUpConfirmation(*user)
-//
-//	tx := a.RepositoryFactory.DB().MustBegin()
-//	assert.NoError(t, repository.CreateUserTx(tx, user))
-//	repository.CreateSignUpConfirmationTx(tx, confirmation)
-//	assert.NoError(t, tx.Commit())
-//
-//	err := a.ServiceFactory.SignUpService().ValidateEmailSignUpConfirmation(confirmation.Token.String(), confirmation.UserId.String())
-//	if assert.NoError(t, err) {
-//
-//	}
-//}
+
+import (
+	"testing"
+
+	"git.jasonraimondi.com/jason/jasontest/app/models"
+	"git.jasonraimondi.com/jason/jasontest/app/test/utils"
+)
+
+func TestService_ValidateEmailSignUpConfirmation(t *testing.T) {
+	tables := []interface{}{
+		&models.User{},
+		&models.SignUpConfirmation{},
+	}
+	a := utils.NewTestApplication(tables)
+
+	user := models.NewUser("jason@raimondi.us")
+	if err := a.RepositoryFactory.User().Create(*user); err != nil {
+		t.Fatalf("error creating user")
+	}
+	confirmation := models.NewSignUpConfirmation(*user)
+	if err := a.RepositoryFactory.SignUpConfirmation().Create(confirmation); err != nil {
+		t.Fatalf("error creating sign_up_confirmation")
+	}
+	err := a.ServiceFactory.SignUpService().ValidateEmailSignUpConfirmation(confirmation.Token.String(), confirmation.UserID.String())
+	if err != nil {
+		t.Fatalf("error validating sign_up_confirmation")
+	}
+}

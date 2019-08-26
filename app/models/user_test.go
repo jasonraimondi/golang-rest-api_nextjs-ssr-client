@@ -4,16 +4,17 @@ import (
 	"testing"
 
 	"git.jasonraimondi.com/jason/jasontest/app/models"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestUser_SetPassword(t *testing.T) {
 	p := models.NewUser("jason@raimondi.us")
 	password := "jasonraimondi"
+	if err := p.SetPassword(password); err != nil {
+		t.Fatalf("error setting password")
+	}
 
-	if assert.NoError(t, p.SetPassword(password)) {
-		assert.True(t, p.CheckPassword(password))
+	if p.CheckPassword(password) != true {
+		t.Fatalf("error validating password")
 	}
 }
 
@@ -30,15 +31,26 @@ func TestUser_GetFullName(t *testing.T) {
 
 	p4 := models.NewUser("jason4@raimondi.us")
 
-	assert.Equal(t, "Jason Raimondi", p.GetFullName())
-	assert.Equal(t, "Jason", p2.GetFullName())
-	assert.Equal(t, "Raimondi", p3.GetFullName())
-	assert.Equal(t, "", p4.GetFullName())
+	if p.GetFullName() != "Jason Raimondi" {
+		t.Fatalf("invalid full name")
+	}
+	if p2.GetFullName() != "Jason" {
+		t.Fatalf("invalid full name")
+	}
+	if p3.GetFullName() != "Raimondi" {
+		t.Fatalf("invalid full name")
+	}
+	if p4.GetFullName() != "" {
+		t.Fatalf("invalid full name")
+	}
 }
 
 func TestUser_GetFullIdentifier(t *testing.T) {
 	p := models.NewUser("jason@raimondi.us")
 	p.SetFirst("Jason")
 	p.SetLast("Raimondi")
-	assert.Equal(t, "Jason Raimondi <jason@raimondi.us>", p.GetFullIdentifier())
+
+	if p.GetFullIdentifier() != "Jason Raimondi <jason@raimondi.us>" {
+		t.Fatalf("invalid full identifier")
+	}
 }

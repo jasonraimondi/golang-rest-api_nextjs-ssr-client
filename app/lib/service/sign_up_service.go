@@ -39,7 +39,7 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 
 func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
 	c = models.NewSignUpConfirmation(*u)
-	if err := s.userRepository.Create(u); err != nil {
+	if err := s.userRepository.Create(*u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
 	if err := s.repository.SignUpConfirmation().Create(c); err != nil {
@@ -48,6 +48,7 @@ func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.Sign
 	return c, httpErr
 }
 
+// @todo return normal error, returning the echo http error is probably not a great idea, see sign_up_service_test
 func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
 	signUpConfirmation, err := s.repository.SignUpConfirmation().GetByToken(token)
 	if err != nil {
@@ -61,7 +62,7 @@ func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId str
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
-	if err = s.repository.User().Update(user); err != nil {
+	if err = s.repository.User().Update(*user); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
 	} else if err = s.repository.SignUpConfirmation().Delete(&signUpConfirmation); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")

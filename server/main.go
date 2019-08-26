@@ -106,13 +106,11 @@ func main() {
 	e.GET("/photos/tags", h.Photo().ListForTags)
 	e.GET("/photos/:photoId", h.Photo().Show)
 
-	e.GET("/tags/photo/:photoId", h.Tag().ListForPhoto)
-
 	admin := e.Group("/admin")
 	//admin.Use(authRoute)
-	admin.POST("/photos/user/:userId", h.Photo().Create)
-	admin.POST("/photos/:photoId/tags", h.Photo().AttachTags)
-	admin.POST("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
+	admin.POST("/photos/user/:userId", h.AdminPhoto().Create)
+	admin.POST("/photos/:photoId/tags", h.AdminPhoto().AttachTags)
+	admin.POST("/photos/:photoId/tags/:tagId", h.AdminPhoto().RemoveTag)
 
 	// @todo remove this
 	fake := e.Group("/fake")
