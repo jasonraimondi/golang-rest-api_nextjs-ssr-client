@@ -1,4 +1,5 @@
 import { get, post } from "../../rest_client";
+import { API_ROUTES } from "../../routes";
 
 export const PHOTO_BASE_PATH = "http://localhost:9000/originals/";
 
@@ -17,23 +18,20 @@ export async function listPhotosForUser(userId: string, page: number, itemsPerPa
   return res.data.records.map((photo: any) => ToPhoto(photo));
 }
 
-export async function listPhotosForTags(tags: string[], page: number, itemsPerPage: number) {
-  const inputs = { page, itemsPerPage, tags };
-  const res: any = await get(`/photos/tag`, inputs);
-  if (res.error) {
-    return res.error;
-  }
-  return res.data.records.map((photo: any) => ToPhoto(photo));
-}
-
 export async function removeTagFromPhoto(photoId: string, tagId: number) {
-  return await post(`/admin/photos/${photoId}/tags/${tagId}`);
+  return await post(API_ROUTES.photos.remove_tag.create({ photoId, tagId: tagId.toString() }));
 }
 
 export async function addTagsToPhoto(photoId: string, tags: string[]) {
   const data = new URLSearchParams();
   tags.forEach(tag => data.append("tags[]", tag));
-  return await post(`/admin/photos/${photoId}/tags`, data);
+  const res: any = await post(API_ROUTES.photos.add_tags.create({ photoId}), data);
+  if (res.error) {
+    return res.error;
+  }
+  if (!res.data || res.status !== 202) {
+    return "Something went wrong!";
+  }
 }
 
 export interface Photo {

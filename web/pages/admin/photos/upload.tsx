@@ -31,7 +31,7 @@ function Page({ auth }: Props) {
     const res: any = await uploadFiles(auth.authorizationString, { userId: auth.user.id, files: values.files });
     if (res.error) setStatus(res.error);
     setSubmitting(false);
-    if (!res.error) await Router.push(APP_ROUTES.admin.dashboard);
+    if (!res.error) await Router.push(APP_ROUTES.admin.dashboard.create({}));
   };
 
   return <Formik

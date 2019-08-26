@@ -1,4 +1,5 @@
 import { postMultipart } from "../../rest_client";
+import { API_ROUTES } from "../../routes";
 
 interface UploadFileFields {
   userId: string;
@@ -8,7 +9,7 @@ interface UploadFileFields {
 export async function uploadFiles(bearer: string, { userId, files }: UploadFileFields) {
   const formData = new FormData();
   files.forEach(file => formData.append("files[]", file));
-  return await postMultipart(`/admin/photos/user/${userId}`, formData, {
+  return await postMultipart(API_ROUTES.photos.upload_photo.create({ userId }), formData, {
     Authorization: bearer,
   });
 }
