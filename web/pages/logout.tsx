@@ -1,9 +1,9 @@
 import { Component } from "react";
-import { AuthProps, privateRoute } from "../lib/auth/private_route";
+import { AuthToken } from "../lib/services/auth_token";
 
-class Page extends Component<AuthProps> {
+class Page extends Component {
   componentDidMount(): void {
-    this.props.auth.logout();
+    AuthToken.logout();
   }
 
   render() {
@@ -11,4 +11,4 @@ class Page extends Component<AuthProps> {
   }
 }
 
-export default privateRoute(Page);
+export default Page;

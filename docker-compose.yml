@@ -10,7 +10,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - /tmp/pgdata:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
 
   minio:
     image: minio/minio
@@ -29,6 +29,19 @@ services:
       - "traefik.port=9000"
       - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /media"
 
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio:9000 miniominiominio miniominiominio;
+      /usr/bin/mc rm -r --force myminio/originals;
+      /usr/bin/mc mb myminio/originals;
+      /usr/bin/mc policy public myminio/originals;
+      exit 0;
+      "
+
   mailhog:
     image: mailhog/mailhog
     ports:
@@ -36,5 +49,6 @@ services:
       - 8025:8025 # web ui
 
 volumes:
+  pg-data:
   minio-data:
   minio-config:
