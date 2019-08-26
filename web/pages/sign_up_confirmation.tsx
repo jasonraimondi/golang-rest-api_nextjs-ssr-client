@@ -38,7 +38,7 @@ class Page extends Component<Props, State> {
       redirectToLogin();
     } else {
       this.setState({ isValid: false, isLoading: false });
-      await Router.push(APP_ROUTES.signUp.create({}));
+      await Router.push(APP_ROUTES.signUp.create());
     }
   }
 

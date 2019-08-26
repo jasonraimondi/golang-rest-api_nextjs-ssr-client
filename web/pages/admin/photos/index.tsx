@@ -2,6 +2,7 @@ import Head from "next/head";
 import React, { Component } from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
+import { APP_ROUTES } from "../../../lib/routes";
 import { listPhotosForUser, Photo, PHOTO_BASE_PATH } from "../../../lib/services/api/photos";
 
 type Props = {
@@ -13,9 +14,11 @@ class Page extends Component<Props & AuthProps> {
     if (!this.props.photos) return;
     return this.props.photos.map((photo: Photo) => {
       const photoSrc = `${PHOTO_BASE_PATH}${photo.RelativeURL}`;
-      const link = `/admin/photos/${photo.ID}`;
+      const photoId = photo.ID;
       return <li key={photo.ID}>
-        <a href={link}><img className="max-w-xs" src={photoSrc}/></a>
+        <a href={APP_ROUTES.admin.photos.show.create({ photoId })}>
+          <img className="max-w-xs" src={photoSrc}/>
+        </a>
         <p>{photo.FileName}</p>
         <p>Tags: {photo.TagList}</p>
       </li>;

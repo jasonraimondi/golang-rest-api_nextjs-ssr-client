@@ -62,6 +62,6 @@ export class AuthToken {
 
   static async storeToken(token: string) {
     Cookie.set(COOKIES.authToken, token);
-    await Router.push(APP_ROUTES.admin.dashboard.create({}));
+    await Router.push(APP_ROUTES.admin.dashboard.create());
   }
 }

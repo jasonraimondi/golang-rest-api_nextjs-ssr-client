@@ -17,7 +17,7 @@ const Header = (props: Props) => {
     <nav>
       <ul className="flex justify-around">
         <li>
-          <Link href={APP_ROUTES.home.create({})}>
+          <Link href={APP_ROUTES.home.create()}>
             <a>Home</a>
           </Link>
         </li>
@@ -30,22 +30,22 @@ const Header = (props: Props) => {
 function PrivateRoutes() {
   return <>
     <li>
-      <Link href={APP_ROUTES.admin.dashboard.create({})}>
+      <Link href={APP_ROUTES.admin.dashboard.create()}>
         <a>Dashboard</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.admin.photos.index.create({})}>
+      <Link href={APP_ROUTES.admin.photos.index.create()}>
         <a>Photo</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.admin.photos.upload.create({})}>
+      <Link href={APP_ROUTES.admin.photos.upload.create()}>
         <a>Upload</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.auth.logout.create({})}>
+      <Link href={APP_ROUTES.auth.logout.create()}>
         <a>Logout</a>
       </Link>
     </li>
@@ -55,12 +55,12 @@ function PrivateRoutes() {
 function PublicRoutes() {
   return <>
     <li>
-      <Link href={APP_ROUTES.auth.login.create({})}>
+      <Link href={APP_ROUTES.auth.login.create()}>
         <a>Login</a>
       </Link>
     </li>
     <li>
-      <Link href={APP_ROUTES.signUp.create({})}>
+      <Link href={APP_ROUTES.signUp.create()}>
         <a>Sign Up</a>
       </Link>
     </li>

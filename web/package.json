@@ -34,8 +34,6 @@
     "@types/react-select": "^3.0.4",
     "@types/styled-components": "^4.1.18",
     "babel-plugin-styled-components": "^1.10.6",
-    "react-select": "^3.0.4",
-    "typesafe-react-router": "^2.2.4",
     "typescript": "^3.5.3"
   }
 }

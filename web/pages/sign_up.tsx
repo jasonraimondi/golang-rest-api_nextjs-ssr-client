@@ -48,7 +48,7 @@ function Page() {
   };
 
   return <>
-    <a href={APP_ROUTES.auth.login.create({})}>Back to Login</a>
+    <a href={APP_ROUTES.auth.login.create()}>Back to Login</a>
     <div className="flex flex-col justify-center h-full">
       <Formik initialValues={initialValues}
               validate={validate}

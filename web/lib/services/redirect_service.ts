@@ -5,14 +5,14 @@ import { APP_ROUTES } from "../routes";
 import { AuthToken } from "./auth_token";
 
 export const redirectToLogin = (server?: ServerResponse) => {
-  redirectTo(`${APP_ROUTES.auth.login.create({})}?redirected=true`, server);
+  redirectTo(`${APP_ROUTES.auth.login.create()}?redirected=true`, server);
 };
 
 export const redirectIfAuthenticated = async (ctx: NextPageContext) => {
   try {
     const auth = AuthToken.fromNext(ctx);
     if (auth.isValid) {
-      redirectTo(`${APP_ROUTES.admin.dashboard.create({})}?redirected=true`, ctx.res);
+      redirectTo(`${APP_ROUTES.admin.dashboard.create()}?redirected=true`, ctx.res);
     }
   } catch (e) {
   }

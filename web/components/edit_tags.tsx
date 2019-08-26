@@ -1,7 +1,5 @@
 import { Formik, FormikActions, FormikProps } from "formik";
-import Router from "next/router";
 import React from "react";
-import { APP_ROUTES } from "../lib/routes";
 import { addTagsToPhoto } from "../lib/services/api/photos";
 import { SubmitButton } from "./forms/button";
 import { TextInput } from "./forms/text";
@@ -10,7 +8,7 @@ type TagInputs = {
   tags: string;
 }
 
-export const EditTags = ({ photoId }: { photoId: string }) => {
+export const EditTags = ({ photoId, afterSave }: { photoId: string, afterSave(): void }) => {
   const initialValues = { tags: "" };
 
   const validate = (values: TagInputs) => {
@@ -25,12 +23,11 @@ export const EditTags = ({ photoId }: { photoId: string }) => {
   };
 
   const onSubmit = async (values: TagInputs, { setSubmitting, setStatus }: FormikActions<TagInputs>) => {
-    console.log(values);
     const tags = values.tags.split(", ");
     const errorMessage: string|null = await addTagsToPhoto(photoId, tags);
     if (errorMessage) setStatus(errorMessage);
     setSubmitting(false);
-    await Router.push(APP_ROUTES.admin.dashboard.create({}));
+    afterSave()
   };
 
   return <Formik
@@ -47,10 +44,10 @@ export const EditTags = ({ photoId }: { photoId: string }) => {
       handleBlur,
       handleSubmit,
       isSubmitting,
-    }: FormikProps<TagInputs>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
+    }: FormikProps<TagInputs>) => <form onSubmit={handleSubmit}>
       <p>{status ? status : null}</p>
       <TextInput type="text"
-                 label="Tags"
+                 label="Add Tags"
                  name="tags"
                  touched={touched.tags}
                  value={values.tags}
@@ -60,7 +57,7 @@ export const EditTags = ({ photoId }: { photoId: string }) => {
                  submitting={isSubmitting}
                  required
       />
-      <SubmitButton label="Add" type="submit" disabled={isSubmitting}/>
+      <SubmitButton label="Submit" type="submit" disabled={isSubmitting}/>
     </form>}
   </Formik>;
 };

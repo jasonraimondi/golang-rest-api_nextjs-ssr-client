@@ -6,7 +6,7 @@ import { post } from "../../rest_client";
 import { API_ROUTES, APP_ROUTES } from "../../routes";
 
 export async function login(inputs: LoginInputs): Promise<string | void> {
-  const res: any = await post<{ token: string }>(API_ROUTES.login.create({}), new URLSearchParams(inputs));
+  const res: any = await post<{ token: string }>(API_ROUTES.login.create(), new URLSearchParams(inputs));
 
   if (res.error) {
     return res.error;
@@ -17,5 +17,5 @@ export async function login(inputs: LoginInputs): Promise<string | void> {
   }
 
   Cookie.set(COOKIES.authToken, res.data.token);
-  await Router.push(APP_ROUTES.admin.dashboard.create({}));
+  await Router.push(APP_ROUTES.admin.dashboard.create());
 }
