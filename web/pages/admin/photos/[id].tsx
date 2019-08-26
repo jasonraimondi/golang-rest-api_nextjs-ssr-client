@@ -6,7 +6,7 @@ import { defaultLayout } from "../../../components/layouts/default";
 import { Tag } from "../../../components/tag";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
-import { addTagsToPhoto, getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
+import { getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
 
 type Props = {
   photo: Photo;
@@ -14,11 +14,6 @@ type Props = {
 
 function Page({ photo }: Props) {
   const [tags, setTags] = useState(photo.Tags);
-
-  const fooBar = async (photo: Photo) => {
-    const res = await addTagsToPhoto(photo.ID, ["one", "two", "dumber", "and hello"]);
-    console.log({ res });
-  };
 
   const handleRemoveTag = async (photoId: string, tagId: number) => {
     const res: any = await removeTagFromPhoto(photoId, tagId);
@@ -41,7 +36,6 @@ function Page({ photo }: Props) {
     <EditTags photoId={photo.ID}
               afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}
     />
-    <button onClick={() => fooBar(photo)}>Create Tags</button>
   </div>;
 }
 

@@ -1,9 +1,10 @@
 import Head from "next/head";
 import React, { Component } from "react";
 import { defaultLayout } from "../../../components/layouts/default";
+import { SinglePhoto } from "../../../components/photo";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { APP_ROUTES } from "../../../lib/routes";
-import { listPhotosForUser, Photo, PHOTO_BASE_PATH } from "../../../lib/services/api/photos";
+import { listPhotosForUser, Photo } from "../../../lib/services/api/photos";
+import "./index.css";
 
 type Props = {
   photos: any
@@ -12,17 +13,7 @@ type Props = {
 class Page extends Component<Props & AuthProps> {
   get photos() {
     if (!this.props.photos) return;
-    return this.props.photos.map((photo: Photo) => {
-      const photoSrc = `${PHOTO_BASE_PATH}${photo.RelativeURL}`;
-      const photoId = photo.ID;
-      return <li key={photo.ID}>
-        <a href={APP_ROUTES.admin.photos.show.create({ photoId })}>
-          <img className="max-w-xs" src={photoSrc}/>
-        </a>
-        <p>{photo.FileName}</p>
-        <p>Tags: {photo.TagList}</p>
-      </li>;
-    });
+    return this.props.photos.map((photo: Photo) => <SinglePhoto photo={photo}/>);
   }
 
   static async getInitialProps({ auth }: AuthProps) {
@@ -35,7 +26,7 @@ class Page extends Component<Props & AuthProps> {
       <Head>
         <title>My Photos</title>
       </Head>
-      <ul>
+      <ul id="photo-list">
         {this.photos}
       </ul>
     </>;

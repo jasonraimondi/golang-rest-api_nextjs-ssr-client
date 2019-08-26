@@ -1,7 +1,6 @@
 import React from "react";
 import { Tags } from "../lib/services/api/photos";
 
-// export type TagProps = { tag: Tags, photoId?: string };
 export type TagProps = { tag: Tags, handleRemoveTag(): void };
 
 export function Tag({ tag, handleRemoveTag }: TagProps) {

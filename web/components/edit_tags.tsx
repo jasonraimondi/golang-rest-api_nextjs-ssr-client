@@ -46,18 +46,20 @@ export const EditTags = ({ photoId, afterSave }: { photoId: string, afterSave():
       isSubmitting,
     }: FormikProps<TagInputs>) => <form onSubmit={handleSubmit}>
       <p>{status ? status : null}</p>
-      <TextInput type="text"
-                 label="Add Tags"
-                 name="tags"
-                 touched={touched.tags}
-                 value={values.tags}
-                 error={errors.tags}
-                 handleBlur={handleBlur}
-                 handleChange={handleChange}
-                 submitting={isSubmitting}
-                 required
-      />
-      <SubmitButton label="Submit" type="submit" disabled={isSubmitting}/>
+      <div className="flex">
+        <TextInput type="text"
+                   label="Add Tags"
+                   name="tags"
+                   touched={touched.tags}
+                   value={values.tags}
+                   error={errors.tags}
+                   handleBlur={handleBlur}
+                   handleChange={handleChange}
+                   submitting={isSubmitting}
+                   required
+        />
+        <SubmitButton label="Submit" type="submit" disabled={isSubmitting}/>
+      </div>
     </form>}
   </Formik>;
 };
