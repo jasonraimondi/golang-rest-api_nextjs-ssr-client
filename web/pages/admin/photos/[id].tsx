@@ -2,29 +2,28 @@ import { NextPageContext } from "next";
 import React from "react";
 import { EditTags } from "../../../components/edit_tags";
 import { defaultLayout } from "../../../components/layouts/default";
+import { Tag } from "../../../components/tag";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { addTagsToPhoto, getPhoto, Photo, PHOTO_BASE_PATH, Tags } from "../../../lib/services/api/photos";
+import { addTagsToPhoto, getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
 
 type Props = {
   photo: Photo;
 } & AuthProps
 
-export function Tag({ tag }: { tag: Tags }) {
-  const handleRemoveTag = (id: number) => {
-    alert(`remove this tag! ${id}`)
-  };
-  return <span className="rounded p-1 bg-blue-300 m-1">{tag.Name} <button onClick={() => handleRemoveTag(tag.ID)}>&times;</button></span>;
-}
-
 function Page({ photo }: Props) {
   const fooBar = async (photo: Photo) => {
     const res = await addTagsToPhoto(photo.ID, ["one", "two", "dumber", "and hello"]);
-    console.log(res);
+    console.log({res});
   };
 
+  const handleRemoveTag = async (photoId: string, tagId: number) => {
+    const res: any = await removeTagFromPhoto(photoId, tagId);
+    if (res.status == 202) {
+    }
+  };
 
   const tags = photo.Tags.map(tag => {
-    return <Tag tag={tag} key={tag.ID} />;
+    return <Tag tag={tag} handleRemoveTag={() => handleRemoveTag(photo.ID, tag.ID)} key={tag.ID} />;
   });
 
   return <>

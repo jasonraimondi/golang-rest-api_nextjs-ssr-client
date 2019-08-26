@@ -45,7 +45,6 @@ func init() {
 	jwtSecureKey = env("JWT_SECURE_KEY", "my-secret-key")
 	dbDriver = env("DB_DRIVER", "postgres")
 	dbConnection = env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable")
-	dbMigrationsDir = env("DB_MIGRATIONS_DIR", "/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations")
 	s3Host = env("S3_HOST", "http://localhost:9000")
 	s3Region = env("S3_REGION", "us-east-1")
 	s3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
@@ -113,7 +112,7 @@ func main() {
 	//admin.Use(authRoute)
 	admin.POST("/photos/user/:userId", h.Photo().Create)
 	admin.POST("/photos/:photoId/tags", h.Photo().AttachTags)
-	admin.DELETE("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
+	admin.POST("/photos/:photoId/tags/:tagId", h.Photo().RemoveTag)
 
 	// @todo remove this
 	fake := e.Group("/fake")

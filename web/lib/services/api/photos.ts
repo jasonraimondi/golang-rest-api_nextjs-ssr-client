@@ -9,7 +9,6 @@ export async function getPhoto(photoId: string) {
 
 
 export async function listPhotosForUser(userId: string, page: number, itemsPerPage: number) {
-  console.log(userId);
   const inputs = { page, itemsPerPage };
   const res: any = await get(`/photos/user/${userId}`, inputs);
   if (res.error) {
@@ -27,11 +26,16 @@ export async function listPhotosForTags(tags: string[], page: number, itemsPerPa
   return res.data.records.map((photo: any) => ToPhoto(photo));
 }
 
+export async function removeTagFromPhoto(photoId: string, tagId: number) {
+  return await post(`/admin/photos/${photoId}/tags/${tagId}`);
+}
+
 export async function addTagsToPhoto(photoId: string, tags: string[]) {
   const data = new URLSearchParams();
   tags.forEach(tag => data.append("tags[]", tag));
   return await post(`/admin/photos/${photoId}/tags`, data);
 }
+
 export interface Photo {
   ID: string;
   FileName: string;
