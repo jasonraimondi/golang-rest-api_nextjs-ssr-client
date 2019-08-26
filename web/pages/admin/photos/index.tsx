@@ -12,10 +12,12 @@ class Page extends Component<Props & AuthProps> {
   get photos() {
     if (!this.props.photos) return;
     return this.props.photos.map((photo: Photo) => {
-      const photoSrc = `${PHOTO_BASE_PATH}${photo.relativeURL}`;
-      const link = `/admin/photos/${photo.id}`;
-      return <li key={photo.id}>
+      const photoSrc = `${PHOTO_BASE_PATH}${photo.RelativeURL}`;
+      const link = `/admin/photos/${photo.ID}`;
+      return <li key={photo.ID}>
         <a href={link}><img className="max-w-xs" src={photoSrc}/></a>
+        <p>{photo.FileName}</p>
+        <p>Tags: {photo.TagList}</p>
       </li>;
     });
   }

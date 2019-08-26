@@ -9,6 +9,7 @@ export async function getPhoto(photoId: string) {
 
 
 export async function listPhotosForUser(userId: string, page: number, itemsPerPage: number) {
+  console.log(userId);
   const inputs = { page, itemsPerPage };
   const res: any = await get(`/photos/user/${userId}`, inputs);
   if (res.error) {
@@ -32,38 +33,34 @@ export async function addTagsToPhoto(photoId: string, tags: string[]) {
   return await post(`/admin/photos/${photoId}/tags`, data);
 }
 export interface Photo {
-  id: string;
-  fileName: string;
-  relativeURL: string;
-  sha256: string;
-  mimeType: string;
-  tags: string[];
-  fileSize: number;
-  description: NullString;
-  width: NullInt;
-  height: NullInt;
-  userID: string;
-  createdAt: number;
-  modifiedAt: NullInt;
+  ID: string;
+  FileName: string;
+  RelativeURL: string;
+  SHA256: string;
+  MimeType: string;
+  Tags: Tags[];
+  TagList: string;
+  FileSize: number;
+  Description: NullString;
+  Width: NullInt;
+  Height: NullInt;
+  UserID: string;
+  CreatedAt: number;
+  ModifiedAt: NullInt;
 }
 
-export const ToPhoto = (photo: any) => {
-  console.log(photo)
-  return {
-    id: photo.ID,
-    tags: photo.Tags ? photo.Tags.map((tag: any) => tag.Name).sort() : [],
-    fileName: photo.FileName,
-    relativeURL: photo.RelativeURL,
-    sha256: photo.SHA256,
-    mimeType: photo.MimeType,
-    fileSize: photo.FileSize,
-    description: photo.Description,
-    width: photo.Width,
-    height: photo.Height,
-    userID: photo.UserId,
-    createdAt: photo.CreatedAt,
-    modifiedAt: photo.ModifiedAt,
-  } as Photo;
+export interface Tags {
+  ID: number;
+  Name: string;
+}
+
+export const ToPhoto = (data: any) => {
+  const photo: Photo = data;
+  console.log(photo);
+  photo.Tags = photo.Tags ? photo.Tags : [];
+  photo.Tags = photo.Tags.sort(sortTagByName);
+  photo.TagList = photo.Tags.map(tag => tag.Name).join(", ");
+  return photo
 };
 
 export interface NullString {
@@ -75,3 +72,18 @@ export interface NullInt {
   int64: number;
   valid: boolean;
 }
+
+export const sortTagByName = (a: any, b: any) => {
+  a = a.Name.toUpperCase();
+  b = b.Name.toUpperCase();
+  if (a < b) {
+    return -1;
+  }
+  if (a > b) {
+    return 1;
+  }
+
+  // names must be equal
+  return 0;
+};
+

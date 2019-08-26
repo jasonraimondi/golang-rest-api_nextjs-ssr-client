@@ -36,7 +36,7 @@ func (r *PhotoRepository) UnlinkFromPhoto(photoId string, tagId uint) error {
 
 func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var photos []models.Photo
-	db := r.db.Where("user_id = ?", userId)
+	db := r.db.Preload("Tags").Where("user_id = ?", userId)
 	return pagination.Paging(&pagination.Param{
 		DB: db,
 		Page: int(currentPage),
