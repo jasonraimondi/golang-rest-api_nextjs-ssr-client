@@ -12,8 +12,8 @@ type PhotoRepository struct {
 	db *gorm.DB
 }
 
-func (r *PhotoRepository) GetById(id string) (photo models.Photo, err error) {
-	photo = models.Photo{}
+func (r *PhotoRepository) GetById(id string) (photo *models.Photo, err error) {
+	photo = &models.Photo{}
 	err = r.db.Preload("Tags").First(&photo, "id = ?", uuid.FromStringOrNil(id)).Error
 	return photo, err
 }

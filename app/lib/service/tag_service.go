@@ -2,7 +2,6 @@ package service
 
 import (
 	"github.com/jinzhu/gorm"
-	uuid "github.com/satori/go.uuid"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
@@ -14,8 +13,6 @@ type PhotoAppService struct {
 }
 
 func (s *PhotoAppService) AddTagsToPhoto(photoId string, tags []string) error {
-	var photo models.Photo
-	s.db.First(&photo, "id = ?", uuid.FromStringOrNil(photoId))
 	newNames, err := s.getTagNamesToCreate(tags)
 	if err != nil {
 		return err
@@ -27,6 +24,10 @@ func (s *PhotoAppService) AddTagsToPhoto(photoId string, tags []string) error {
 	}
 	if len(tagsToLink) > 0 {
 		tagsToLink, err := s.getIdsToLink(tagsToLink)
+		if err != nil {
+			return err
+		}
+		photo, err := s.photoRepository.GetById(photoId)
 		if err != nil {
 			return err
 		}

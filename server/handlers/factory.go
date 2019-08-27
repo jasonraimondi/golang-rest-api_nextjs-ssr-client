@@ -34,7 +34,6 @@ func (h *Handler) AuthHandler() *AuthHandler {
 
 func (h *Handler) AdminPhoto() *AdminPhotoHandler {
 	return &AdminPhotoHandler{
-		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
 		photoAppService:    h.App.ServiceFactory.PhotoAppService(),
 		photoUploadService: h.App.ServiceFactory.FileUploadService(),
 	}
@@ -42,10 +41,7 @@ func (h *Handler) AdminPhoto() *AdminPhotoHandler {
 
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
-		//listAppsRepository:   h.App.RepositoryFactory.ListAppsRepository(),
 		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
-		photoAppService:    h.App.ServiceFactory.PhotoAppService(),
-		photoUploadService: h.App.ServiceFactory.FileUploadService(),
 	}
 }
 
