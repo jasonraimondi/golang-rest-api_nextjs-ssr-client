@@ -1,7 +1,6 @@
 package lib
 
 import (
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/go-playground/validator.v9"
 
@@ -17,13 +16,13 @@ type Application struct {
 }
 
 func NewApplication(dbx *gorm.DB, s3Config *awsupload.S3Config, jwtSecureKey string, dir string) *Application {
-	v := validator.New()
-	_ = v.RegisterValidation("password-strength", ValidatePasswordStrength)
-	r := repository.NewFactory(dbx)
-	s := service.NewService(r, v, s3Config, jwtSecureKey)
+	validate := validator.New()
+	_ = validate.RegisterValidation("password-strength", ValidatePasswordStrength)
+	repositoryFactory := repository.NewFactory(dbx)
+	serviceFactory := service.NewService(repositoryFactory, validate, s3Config, jwtSecureKey)
 	return &Application{
-		RepositoryFactory: r,
-		ServiceFactory:    s,
+		RepositoryFactory: repositoryFactory,
+		ServiceFactory:    serviceFactory,
 		MigrationDir:      dir,
 	}
 }

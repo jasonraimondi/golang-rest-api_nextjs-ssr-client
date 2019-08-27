@@ -8,14 +8,14 @@ import (
 )
 
 type UserRepository struct {
-	dbx *gorm.DB
+	db *gorm.DB
 }
 
 func (r *UserRepository) GetById(id string) (*models.User, error) {
 	user := &models.User{}
 	if uid, err := uuid.FromString(id); err != nil {
 		return nil, err
-	} else if err = r.dbx.First(&user, "id = ?", uid).Error; err != nil {
+	} else if err = r.db.First(&user, "id = ?", uid).Error; err != nil {
 		return nil, err
 	}
 	return user, nil
@@ -23,14 +23,14 @@ func (r *UserRepository) GetById(id string) (*models.User, error) {
 
 func (r *UserRepository) GetByEmail(email string) (user models.User, err error) {
 	user = models.User{}
-	err = r.dbx.First(&user, "email = ?", email).Error
+	err = r.db.First(&user, "email = ?", email).Error
 	return user, err
 }
 
 func (r *UserRepository) Update(u models.User) (err error) {
-	return r.dbx.Save(&u).Error
+	return r.db.Save(&u).Error
 }
 
 func (r *UserRepository) Create(u models.User) (err error) {
-	return r.dbx.Create(&u).Error
+	return r.db.Create(&u).Error
 }

@@ -5,13 +5,15 @@ import (
 )
 
 type SignUpConfirmation struct {
-	Token  uuid.UUID `gorm:"primary_key"`
+	Token  uuid.UUID
 	UserID uuid.UUID
+	User   *User
 }
 
-func NewSignUpConfirmation(u User) (c *SignUpConfirmation) {
+
+func NewSignUpConfirmation(u *User) (c *SignUpConfirmation) {
 	return &SignUpConfirmation{
-		Token:  uuid.NewV4(),
-		UserID: u.GetID(),
+		Token: uuid.NewV4(),
+		User:  u,
 	}
 }

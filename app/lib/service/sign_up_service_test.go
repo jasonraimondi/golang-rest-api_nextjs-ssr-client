@@ -15,7 +15,7 @@ func TestService_ValidateEmailSignUpConfirmation(t *testing.T) {
 	a := utils.NewTestApplication(tables)
 
 	user := models.NewUser("jason@raimondi.us")
-	if err := a.RepositoryFactory.User().Create(*user); err != nil {
+	if err := a.RepositoryFactory.UserRepository().Create(*user); err != nil {
 		t.Fatalf("error creating user")
 	}
 	confirmation := models.NewSignUpConfirmation(*user)

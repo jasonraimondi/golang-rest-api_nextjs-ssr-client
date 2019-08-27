@@ -81,7 +81,7 @@ func (s *PhotoUploadService) createPhoto(user *models.User, f multipart.File, fi
 		fileHeader.Filename,
 		fileSHA256,
 		fileHeader.Header.Get("Content-Type"),
-		fileHeader.Size,
+		uint64(fileHeader.Size),
 	)
 	if err := s.repository.PhotoRepository().Create(photo); err != nil {
 		return nil, err

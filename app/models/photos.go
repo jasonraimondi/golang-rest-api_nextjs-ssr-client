@@ -12,16 +12,17 @@ import (
 
 type Photo struct {
 	ID          uuid.UUID `gorm:"primary_key"`
-	FileName    string
-	RelativeURL string
-	SHA256      string
-	MimeType    string
+	FileName    string    `gorm:"type:varchar(100); not null"`
+	RelativeURL string    `gorm:"type:varchar(255); not null"`
+	SHA256      string    `gorm:"type:varchar(64); not null"`
+	MimeType    string    `gorm:"type:varchar(100); not null"`
+	FileSize    uint64    `gorm:"not null"`
+	Tags        []Tag     `gorm:"many2many:photo_tag"`
+	UserID      uuid.UUID `gorm:"not null"`
+	User        *User
 	Description sql.NullString
-	FileSize    int64
 	Width       sql.NullInt64
 	Height      sql.NullInt64
-	UserID      uuid.UUID
-	Tags        []Tag `gorm:"many2many:photo_tag"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time `sql:"index"`
@@ -33,7 +34,7 @@ func NewPhoto(
 	fileName string,
 	sha256 string,
 	mimeType string,
-	fileSize int64,
+	fileSize uint64,
 ) *Photo {
 	id := uid.String()
 	return &Photo{

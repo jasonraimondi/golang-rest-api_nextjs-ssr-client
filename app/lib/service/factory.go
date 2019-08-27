@@ -22,7 +22,7 @@ func (s *Factory) SignUpService() *SignUpService {
 	return &SignUpService{
 		repository:     s.repository,
 		validate:       s.validate,
-		userRepository: s.repository.User(),
+		userRepository: s.repository.UserRepository(),
 	}
 }
 
@@ -30,14 +30,14 @@ func (s *Factory) FileUploadService() *PhotoUploadService {
 	return &PhotoUploadService{
 		originals:      "originals",
 		repository:     s.repository,
-		userRepository: s.repository.User(),
+		userRepository: s.repository.UserRepository(),
 		s3:             s.s3,
 	}
 }
 
 func (s *Factory) AuthService() *AuthService {
 	return &AuthService{
-		userRepository: s.repository.User(),
+		userRepository: s.repository.UserRepository(),
 		jwtSecureKey:   s.jwtSecureKey,
 	}
 }

@@ -1,45 +1,33 @@
 package repository
 
 import (
-	"github.com/Masterminds/squirrel"
 	"github.com/jinzhu/gorm"
 )
 
 type Factory struct {
-	dbx *gorm.DB
-	qb  squirrel.StatementBuilderType
+	db *gorm.DB
 }
 
 func NewFactory(dbx *gorm.DB) *Factory {
-	qb := squirrel.StatementBuilder.PlaceholderFormat(squirrel.Question)
-	return &Factory{dbx, qb}
-}
-
-func (r *Factory) QueryBuilder() squirrel.StatementBuilderType {
-	return r.qb
+	return &Factory{dbx}
 }
 
 func (r *Factory) DB() *gorm.DB {
-	return r.dbx
+	return r.db
 }
 
-func (r *Factory) User() *UserRepository {
-	return &UserRepository{r.dbx}
+func (r *Factory) UserRepository() *UserRepository {
+	return &UserRepository{r.db}
 }
 
 func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
-	return &SignUpConfirmationRepository{r.qb, r.dbx}
+	return &SignUpConfirmationRepository{r.db}
 }
 
 func (r *Factory) PhotoRepository() *PhotoRepository {
-	return &PhotoRepository{r.dbx}
+	return &PhotoRepository{r.db}
 }
 
 func (r *Factory) TagRepository() *TagRepository {
-	return &TagRepository{r.qb, r.dbx}
+	return &TagRepository{r.db}
 }
-
-//
-//func (r *Factory) ListAppsRepository() *ListAppsRepository {
-//	return &ListAppsRepository{r.qb, r.db}
-//}

@@ -38,7 +38,7 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 }
 
 func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
-	c = models.NewSignUpConfirmation(*u)
+	c = models.NewSignUpConfirmation(u)
 	if err := s.userRepository.Create(*u); err != nil {
 		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
 	}
@@ -54,15 +54,15 @@ func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId str
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "token not found")
 	}
-	user, err := s.repository.User().GetById(userId)
+	user, err := s.repository.UserRepository().GetById(userId)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "user not found")
 	}
-	if signUpConfirmation.UserID.String() != userId {
+	if signUpConfirmation.User.GetID() != userId {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
-	if err = s.repository.User().Update(*user); err != nil {
+	if err = s.repository.UserRepository().Update(*user); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
 	} else if err = s.repository.SignUpConfirmation().Delete(&signUpConfirmation); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")

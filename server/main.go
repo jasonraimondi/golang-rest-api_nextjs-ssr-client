@@ -37,6 +37,13 @@ var (
 	h               *handlers.Handler
 )
 
+var tables = []interface{}{
+	&models.Photo{},
+	&models.Tag{},
+	&models.User{},
+	&models.SignUpConfirmation{},
+}
+
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
 func init() {
 	if env("ENABLE_DEBUGGING", "true") == "true" {
@@ -56,8 +63,8 @@ func init() {
 	}
 	if enableDebugging {
 		db.SetLogger(log.New(os.Stdout, "\r\n", 0))
+		migrate(db)
 	}
-
 	sessionToken := "" // @todo what is session token?
 	s3Config := awsupload.NewS3Config("originals", &aws.Config{
 		Credentials:      credentials.NewStaticCredentials(s3IdentifierKey, s3SecretKey, sessionToken),
@@ -67,6 +74,14 @@ func init() {
 	})
 	app = lib.NewApplication(db, s3Config, jwtSecureKey, dbMigrationsDir)
 	h = handlers.NewHandler(app)
+}
+
+func migrate(db *gorm.DB) {
+	db.AutoMigrate(tables...)
+	db.Model(&models.Photo{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
+	db.Model(&models.PhotoTag{}).AddForeignKey("photo_id", "photos(id)", "CASCADE", "CASCADE")
+	db.Model(&models.PhotoTag{}).AddForeignKey("tag_id", "tags(id)", "CASCADE", "CASCADE")
+	db.Model(&models.SignUpConfirmation{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 }
 
 func main() {
@@ -88,16 +103,6 @@ func main() {
 		ErrorHandler: func(err error) error { return err },
 	}
 	authRoute := middleware.JWTWithConfig(config)
-
-	e.GET("/migrate", func(c echo.Context) (err error) {
-		h.App.RepositoryFactory.DB().AutoMigrate(
-			&models.Photo{},
-			&models.Tag{},
-			&models.User{},
-			&models.SignUpConfirmation{},
-		)
-		return c.JSON(http.StatusOK, "hi")
-	})
 
 	e.POST("/login", h.AuthHandler().Login)
 	e.POST("/sign_up", h.SignUpHandler().SignUp)
