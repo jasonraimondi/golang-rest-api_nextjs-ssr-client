@@ -35,6 +35,7 @@ func NewUser(email string) (u *User) {
 }
 
 func (u *User) GetID() string {
+	fmt.Println("hi")
 	return u.ID.String()
 }
 

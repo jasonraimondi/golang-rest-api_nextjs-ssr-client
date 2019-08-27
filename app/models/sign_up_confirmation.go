@@ -5,8 +5,8 @@ import (
 )
 
 type SignUpConfirmation struct {
-	Token  uuid.UUID
-	UserID uuid.UUID
+	Token  uuid.UUID `gorm:"primary_key"`
+	UserID uuid.UUID `gorm:"index:user_idx; unique; not null"`
 	User   *User
 }
 

@@ -58,7 +58,7 @@ func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId str
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, "user not found")
 	}
-	if signUpConfirmation.User.GetID() != userId {
+	if signUpConfirmation.UserID.String() != userId {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
 	}
 	user.SetVerified()
