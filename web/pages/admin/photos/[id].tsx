@@ -43,11 +43,11 @@ function Page({ photo }: Props) {
   return <div className="container mx-auto max-w-sm">
     <img width={420} src={PHOTO_BASE_PATH + photo.RelativeURL} alt={photo.Description.string}
          title={photo.Description.string}/>
-    <p>FileSize: {photo.FileSize}</p>
-    <p>MimeType: {photo.MimeType}</p>
-    <p>FileName: {photo.FileName}</p>
-    <div>Apps: {appList}</div>
-    <div>Tags: {tagList}</div>
+    <p><strong>FileSize:</strong> {photo.FileSizeHuman}</p>
+    <p><strong>MimeType:</strong> {photo.MimeType}</p>
+    <p><strong>FileName:</strong> {photo.FileName}</p>
+    <p><strong>Apps:</strong> {appList}</p>
+    <p><strong>Tags:</strong> {tagList}</p>
     <EditTags photoId={photo.ID}
               afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}
     />

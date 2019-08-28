@@ -45,6 +45,7 @@ export interface Photo {
   Tags: Tags[];
   TagList: string;
   FileSize: number;
+  FileSizeHuman: string;
   Description: NullString;
   Width: NullInt;
   Height: NullInt;
@@ -68,8 +69,21 @@ export const ToPhoto = (data: any) => {
   photo.Tags = photo.Tags ? photo.Tags : [];
   photo.Tags = photo.Tags.sort(sortTagByName);
   photo.TagList = photo.Tags.map(tag => tag.Name).join(", ");
+
+  photo.FileSizeHuman = formatSizeUnits(photo.FileSize);
   return photo;
 };
+
+function formatSizeUnits(bytes: number): string {
+  let result: string;
+  if      (bytes >= 1073741824) { result = (bytes / 1073741824).toFixed(2) + " GB"; }
+  else if (bytes >= 1048576)    { result = (bytes / 1048576).toFixed(2) + " MB"; }
+  else if (bytes >= 1024)       { result = (bytes / 1024).toFixed(2) + " KB"; }
+  else if (bytes > 1)           { result = bytes + " bytes"; }
+  else if (bytes == 1)          { result = bytes + " byte"; }
+  else                          { result = "0 bytes"; }
+  return result;
+}
 
 export interface NullString {
   string: string;
