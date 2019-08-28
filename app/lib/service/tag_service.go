@@ -7,23 +7,23 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 )
 
-type PhotoAppService struct {
+type TagService struct {
 	db              *gorm.DB
 	photoRepository *repository.PhotoRepository
 }
 
-func (s *PhotoAppService) AddTagsToPhoto(photoId string, tags []string) error {
-	newNames, err := s.getTagNamesToCreate(tags)
+func (s *TagService) AddTagsToPhoto(photoId string, tags []string) error {
+	newNames, err := s.GetAllTagNamesToCreate(tags)
 	if err != nil {
 		return err
 	}
-	s.createNameRecords(newNames)
-	tagsToLink, err := s.existingPhotoTag(tags, photoId)
+	s.CreateTagsForNames(newNames)
+	tagsToLink, err := s.GetAllTagNamesForPhoto(tags, photoId)
 	if err != nil {
 		return err
 	}
 	if len(tagsToLink) > 0 {
-		tagsToLink, err := s.getIdsToLink(tagsToLink)
+		tagsToLink, err := s.GetAllTagsByName(tagsToLink)
 		if err != nil {
 			return err
 		}
@@ -37,27 +37,27 @@ func (s *PhotoAppService) AddTagsToPhoto(photoId string, tags []string) error {
 	return nil
 }
 
-func (s *PhotoAppService) RemoveTagFromPhoto(photoId string, tagId uint) error {
-	return s.photoRepository.UnlinkFromPhoto(photoId, tagId)
+func (s *TagService) RemoveTagFromPhoto(photoId string, tagId uint) error {
+	return s.photoRepository.UnlinkTag(photoId, tagId)
 }
 
-func (s *PhotoAppService) createLinkedRecords(photoId string, tagsToLink []models.Tag) error {
+func (s *TagService) createLinkedRecords(photoId string, tagsToLink []models.Tag) error {
 	return s.db.Association("tags").Append(tagsToLink).Error
 }
 
-func (s *PhotoAppService) getIdsToLink(names []string) ([]models.Tag, error) {
-	tagsToLink := []models.Tag{}
+func (s *TagService) GetAllTagsByName(names []string) ([]models.Tag, error) {
+	var tagsToLink []models.Tag
 	err := s.db.Find(&tagsToLink, "name IN (?)", names).Error
 	return tagsToLink, err
 }
 
-func (s *PhotoAppService) createNameRecords(names []string) {
+func (s *TagService) CreateTagsForNames(names []string) {
 	for _, name := range names {
 		s.db.Create(&models.Tag{Name: name})
 	}
 }
 
-func (s *PhotoAppService) getTagNamesToCreate(names []string) (result []string, err error) {
+func (s *TagService) GetAllTagNamesToCreate(names []string) (result []string, err error) {
 	var tags []models.Tag
 	if err = s.db.Where("name IN (?)", names).Find(&tags).Error; err != nil {
 		return nil, err
@@ -66,27 +66,31 @@ func (s *PhotoAppService) getTagNamesToCreate(names []string) (result []string, 
 	for _, t := range tags {
 		existingTagString = append(existingTagString, t.Name)
 	}
-	result = Difference(names, existingTagString)
+	result = ArrayDiff(names, existingTagString)
 	return result, err
 }
 
-func (s *PhotoAppService) existingPhotoTag(name []string, photoId string) ([]string, error) {
+func (s *TagService) GetAllTagNamesForPhoto(name []string, photoId string) (result []string, err error) {
 	var existingTagString []string
-	err := s.db.Model(&models.Tag{}).Joins("left join photo_tag on photo_tag.tag_id=tags.id").Where("photo_tag.photo_id = ?", photoId).Pluck("tags.name", &existingTagString).Error
+	err = s.db.
+		Model(&models.PhotoTag{}).
+		Joins("left join tags on tags.id=photo_tag.tag_id").
+		Where("photo_tag.photo_id = ?", photoId).
+		Pluck("tags.name", &existingTagString).
+		Error
 	if err != nil {
-		return []string{}, err
+		return nil, err
 	}
-	existingTags := Difference(name, existingTagString)
-	if existingTags == nil {
-		existingTags = []string{}
+	result = ArrayDiff(name, existingTagString)
+	if result == nil {
+		result = []string{}
 	}
-	return existingTags, err
+	return result, err
 }
 
 // difference returns the elements in `a` that aren't in `b`.
-func Difference(a, b []string) (diff []string) {
+func ArrayDiff(a, b []string) (diff []string) {
 	m := make(map[string]bool)
-
 	for _, item := range b {
 		m[item] = true
 	}

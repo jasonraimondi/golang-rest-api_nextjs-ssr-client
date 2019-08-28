@@ -11,7 +11,7 @@ import (
 
 type AdminPhotoHandler struct {
 	photoUploadService *service.PhotoUploadService
-	photoAppService    *service.PhotoAppService
+	photoAppService    *service.TagService
 }
 
 func (h *AdminPhotoHandler) AttachTags(c echo.Context) error {

@@ -42,8 +42,8 @@ func (s *Factory) AuthService() *AuthService {
 	}
 }
 
-func (s *Factory) PhotoAppService() *PhotoAppService {
-	return &PhotoAppService{
+func (s *Factory) PhotoAppService() *TagService {
+	return &TagService{
 		db:              s.repository.DB(),
 		photoRepository: s.repository.PhotoRepository(),
 	}

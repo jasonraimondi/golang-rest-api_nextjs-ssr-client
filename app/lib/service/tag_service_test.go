@@ -5,11 +5,12 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
+	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"git.jasonraimondi.com/jason/jasontest/app/test/utils"
 )
 
-func TestPhotoAppService_AddTagsToPhoto(t *testing.T) {
+func TestTagService_AddTagsToPhoto(t *testing.T) {
 	tables := []interface{}{
 		&models.Photo{},
 		&models.Tag{},
@@ -35,7 +36,7 @@ func TestPhotoAppService_AddTagsToPhoto(t *testing.T) {
 		t.Fatalf("error fetching photo")
 	}
 	if len(photo.Tags) != 4 {
-		t.Fatalf("should have three tags")
+		t.Fatalf("should have 4 tags")
 	} else if photo.Tags[0].Name != "og-tag" {
 		t.Fatalf("invalid name (%s)", photo.Tags[0].Name)
 	} else if photo.Tags[1].Name != "alpha" {
@@ -44,5 +45,17 @@ func TestPhotoAppService_AddTagsToPhoto(t *testing.T) {
 		t.Fatalf("invalid name (%s)", photo.Tags[1].Name)
 	} else if photo.Tags[3].Name != "zeta" {
 		t.Fatalf("invalid name (%s)", photo.Tags[2].Name)
+	}
+}
+
+func TestDifference(t *testing.T) {
+	a := []string{"a", "b", "c", "d", "extra"}
+	b := []string{"b", "c", "d", "funny"}
+	sut := service.ArrayDiff(a, b)
+	if sut[0] != "a" {
+		t.Fatalf("invalid array diff")
+	}
+	if sut[1] != "extra" {
+		t.Fatalf("invalid array diff")
 	}
 }

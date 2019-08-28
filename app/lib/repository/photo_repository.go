@@ -26,7 +26,7 @@ func (r *PhotoRepository) Create(u *models.Photo) (err error) {
 	return r.db.Create(u).Error
 }
 
-func (r *PhotoRepository) UnlinkFromPhoto(photoId string, tagId uint) error {
+func (r *PhotoRepository) UnlinkTag(photoId string, tagId uint) error {
 	var tag models.Tag
 	var photo models.Photo
 	r.db.First(&tag, "id = ?", tagId)
