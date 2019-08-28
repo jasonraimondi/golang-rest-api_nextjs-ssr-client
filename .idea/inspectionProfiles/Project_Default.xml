@@ -15,6 +15,7 @@
         <method importPath="math/rand" receiver="*Rand" name="Read" />
         <method importPath="os" receiver="*File" name="Close" />
         <method importPath="mime/multipart" receiver="File" name="Close" />
+        <method importPath="github.com/jinzhu/gorm" receiver="*DB" name="Close" />
       </methods>
     </inspection_tool>
     <inspection_tool class="HtmlRequiredTitleElement" enabled="false" level="WARNING" enabled_by_default="false" />

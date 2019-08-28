@@ -9,7 +9,8 @@ import (
 )
 
 type PhotoRepository struct {
-	db *gorm.DB
+	debug bool
+	db    *gorm.DB
 }
 
 func (r *PhotoRepository) GetById(id string) (photo *models.Photo, err error) {
@@ -42,7 +43,7 @@ func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage
 		Page:    int(currentPage),
 		Limit:   int(itemsPerPage),
 		OrderBy: []string{"created_at desc"},
-		ShowSQL: true,
+		ShowSQL: r.debug,
 	}, &photos)
 }
 
@@ -59,6 +60,6 @@ func (r *PhotoRepository) ForTags(tags []string, currentPage int64, itemsPerPage
 		Page:    int(currentPage),
 		Limit:   int(itemsPerPage),
 		OrderBy: []string{"photos.created_at desc"},
-		ShowSQL: true,
+		ShowSQL: r.debug,
 	}, &photos)
 }

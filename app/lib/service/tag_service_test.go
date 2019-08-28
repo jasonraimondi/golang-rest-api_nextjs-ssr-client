@@ -18,7 +18,7 @@ func TestTagService_AddTagsToPhoto(t *testing.T) {
 	a := utils.NewTestApplication(tables)
 
 	user := models.NewUser("jason@raimondi.us")
-	photo := models.NewPhoto(uuid.NewV4(), user, "myfilename", "mysha256", "image/png", 42)
+	photo := models.NewPhoto(uuid.NewV4(), user, "myfilename.png", "mysha256", "image/png", 42)
 	photo.AddTag(models.Tag{Name: "og-tag"})
 	photo.AddTag(models.Tag{Name: "alpha"})
 

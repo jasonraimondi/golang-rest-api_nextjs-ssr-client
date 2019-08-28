@@ -10,19 +10,17 @@ import (
 )
 
 type Application struct {
-	MigrationDir      string
 	RepositoryFactory *repository.Factory
 	ServiceFactory    *service.Factory
 }
 
-func NewApplication(dbx *gorm.DB, s3Config *awsupload.S3Config, jwtSecureKey string, dir string) *Application {
+func NewApplication(db *gorm.DB, s3Config *awsupload.S3Config, jwtSecureKey string, debug bool) *Application {
 	validate := validator.New()
 	_ = validate.RegisterValidation("password-strength", ValidatePasswordStrength)
-	repositoryFactory := repository.NewFactory(dbx)
+	repositoryFactory := repository.NewFactory(db, debug)
 	serviceFactory := service.NewService(repositoryFactory, validate, s3Config, jwtSecureKey)
 	return &Application{
 		RepositoryFactory: repositoryFactory,
 		ServiceFactory:    serviceFactory,
-		MigrationDir:      dir,
 	}
 }

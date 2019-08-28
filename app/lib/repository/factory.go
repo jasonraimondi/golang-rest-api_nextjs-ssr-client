@@ -5,11 +5,12 @@ import (
 )
 
 type Factory struct {
-	db *gorm.DB
+	debug bool
+	db    *gorm.DB
 }
 
-func NewFactory(dbx *gorm.DB) *Factory {
-	return &Factory{dbx}
+func NewFactory(dbx *gorm.DB, debug bool) *Factory {
+	return &Factory{debug, dbx}
 }
 
 func (r *Factory) DB() *gorm.DB {
@@ -25,7 +26,7 @@ func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
 }
 
 func (r *Factory) PhotoRepository() *PhotoRepository {
-	return &PhotoRepository{r.db}
+	return &PhotoRepository{r.debug, r.db}
 }
 
 func (r *Factory) TagRepository() *TagRepository {

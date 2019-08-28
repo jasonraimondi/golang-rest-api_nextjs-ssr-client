@@ -30,7 +30,7 @@ func NewTestApplication(tables []interface{}) (a *lib.Application) {
 		db,
 		s3Config,
 		"jwtSecureKey-test",
-		"/Users/jason/go/src/git.jasonraimondi.com/jason/jasontest/db/migrations",
+		true,
 	)
 	return a
 }

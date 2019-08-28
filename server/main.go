@@ -5,16 +5,16 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/jinzhu/gorm"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
-	"git.jasonraimondi.com/jason/jasontest/app/models"
 	"git.jasonraimondi.com/jason/jasontest/server/handlers"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
@@ -24,23 +24,20 @@ import (
 )
 
 var (
-	enableDebugging bool
+	debug           bool
 	jwtSecureKey    string
 	dbDriver        string
 	dbConnection    string
-	dbMigrationsDir string
 	s3Host          string
 	s3Region        string
 	s3IdentifierKey string
 	s3SecretKey     string
-	app             *lib.Application
-	h               *handlers.Handler
 )
 
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
 func init() {
 	if env("ENABLE_DEBUGGING", "true") == "true" {
-		enableDebugging = true
+		debug = true
 	}
 	jwtSecureKey = env("JWT_SECURE_KEY", "my-secret-key")
 	dbDriver = env("DB_DRIVER", "postgres")
@@ -49,15 +46,15 @@ func init() {
 	s3Region = env("S3_REGION", "us-east-1")
 	s3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
 	s3SecretKey = env("S3_SECRET_KEY", "miniominiominio")
+}
 
+func main() {
 	db, err := gorm.Open(dbDriver, dbConnection)
 	if err != nil {
 		panic("failed to connect to database")
 	}
-	if enableDebugging {
-		db.SetLogger(log.New(os.Stdout, "\r\n", 0))
-		migrate(db)
-	}
+	defer db.Close()
+
 	var sessionToken = "" // @todo what is session token?
 	var s3Config = awsupload.NewS3Config("originals", &aws.Config{
 		Credentials:      credentials.NewStaticCredentials(s3IdentifierKey, s3SecretKey, sessionToken),
@@ -65,34 +62,16 @@ func init() {
 		Region:           aws.String(s3Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
-	app = lib.NewApplication(db, s3Config, jwtSecureKey, dbMigrationsDir)
-	h = handlers.NewHandler(app)
-}
+	var app = lib.NewApplication(db, s3Config, jwtSecureKey, debug)
+	var h = handlers.NewHandler(app)
 
-func migrate(db *gorm.DB) {
-	var tables = []interface{}{
-		&models.Photo{},
-		&models.Tag{},
-		&models.PhotoTag{},
-		&models.PhotoApp{},
-		&models.User{},
-		&models.SignUpConfirmation{},
+	var e = echo.New()
+	e.Debug = debug
+
+	if debug {
+		db.SetLogger(log.New(os.Stdout, "\r\n", 0))
+		repository.Migrate(db)
 	}
-
-	db.AutoMigrate(tables...)
-	db.Model(&models.Photo{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
-	db.Model(&models.PhotoTag{}).AddForeignKey("photo_id", "photos(id)", "CASCADE", "CASCADE")
-	db.Model(&models.PhotoTag{}).AddForeignKey("tag_id", "tags(id)", "CASCADE", "CASCADE")
-
-
-	db.Model(&models.PhotoApp{}).AddForeignKey("photo_id", "photos(id)", "CASCADE", "CASCADE")
-	db.Model(&models.PhotoApp{}).AddForeignKey("tag_id", "tags(id)", "CASCADE", "CASCADE")
-	db.Model(&models.SignUpConfirmation{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
-}
-
-func main() {
-	e := echo.New()
-	e.Debug = enableDebugging
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
