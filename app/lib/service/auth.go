@@ -7,12 +7,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 
+	"git.jasonraimondi.com/jason/jasontest/app/lib/config"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 )
 
 type AuthService struct {
 	userRepository *repository.UserRepository
-	jwtSecureKey   string
+	jwtSecureKey   config.JWTSecureKey
 }
 
 func (s *AuthService) AttemptLogin(email string, password string) (string, *echo.HTTPError) {

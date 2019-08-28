@@ -11,7 +11,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/service/s3"
 
-	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
+	"git.jasonraimondi.com/jason/jasontest/app/lib/config"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/models"
@@ -22,11 +22,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+type BucketName string
+
 type PhotoUploadService struct {
-	originals      string
+	originals      BucketName
 	repository     *repository.Factory
 	userRepository *repository.UserRepository
-	s3             *awsupload.S3Config
+	s3             *config.S3Config
 }
 
 func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *echo.HTTPError {
@@ -60,7 +62,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 			ContentLength:      aws.Int64(int64(photo.FileSize)),
 			ContentType:        aws.String(http.DetectContentType(buffer)),
 			Body:               bytes.NewReader(buffer),
-			Bucket:             aws.String(s.originals),
+			Bucket:             aws.String(string(s.originals)),
 			Key:                aws.String(photo.RelativeURL),
 		}
 		if _, err = s3Client.PutObject(put); err != nil {

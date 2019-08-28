@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
-	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
+	config2 "git.jasonraimondi.com/jason/jasontest/app/lib/config"
 	"git.jasonraimondi.com/jason/jasontest/server/handlers"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -25,7 +25,7 @@ func NewTestApplication(tables []interface{}) (a *lib.Application) {
 		Region:           aws.String("us-east-1"),
 		S3ForcePathStyle: aws.Bool(true),
 	}
-	s3Config := awsupload.NewS3Config("test-originals", config)
+	s3Config := config2.NewS3Config("test-originals", config)
 	a = lib.NewApplication(
 		db,
 		s3Config,

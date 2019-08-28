@@ -10,7 +10,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
-	"git.jasonraimondi.com/jason/jasontest/app/lib/awsupload"
+	"git.jasonraimondi.com/jason/jasontest/app/lib/config"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	"git.jasonraimondi.com/jason/jasontest/server/handlers"
@@ -24,14 +24,10 @@ import (
 )
 
 var (
-	debug           bool
-	jwtSecureKey    string
-	dbDriver        string
-	dbConnection    string
-	s3Host          string
-	s3Region        string
-	s3IdentifierKey string
-	s3SecretKey     string
+	debug         bool
+	jwtSecureKey  config.JWTSecureKey
+	dbCredentials config.DBCred
+	s3Cred        config.S3Cred
 )
 
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
@@ -39,27 +35,30 @@ func init() {
 	if env("ENABLE_DEBUGGING", "true") == "true" {
 		debug = true
 	}
-	jwtSecureKey = env("JWT_SECURE_KEY", "my-secret-key")
-	dbDriver = env("DB_DRIVER", "postgres")
-	dbConnection = env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable")
-	s3Host = env("S3_HOST", "http://localhost:9000")
-	s3Region = env("S3_REGION", "us-east-1")
-	s3IdentifierKey = env("S3_IDENTIFIER_KEY", "miniominiominio")
-	s3SecretKey = env("S3_SECRET_KEY", "miniominiominio")
+	jwtSecureKey = config.JWTSecureKey(env("JWT_SECURE_KEY", "my-secret-key"))
+	dbCredentials = config.DBCred{
+		Driver:      env("DB_DRIVER", "postgres"),
+		Connection: env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable"),
+	}
+	s3Cred = config.S3Cred{
+		Host:       env("S3_HOST", "http://localhost:9000"),
+		Region:     env("S3_REGION", "us-east-1"),
+		Identifier: env("S3_IDENTIFIER_KEY", "miniominiominio"),
+		Secret:     env("S3_SECRET_KEY", "miniominiominio"),
+	}
 }
 
 func main() {
-	db, err := gorm.Open(dbDriver, dbConnection)
+	db, err := gorm.Open(dbCredentials.Driver, dbCredentials.Connection)
 	if err != nil {
 		panic("failed to connect to database")
 	}
 	defer db.Close()
 
-	var sessionToken = "" // @todo what is session token?
-	var s3Config = awsupload.NewS3Config("originals", &aws.Config{
-		Credentials:      credentials.NewStaticCredentials(s3IdentifierKey, s3SecretKey, sessionToken),
-		Endpoint:         aws.String(s3Host),
-		Region:           aws.String(s3Region),
+	var s3Config = config.NewS3Config("originals", &aws.Config{
+		Credentials:      credentials.NewStaticCredentials(s3Cred.Identifier, s3Cred.Secret, s3Cred.SessionToken),
+		Endpoint:         aws.String(s3Cred.Host),
+		Region:           aws.String(s3Cred.Region),
 		S3ForcePathStyle: aws.Bool(true),
 	})
 	var app = lib.NewApplication(db, s3Config, jwtSecureKey, debug)

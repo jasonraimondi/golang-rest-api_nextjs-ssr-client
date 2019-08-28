@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
+	"git.jasonraimondi.com/jason/jasontest/server/responses"
 
 	"github.com/labstack/echo"
 )
@@ -24,7 +25,7 @@ func (h *SignUpHandler) SignUp(c echo.Context) error {
 		return err
 	}
 
-	return sendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))
+	return responses.SendMessage(c, http.StatusCreated, http.StatusText(http.StatusCreated))
 }
 
 func (h *SignUpHandler) SignUpConfirmation(c echo.Context) error {
@@ -35,5 +36,5 @@ func (h *SignUpHandler) SignUpConfirmation(c echo.Context) error {
 		return err
 	}
 
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }

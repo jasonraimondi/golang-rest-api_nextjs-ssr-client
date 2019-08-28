@@ -13,6 +13,7 @@ func TestPhotoRepository_ForUser(t *testing.T) {
 	tables := []interface{}{
 		&models.Photo{},
 		&models.User{},
+		&models.Tag{},
 	}
 	a := utils.NewTestApplication(tables)
 	pr := a.RepositoryFactory.PhotoRepository()
@@ -26,9 +27,22 @@ func TestPhotoRepository_ForUser(t *testing.T) {
 	p3 := models.NewPhoto(uuid.NewV4(), user, "filename3", "sha1", "image/png", 1234)
 	a.RepositoryFactory.PhotoRepository().Create(p3)
 
+	user2 := models.NewUser("jason@raimondi.us")
+	a.RepositoryFactory.UserRepository().Create(*user2)
+	models.NewPhoto(uuid.NewV4(), user2, "filename1", "sha1", "image/png", 1234)
+
 	paginator := pr.ForUser(user.GetID(), 1, 25)
 	if paginator.TotalRecord != 3 {
 		t.Fatalf("invalid record count")
+	}
+	var photos *[]models.Photo
+	photos = paginator.Records.(*[]models.Photo)
+	for k, v := range *photos {
+		if name := v.FileName; name != "filename3" && k == 0 {
+			t.Fatalf("actual: %s expected: %s", name, "filename1")
+		} else if name := v.FileName; name != "filename2" && k == 1 {
+			t.Fatalf("actual: %s expected: %s", name, "filename2")
+		}
 	}
 }
 

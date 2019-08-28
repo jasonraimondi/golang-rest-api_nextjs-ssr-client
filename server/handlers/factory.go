@@ -3,15 +3,11 @@ package handlers
 import (
 	"strconv"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/labstack/echo"
-
 	"git.jasonraimondi.com/jason/jasontest/app/lib"
 )
 
 type Handler struct {
 	App      *lib.Application
-	S3Config *aws.Config
 }
 
 func NewHandler(a *lib.Application) *Handler {
@@ -43,12 +39,6 @@ func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
 		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
 	}
-}
-
-func sendMessage(c echo.Context, statusCode int, message string) error {
-	return c.JSON(statusCode, map[string]interface{}{
-		"message": message,
-	})
 }
 
 func strToInt(s string, d int) int64 {

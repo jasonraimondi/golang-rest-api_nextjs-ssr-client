@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
+	"git.jasonraimondi.com/jason/jasontest/server/responses"
 )
 
 type PhotoHandler struct {
@@ -19,7 +20,7 @@ func (h *PhotoHandler) ListForUser(c echo.Context) error {
 	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
 
 	paginator := h.photoRepository.ForUser(userId, page, itemsPerPage)
-	return c.JSON(http.StatusOK, paginator)
+	return responses.SendPaginator(c, http.StatusOK, paginator)
 }
 
 func (h *PhotoHandler) ListForTags(c echo.Context) error {
@@ -31,7 +32,7 @@ func (h *PhotoHandler) ListForTags(c echo.Context) error {
 	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
 
 	paginator := h.photoRepository.ForTags(tags, page, itemsPerPage)
-	return c.JSON(http.StatusOK, paginator)
+	return responses.SendPaginator(c, http.StatusOK, paginator)
 }
 
 func (h *PhotoHandler) Show(c echo.Context) error {
@@ -40,5 +41,5 @@ func (h *PhotoHandler) Show(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, photo)
+	return responses.SendAny(c, http.StatusOK, photo)
 }

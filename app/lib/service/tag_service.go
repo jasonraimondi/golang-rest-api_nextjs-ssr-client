@@ -68,7 +68,9 @@ func (s *TagService) createMissingTags(tags []string) error {
 }
 
 func (s *TagService) RemoveAppFromPhoto(photoId string, tagId uint) error {
-	return s.photoRepository.UnlinkApp(photoId, tagId)
+	return nil
+	// @TODO HERE HERE WIP
+	//return s.photoRepository.UnlinkApp(photoId, tagId)
 }
 
 

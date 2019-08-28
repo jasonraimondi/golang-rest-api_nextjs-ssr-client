@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -11,9 +12,9 @@ import (
 )
 
 type SignUpService struct {
-	repository     *repository.Factory // @todo pull this out, begintx is the issue
-	validate       *validator.Validate
-	userRepository *repository.UserRepository
+	validate                     *validator.Validate
+	signUpConfirmationRepository *repository.SignUpConfirmationRepository
+	userRepository               *repository.UserRepository
 }
 
 func (s *SignUpService) CreateUser(email string, firstName string, lastName string, password string) (u *models.User, httpErr *echo.HTTPError) {
@@ -29,9 +30,9 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 
 	if password != "" {
 		if err := guardAgainstInvalidPassword(s.validate, password); err != nil {
-			return nil, echo.NewHTTPError(http.StatusNotAcceptable, "invalid password", err)
+			return nil, echo.NewHTTPError(http.StatusNotAcceptable, errors.New("invalid password"), err)
 		} else if err = u.SetPassword(password); err != nil {
-			return nil, echo.NewHTTPError(http.StatusInternalServerError, "server error set user password")
+			return nil, echo.NewHTTPError(http.StatusInternalServerError, errors.New("server error set user password"), err)
 		}
 	}
 	return u, httpErr
@@ -40,32 +41,32 @@ func (s *SignUpService) CreateUser(email string, firstName string, lastName stri
 func (s *SignUpService) CreateSignUpConfirmation(u *models.User) (c *models.SignUpConfirmation, httpErr *echo.HTTPError) {
 	c = models.NewSignUpConfirmation(u)
 	if err := s.userRepository.Create(*u); err != nil {
-		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating user", err)
+		return nil, echo.NewHTTPError(http.StatusInternalServerError, errors.New("server error creating user"), err)
 	}
-	if err := s.repository.SignUpConfirmation().Create(c); err != nil {
-		return nil, echo.NewHTTPError(http.StatusInternalServerError, err, "server error creating sign up confirmation", err)
+	if err := s.signUpConfirmationRepository.Create(c); err != nil {
+		return nil, echo.NewHTTPError(http.StatusInternalServerError, errors.New("server error creating sign up confirmation"), err)
 	}
 	return c, httpErr
 }
 
 // @todo return normal error, returning the echo http error is probably not a great idea, see sign_up_service_test
 func (s *SignUpService) ValidateEmailSignUpConfirmation(token string, userId string) *echo.HTTPError {
-	signUpConfirmation, err := s.repository.SignUpConfirmation().GetByToken(token)
+	signUpConfirmation, err := s.signUpConfirmationRepository.GetByToken(token)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, "token not found")
+		return echo.NewHTTPError(http.StatusNotFound, errors.New("token not found"))
 	}
-	user, err := s.repository.UserRepository().GetById(userId)
+	user, err := s.userRepository.GetById(userId)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusNotFound, "user not found")
+		return echo.NewHTTPError(http.StatusNotFound, errors.New("user not found"))
 	}
 	if signUpConfirmation.UserID.String() != userId {
-		return echo.NewHTTPError(http.StatusNotAcceptable, "invalid user and token id")
+		return echo.NewHTTPError(http.StatusNotAcceptable, errors.New("invalid user and token id"))
 	}
 	user.SetVerified()
-	if err = s.repository.UserRepository().Update(*user); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
-	} else if err = s.repository.SignUpConfirmation().Delete(&signUpConfirmation); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "error transaction failed")
+	if err = s.userRepository.Update(*user); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errors.New("error transaction failed"))
+	} else if err = s.signUpConfirmationRepository.Delete(&signUpConfirmation); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, errors.New("error transaction failed"))
 	}
 	return nil
 }

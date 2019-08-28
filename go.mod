@@ -3,7 +3,6 @@ module git.jasonraimondi.com/jason/jasontest
 go 1.12
 
 require (
-	github.com/Masterminds/squirrel v1.1.0
 	github.com/aws/aws-sdk-go v1.23.9
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/locales v0.12.1 // indirect
@@ -17,5 +16,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.11.0
 	github.com/satori/go.uuid v1.2.0
 	golang.org/x/crypto v0.0.0-20190820162420-60c769a6c586
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.29.1
 )

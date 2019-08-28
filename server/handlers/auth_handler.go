@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
+	"git.jasonraimondi.com/jason/jasontest/server/responses"
 )
 
 type AuthHandler struct {
@@ -21,7 +22,7 @@ func (h *AuthHandler) Login(c echo.Context) (err error) {
 	if httpErr != nil {
 		return httpErr
 	}
-	return c.JSON(http.StatusOK, map[string]string{
+	return responses.SendData(c, http.StatusOK, responses.Data{
 		"token": token,
 	})
 }

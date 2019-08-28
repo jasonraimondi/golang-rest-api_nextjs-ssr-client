@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo"
 
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
+	"git.jasonraimondi.com/jason/jasontest/server/responses"
 )
 
 type AdminPhotoHandler struct {
@@ -20,7 +21,7 @@ func (h *AdminPhotoHandler) AttachApps(c echo.Context) error {
 	if err := h.photoAppService.AddAppsToPhoto(photoId, apps["apps[]"]); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func (h *AdminPhotoHandler) AttachTags(c echo.Context) error {
@@ -29,7 +30,7 @@ func (h *AdminPhotoHandler) AttachTags(c echo.Context) error {
 	if err := h.photoAppService.AddTagsToPhoto(photoId, tags["tags[]"]); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func (h *AdminPhotoHandler) RemoveApp(c echo.Context) error {
@@ -39,7 +40,7 @@ func (h *AdminPhotoHandler) RemoveApp(c echo.Context) error {
 	} else if err = h.photoAppService.RemoveAppFromPhoto(photoId, uint(appId)); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func (h *AdminPhotoHandler) RemoveTag(c echo.Context) error {
@@ -49,7 +50,7 @@ func (h *AdminPhotoHandler) RemoveTag(c echo.Context) error {
 	} else if err = h.photoAppService.RemoveAppFromPhoto(photoId, uint(tagId)); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }
 
 func (h *AdminPhotoHandler) Create(c echo.Context) error {
@@ -61,5 +62,5 @@ func (h *AdminPhotoHandler) Create(c echo.Context) error {
 		return httpErr
 	}
 
-	return sendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 }

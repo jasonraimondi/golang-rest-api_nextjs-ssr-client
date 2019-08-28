@@ -1,8 +1,6 @@
-package awsupload
+package config
 
-import (
-	"github.com/aws/aws-sdk-go/aws"
-)
+import "github.com/aws/aws-sdk-go/aws"
 
 type S3Config struct {
 	OriginalBucket string
