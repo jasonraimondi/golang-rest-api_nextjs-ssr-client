@@ -49,6 +49,10 @@ func NewPhoto(
 	}
 }
 
+func (p *Photo) GetID() string {
+	return p.ID.String()
+}
+
 func (p *Photo) AddTags(tags []Tag) {
 	for _, tag := range tags {
 		p.AddTag(tag)
@@ -59,6 +63,12 @@ func (p *Photo) AddTag(tag Tag) {
 	p.Tags = append(p.Tags, tag)
 }
 
-func (p *Photo) GetID() string {
-	return p.ID.String()
+func (p *Photo) AddApps(apps []Tag) {
+	for _, app := range apps {
+		p.AddApp(app)
+	}
+}
+
+func (p *Photo) AddApp(app Tag) {
+	p.Apps = append(p.Apps, app)
 }

@@ -12,13 +12,34 @@ type TagService struct {
 	photoRepository *repository.PhotoRepository
 }
 
-func (s *TagService) AddTagsToPhoto(photoId string, tags []string) error {
-	newNames, err := s.GetAllTagNamesToCreate(tags)
+func (s *TagService) AddAppsToPhoto(photoId string, apps []string) error {
+	if err := s.createMissingTags(apps); err != nil {
+		return err
+	}
+	tagsToLink, err := s.GetAllNewTagNamesToCreate(apps, photoId)
 	if err != nil {
 		return err
 	}
-	s.CreateTagsForNames(newNames)
-	tagsToLink, err := s.GetAllTagNamesForPhoto(tags, photoId)
+	if len(tagsToLink) > 0 {
+		tagsToLink, err := s.GetAllTagsByName(tagsToLink)
+		if err != nil {
+			return err
+		}
+		photo, err := s.photoRepository.GetById(photoId)
+		if err != nil {
+			return err
+		}
+		photo.AddApps(tagsToLink)
+		s.db.Save(photo)
+	}
+	return nil
+}
+
+func (s *TagService) AddTagsToPhoto(photoId string, tags []string) error {
+	if err := s.createMissingTags(tags); err != nil {
+		return err
+	}
+	tagsToLink, err := s.GetAllNewTagNamesToCreate(tags, photoId)
 	if err != nil {
 		return err
 	}
@@ -36,6 +57,16 @@ func (s *TagService) AddTagsToPhoto(photoId string, tags []string) error {
 	}
 	return nil
 }
+
+func (s *TagService) createMissingTags(tags []string) error {
+	newNames, err := s.GetAllTagNamesToCreate(tags)
+	if err != nil {
+		return err
+	}
+	s.CreateTagsForNames(newNames)
+	return nil
+}
+
 
 func (s *TagService) RemoveTagFromPhoto(photoId string, tagId uint) error {
 	return s.photoRepository.UnlinkTag(photoId, tagId)
@@ -70,7 +101,25 @@ func (s *TagService) GetAllTagNamesToCreate(names []string) (result []string, er
 	return result, err
 }
 
-func (s *TagService) GetAllTagNamesForPhoto(name []string, photoId string) (result []string, err error) {
+func (s *TagService) GetAllNewAppNamesToCreate(name []string, photoId string) (result []string, err error) {
+	var existingAppString []string
+	err = s.db.
+		Model(&models.PhotoApp{}).
+		Joins("left join tags on tags.id=photo_tag.tag_id").
+		Where("photo_app.photo_id = ?", photoId).
+		Pluck("tags.name", &existingAppString).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	result = ArrayDiff(name, existingAppString)
+	if result == nil {
+		result = []string{}
+	}
+	return result, err
+}
+
+func (s *TagService) GetAllNewTagNamesToCreate(name []string, photoId string) (result []string, err error) {
 	var existingTagString []string
 	err = s.db.
 		Model(&models.PhotoTag{}).

@@ -28,7 +28,3 @@ func (r *Factory) SignUpConfirmation() *SignUpConfirmationRepository {
 func (r *Factory) PhotoRepository() *PhotoRepository {
 	return &PhotoRepository{r.debug, r.db}
 }
-
-func (r *Factory) TagRepository() *TagRepository {
-	return &TagRepository{r.db}
-}
