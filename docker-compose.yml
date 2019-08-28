@@ -36,9 +36,8 @@ services:
     entrypoint: >
       /bin/sh -c "
       /usr/bin/mc config host add myminio http://minio:9000 miniominiominio miniominiominio;
-      /usr/bin/mc rm -r --force myminio/originals;
       /usr/bin/mc mb myminio/originals;
-      /usr/bin/mc policy public myminio/originals;
+      /usr/bin/mc policy set public myminio/originals;
       exit 0;
       "
 

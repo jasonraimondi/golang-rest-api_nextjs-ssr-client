@@ -14,7 +14,7 @@ type PhotoRepository struct {
 
 func (r *PhotoRepository) GetById(id string) (photo *models.Photo, err error) {
 	photo = &models.Photo{}
-	err = r.db.Preload("Tags").First(&photo, "id = ?", uuid.FromStringOrNil(id)).Error
+	err = r.db.Preload("Tags").Preload("Apps").First(&photo, "id = ?", uuid.FromStringOrNil(id)).Error
 	return photo, err
 }
 
@@ -36,7 +36,7 @@ func (r *PhotoRepository) UnlinkFromPhoto(photoId string, tagId uint) error {
 
 func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var photos []models.Photo
-	db := r.db.Preload("Tags").Where("user_id = ?", userId)
+	db := r.db.Preload("Tags").Preload("Apps").Where("user_id = ?", userId)
 	return pagination.Paging(&pagination.Param{
 		DB:      db,
 		Page:    int(currentPage),

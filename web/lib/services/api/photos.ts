@@ -40,6 +40,8 @@ export interface Photo {
   RelativeURL: string;
   SHA256: string;
   MimeType: string;
+  Apps: Tags[];
+  AppList: string;
   Tags: Tags[];
   TagList: string;
   FileSize: number;
@@ -59,6 +61,10 @@ export interface Tags {
 export const ToPhoto = (data: any) => {
   const photo: Photo = data;
   console.log(photo);
+  photo.Apps = photo.Apps ? photo.Apps : [];
+  photo.Apps = photo.Apps.sort(sortTagByName);
+  photo.AppList = photo.Apps.map(tag => tag.Name).join(", ");
+
   photo.Tags = photo.Tags ? photo.Tags : [];
   photo.Tags = photo.Tags.sort(sortTagByName);
   photo.TagList = photo.Tags.map(tag => tag.Name).join(", ");

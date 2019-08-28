@@ -14,6 +14,7 @@ type Props = {
 
 function Page({ photo }: Props) {
   const [tags, setTags] = useState(photo.Tags);
+  const [apps, setApps] = useState(photo.Apps);
 
   const handleRemoveTag = async (photoId: string, tagId: number) => {
     const res: any = await removeTagFromPhoto(photoId, tagId);
@@ -21,6 +22,19 @@ function Page({ photo }: Props) {
       setTags(tags.filter(tag => tag.ID !== tagId));
     }
   };
+
+  const handleRemoveApp = async (photoId: string, appId: number) => {
+    // const res: any = await removeTagFromPhoto(photoId, appId);
+    // if (res.status == 202) {
+    //   setApps(apps.filter(app => app.ID !== appId));
+    // }
+    alert("todo" + photoId + " / " + appId);
+    setApps(apps);
+  };
+
+  const appList = apps.length ? apps.map(tag => {
+    return <Tag tag={tag} handleRemoveTag={() => handleRemoveApp(photo.ID, tag.ID)} key={tag.ID}/>;
+  }) : "no tags";
 
   const tagList = tags.length ? tags.map(tag => {
     return <Tag tag={tag} handleRemoveTag={() => handleRemoveTag(photo.ID, tag.ID)} key={tag.ID}/>;
@@ -32,6 +46,7 @@ function Page({ photo }: Props) {
     <p>FileSize: {photo.FileSize}</p>
     <p>MimeType: {photo.MimeType}</p>
     <p>FileName: {photo.FileName}</p>
+    <div>Apps: {appList}</div>
     <div>Tags: {tagList}</div>
     <EditTags photoId={photo.ID}
               afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}

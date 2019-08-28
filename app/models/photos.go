@@ -17,6 +17,7 @@ type Photo struct {
 	SHA256      string    `gorm:"type:varchar(64); not null"`
 	MimeType    string    `gorm:"type:varchar(100); not null"`
 	FileSize    uint64    `gorm:"not null"`
+	Apps        []Tag     `gorm:"many2many:photo_app"`
 	Tags        []Tag     `gorm:"many2many:photo_tag"`
 	UserID      uuid.UUID `gorm:"not null"`
 	User        *User
