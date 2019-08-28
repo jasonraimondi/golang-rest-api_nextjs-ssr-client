@@ -22,10 +22,26 @@ export async function removeTagFromPhoto(photoId: string, tagId: number) {
   return await post(API_ROUTES.photos.remove_tag.create({ photoId, tagId: tagId.toString() }));
 }
 
+export async function removeAppFromPhoto(photoId: string, appId: number) {
+  return await post(API_ROUTES.photos.remove_app.create({ photoId, appId: appId.toString() }));
+}
+
 export async function addTagsToPhoto(photoId: string, tags: string[]) {
   const data = new URLSearchParams();
   tags.forEach(tag => data.append("tags[]", tag));
   const res: any = await post(API_ROUTES.photos.add_tags.create({ photoId }), data);
+  if (res.error) {
+    return res.error;
+  }
+  if (!res.data || res.status !== 202) {
+    return "Something went wrong!";
+  }
+}
+
+export async function addAppsToPhoto(photoId: string, apps: string[]) {
+  const data = new URLSearchParams();
+  apps.forEach(tag => data.append("apps[]", tag));
+  const res: any = await post(API_ROUTES.photos.add_apps.create({ photoId }), data);
   if (res.error) {
     return res.error;
   }

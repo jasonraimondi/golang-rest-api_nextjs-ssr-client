@@ -6,7 +6,13 @@ import { defaultLayout } from "../../../components/layouts/default";
 import { Tag } from "../../../components/tag";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
-import { getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
+import {
+  getPhoto,
+  Photo,
+  PHOTO_BASE_PATH,
+  removeAppFromPhoto,
+  removeTagFromPhoto,
+} from "../../../lib/services/api/photos";
 
 type Props = {
   photo: Photo;
@@ -24,16 +30,14 @@ function Page({ photo }: Props) {
   };
 
   const handleRemoveApp = async (photoId: string, appId: number) => {
-    // const res: any = await removeTagFromPhoto(photoId, appId);
-    // if (res.status == 202) {
-    //   setApps(apps.filter(app => app.ID !== appId));
-    // }
-    alert("todo" + photoId + " / " + appId);
-    setApps(apps);
+    const res: any = await removeAppFromPhoto(photoId, appId);
+    if (res.status == 202) {
+      setApps(apps.filter(app => app.ID !== appId));
+    }
   };
 
-  const appList = apps.length ? apps.map(tag => {
-    return <Tag tag={tag} handleRemoveTag={() => handleRemoveApp(photo.ID, tag.ID)} key={tag.ID}/>;
+  const appList = apps.length ? apps.map(app => {
+    return <Tag tag={app} handleRemoveTag={() => handleRemoveApp(photo.ID, app.ID)} key={app.ID}/>;
   }) : "no tags";
 
   const tagList = tags.length ? tags.map(tag => {
@@ -47,8 +51,13 @@ function Page({ photo }: Props) {
     <p><strong>MimeType:</strong> {photo.MimeType}</p>
     <p><strong>FileName:</strong> {photo.FileName}</p>
     <p><strong>Apps:</strong> {appList}</p>
+    <EditTags type="app"
+              photoId={photo.ID}
+              afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}
+    />
     <p><strong>Tags:</strong> {tagList}</p>
-    <EditTags photoId={photo.ID}
+    <EditTags type="tag"
+              photoId={photo.ID}
               afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}
     />
   </div>;

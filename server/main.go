@@ -102,6 +102,9 @@ func main() {
 	admin.POST("/photos/:photoId/tags", h.AdminPhoto().AttachTags)
 	admin.POST("/photos/:photoId/tags/:tagId", h.AdminPhoto().RemoveTag)
 
+	admin.POST("/photos/:photoId/apps", h.AdminPhoto().AttachApps)
+	admin.POST("/photos/:photoId/apps/:appId", h.AdminPhoto().RemoveApp)
+
 	// @todo remove this
 	fake := e.Group("/fake")
 	fake.Use(authRoute)
