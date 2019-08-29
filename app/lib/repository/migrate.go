@@ -17,6 +17,7 @@ func Migrate(db *gorm.DB) {
 	}
 
 	db.AutoMigrate(tables...)
+	// @todo this randomly fails...
 	db.Model(&models.Photo{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 	db.Model(&models.PhotoTag{}).AddForeignKey("photo_id", "photos(id)", "CASCADE", "CASCADE")
 	db.Model(&models.PhotoTag{}).AddForeignKey("tag_id", "tags(id)", "CASCADE", "CASCADE")

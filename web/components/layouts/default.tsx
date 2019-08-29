@@ -6,21 +6,21 @@ import Header from "./parts/header";
 
 type Props = { auth?: AuthToken }
 
-export function defaultLayout(C: any) {
+export function defaultLayout(Wrappe: any) {
   return class extends Component<Props> {
     static async getInitialProps(ctx: NextPageContext) {
-      if (C.getInitialProps) {
-        const wrappedProps = await C.getInitialProps(ctx);
+      if (Wrappe.getInitialProps) {
+        const wrappedProps = await Wrappe.getInitialProps(ctx);
         return { ...wrappedProps }
       }
-      return ctx;
+      return {};
     }
 
     render() {
       return <>
         <Head/>
         <Header auth={this.props.auth}/>
-        <C {...this.props}/>
+        <Wrappe {...this.props}/>
       </>;
     }
   };

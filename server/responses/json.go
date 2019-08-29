@@ -26,4 +26,3 @@ func SendMessage(c echo.Context, s StatusCode, message string) error {
 		"message": message,
 	})
 }
-
