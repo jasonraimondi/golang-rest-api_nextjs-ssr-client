@@ -2,7 +2,7 @@ import { Formik, FormikActions, FormikProps } from "formik";
 import Router from "next/router";
 
 import { SubmitButton } from "../../../components/forms/button";
-import { MyDropzone } from "../../../components/forms/my_dropzone";
+import { FileDropZone } from "../../../components/forms/my_dropzone";
 import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
@@ -51,7 +51,7 @@ function Page({ auth }: Props) {
     }: FormikProps<PhotoUpload>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
       <p>{status ? status : null}</p>
 
-      <MyDropzone values={values} setFiles={(acceptedFiles: File[]) => {
+      <FileDropZone values={values} setFiles={(acceptedFiles: File[]) => {
         if (acceptedFiles.length === 0) return;
         setFieldValue("files", values.files.concat(acceptedFiles));
       }}/>

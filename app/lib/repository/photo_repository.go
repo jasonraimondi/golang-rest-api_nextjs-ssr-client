@@ -15,7 +15,10 @@ type PhotoRepository struct {
 
 func (r *PhotoRepository) GetById(id string) (photo *models.Photo, err error) {
 	photo = &models.Photo{}
-	err = r.db.Preload("Tags").Preload("Apps").First(&photo, "id = ?", uuid.FromStringOrNil(id)).Error
+	err = r.db.
+		Preload("Tags").
+		Preload("Apps").
+		First(&photo, "id = ?", uuid.FromStringOrNil(id)).Error
 	return photo, err
 }
 

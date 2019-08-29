@@ -1,14 +1,15 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import "./my_dropzone.css";
 
-export function MyDropzone({ values, setFiles }: any) {
+export function FileDropZone({ values, setFiles }: any) {
   const handleAcceptedFiles = (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
   };
   const onDrop = useCallback(handleAcceptedFiles, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
-    <div {...getRootProps()}>
+    <div id="file-upload-dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
       {
         isDragActive ?
