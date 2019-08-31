@@ -12,34 +12,34 @@ type Props = {
   token: string;
 }
 
-export function privateRoute(WrappedComponent: any) {
+export function privateRoute(Page: any) {
   return class extends Component<AuthProps> {
     state = {
-      auth: new AuthToken(this.props.auth.token),
+      auth: new AuthToken(this.props.token),
     };
 
     static async getInitialProps(ctx: NextPageContext) {
       const auth = AuthToken.fromNext(ctx);
-      const initialProps = { ...ctx, auth };
-      if (auth.isExpired) redirectToLogin(ctx.res);
-      if (WrappedComponent.getInitialProps) {
-        const wrappedProps = await WrappedComponent.getInitialProps(initialProps);
-        // make sure our `auth: AuthToken` is always returned
-        return { ...wrappedProps, auth };
-      }
-      return initialProps;
+      console.log("private route");
+      if (auth.isExpired) await redirectToLogin(ctx.res);
+      let result = {
+        ...(Page.getInitialProps ? await Page.getInitialProps(ctx) : {}),
+        token: auth.token,
+      };
+      console.log("private route", result);
+      return result;
     }
 
     componentDidMount(): void {
       // since getInitialProps returns our props after they've JSON.stringify
       // we need to reinitialize it as an AuthToken to have the full class
       // with all instance methods available
-      this.setState({ auth: new AuthToken(this.props.auth.token) });
+      this.setState({ auth: new AuthToken(this.props.token) });
     }
 
     render() {
       const { auth, ...propsWithoutAuth } = this.props;
-      return <WrappedComponent auth={this.state.auth} {...propsWithoutAuth} />;
+      return <Page auth={this.state.auth} {...propsWithoutAuth} />;
     }
   };
 }

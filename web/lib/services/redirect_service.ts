@@ -4,21 +4,21 @@ import Router from "next/router";
 import { APP_ROUTES } from "../routes";
 import { AuthToken } from "./auth_token";
 
-export const redirectToLogin = (server?: ServerResponse) => {
-  redirectTo(`${APP_ROUTES.auth.login.create()}?redirected=true`, server);
+export const redirectToLogin = async (server?: ServerResponse) => {
+  await redirectTo(`${APP_ROUTES.auth.login.create()}?redirected=true`, server);
 };
 
 export const redirectIfAuthenticated = async (ctx: NextPageContext) => {
   try {
     const auth = AuthToken.fromNext(ctx);
     if (auth.isValid) {
-      redirectTo(`${APP_ROUTES.admin.dashboard.create()}?redirected=true`, ctx.res);
+      await redirectTo(`${APP_ROUTES.admin.dashboard.create()}?redirected=true`, ctx.res);
     }
   } catch (e) {
   }
 };
 
-const redirectTo = (url: string, server?: ServerResponse) => {
+const redirectTo = async (url: string, server?: ServerResponse) => {
   if (server) {
     // @see https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
     // server rendered pages do not have access to "next/router", thus they need to redirect
@@ -27,6 +27,6 @@ const redirectTo = (url: string, server?: ServerResponse) => {
     });
     server.end();
   } else {
-    Router.push(url);
+    await Router.push(url);
   }
 };

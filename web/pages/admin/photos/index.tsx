@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { SinglePhoto } from "../../../components/photo";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { listPhotosForUser, Photo } from "../../../lib/services/api/photos";
+import { flowRight } from "../../../lib/helper";
+import { Photo } from "../../../lib/services/api/photos";
 import "./index.css";
 
 type Props = {
@@ -16,9 +17,11 @@ class Page extends Component<Props & AuthProps> {
     return this.props.photos.map((photo: Photo) => <SinglePhoto photo={photo}/>);
   }
 
-  static async getInitialProps({ auth }: AuthProps) {
-    const res: any = await listPhotosForUser(auth.user.id, 1, 250);
-    return { auth, photos: res };
+  static async getInitialProps(ctx: any) {
+    console.log("index", ctx.token)
+    // const res: any = await listPhotosForUser(auth.user.id, 1, 250);
+    // return { auth, photos: res };
+    return {}
   }
 
   render() {
@@ -33,4 +36,4 @@ class Page extends Component<Props & AuthProps> {
   }
 }
 
-export default privateRoute(defaultLayout(Page));
+export default flowRight(privateRoute, defaultLayout)(Page);

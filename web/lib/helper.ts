@@ -1,0 +1,1 @@
+export const flowRight = (...functions: any[]) => functions.reduce((a, c) => (...args: any[]) => a(c(...args)));
