@@ -31,7 +31,6 @@ export const EditTags = ({ type, photoId, afterSave }: Props) => {
   };
 
   const addTags = (type: NameType, photoId: string, tags: string[]) => {
-    console.log(type)
     if (type === "tag") {
       return addTagsToPhoto(photoId, tags);
     }

@@ -20,14 +20,11 @@ export function privateRoute(Page: any) {
 
     static async getInitialProps(ctx: NextPageContext) {
       const auth = AuthToken.fromNext(ctx);
-      console.log("private route");
       if (auth.isExpired) await redirectToLogin(ctx.res);
-      let result = {
+      return {
         ...(Page.getInitialProps ? await Page.getInitialProps(ctx) : {}),
         token: auth.token,
       };
-      console.log("private route", result);
-      return result;
     }
 
     componentDidMount(): void {

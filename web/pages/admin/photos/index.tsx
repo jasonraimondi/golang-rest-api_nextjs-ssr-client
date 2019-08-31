@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { SinglePhoto } from "../../../components/photo";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
-import { flowRight } from "../../../lib/helper";
-import { Photo } from "../../../lib/services/api/photos";
+import { listPhotosForUser, Photo } from "../../../lib/services/api/photos";
 import "./index.css";
+import { AuthToken } from "../../../lib/services/auth_token";
 
 type Props = {
   photos: any
@@ -18,10 +18,9 @@ class Page extends Component<Props & AuthProps> {
   }
 
   static async getInitialProps(ctx: any) {
-    console.log("index", ctx.token)
-    // const res: any = await listPhotosForUser(auth.user.id, 1, 250);
-    // return { auth, photos: res };
-    return {}
+    const auth = AuthToken.fromNext(ctx);
+    const res: any = await listPhotosForUser(auth.user.id, 1, 250);
+    return { auth, photos: res };
   }
 
   render() {
@@ -36,4 +35,4 @@ class Page extends Component<Props & AuthProps> {
   }
 }
 
-export default flowRight(privateRoute, defaultLayout)(Page);
+export default privateRoute(defaultLayout(Page));

@@ -10,11 +10,9 @@ type Props = { auth?: AuthToken }
 export function defaultLayout(Page: any) {
   return class extends Component<Props> {
     static async getInitialProps(ctx: NextPageContext & AuthProps) {
-      let result = {
+      return {
         ...(Page.getInitialProps ? await Page.getInitialProps(ctx) : {}),
       };
-      console.log("default layout", result);
-      return result;
     }
 
     render() {

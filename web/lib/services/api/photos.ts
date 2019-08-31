@@ -77,7 +77,6 @@ export interface Tags {
 
 export const ToPhoto = (data: any) => {
   const photo: Photo = data;
-  console.log(photo);
   photo.Apps = photo.Apps ? photo.Apps : [];
   photo.Apps = photo.Apps.sort(sortTagByName);
   photo.AppList = photo.Apps.map(tag => tag.Name).join(", ");
