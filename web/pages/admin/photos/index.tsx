@@ -1,38 +1,29 @@
 import Head from "next/head";
-import React, { Component } from "react";
+import React from "react";
+
 import { defaultLayout } from "../../../components/layouts/default";
-import { SinglePhoto } from "../../../components/photo";
+import { PhotoList } from "../../../components/photo/photo_list";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
 import { listPhotosForUser, Photo } from "../../../lib/services/api/photos";
-import "./index.css";
 import { AuthToken } from "../../../lib/services/auth_token";
 
 type Props = {
-  photos: any
+  photos: Photo[]
 }
 
-class Page extends Component<Props & AuthProps> {
-  get photos() {
-    if (!this.props.photos) return;
-    return this.props.photos.map((photo: Photo) => <SinglePhoto photo={photo}/>);
-  }
-
-  static async getInitialProps(ctx: any) {
-    const auth = AuthToken.fromNext(ctx);
-    const res: any = await listPhotosForUser(auth.user.id, 1, 250);
-    return { auth, photos: res };
-  }
-
-  render() {
-    return <>
-      <Head>
-        <title>My Photos</title>
-      </Head>
-      <ul id="photo-list">
-        {this.photos}
-      </ul>
-    </>;
-  }
+function Page({ photos }: Props & AuthProps) {
+  return <>
+    <Head>
+      <title>My Photos</title>
+    </Head>
+    <PhotoList photos={photos}/>
+  </>;
 }
+
+Page.getInitialProps = async (ctx: any) => {
+  const auth = AuthToken.fromNext(ctx);
+  const res: any = await listPhotosForUser(auth.user.id, 1, 250);
+  return { auth, photos: res };
+};
 
 export default privateRoute(defaultLayout(Page));

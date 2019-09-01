@@ -15,10 +15,11 @@ type AdminPhotoHandler struct {
 	photoAppService    *service.TagService
 }
 
-func (h *AdminPhotoHandler) AttachApps(c echo.Context) error {
+func (h *AdminPhotoHandler) UpdatePhoto(c echo.Context) error {
 	photoId := c.Param("photoId")
-	apps, _ := c.FormParams()
-	if err := h.photoAppService.AddAppsToPhoto(photoId, apps["apps[]"]); err != nil {
+	app := c.FormValue("app")
+	description := c.Param("description")
+	if err := h.photoAppService.UpdatePhoto(photoId, description, app); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))

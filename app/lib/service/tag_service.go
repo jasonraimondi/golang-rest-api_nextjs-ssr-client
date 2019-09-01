@@ -12,27 +12,18 @@ type TagService struct {
 	photoRepository *repository.PhotoRepository
 }
 
-func (s *TagService) AddAppsToPhoto(photoId string, apps []string) error {
-	if err := s.createMissingTags(apps); err != nil {
-		return err
-	}
-	tagsToLink, err := s.GetAllNewTagNamesToCreate(apps, photoId)
+func (s *TagService) UpdatePhoto(photoId string, description string, app string) error {
+	photo, err := s.photoRepository.GetById(photoId)
 	if err != nil {
 		return err
 	}
-	if len(tagsToLink) > 0 {
-		tagsToLink, err := s.GetAllTagsByName(tagsToLink)
-		if err != nil {
-			return err
-		}
-		photo, err := s.photoRepository.GetById(photoId)
-		if err != nil {
-			return err
-		}
-		photo.AddApps(tagsToLink)
-		s.db.Save(photo)
+	if app != "" {
+		photo.App = &models.App{Name: app}
 	}
-	return nil
+	if description != "" {
+		photo.Description = models.ToNullString(description)
+	}
+	return s.photoRepository.Update(photo)
 }
 
 func (s *TagService) AddTagsToPhoto(photoId string, tags []string) error {

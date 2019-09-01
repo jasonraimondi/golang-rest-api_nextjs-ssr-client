@@ -17,9 +17,10 @@ type Photo struct {
 	SHA256      string    `gorm:"type:varchar(64); not null"`
 	MimeType    string    `gorm:"type:varchar(100); not null"`
 	FileSize    uint64    `gorm:"not null"`
-	Apps        []Tag     `gorm:"many2many:photo_app"`
 	Tags        []Tag     `gorm:"many2many:photo_tag"`
 	UserID      uuid.UUID `gorm:"not null"`
+	AppID       *uint
+	App         *App
 	User        *User
 	Description sql.NullString
 	Width       sql.NullInt64
@@ -61,14 +62,4 @@ func (p *Photo) AddTags(tags []Tag) {
 
 func (p *Photo) AddTag(tag Tag) {
 	p.Tags = append(p.Tags, tag)
-}
-
-func (p *Photo) AddApps(apps []Tag) {
-	for _, app := range apps {
-		p.AddApp(app)
-	}
-}
-
-func (p *Photo) AddApp(app Tag) {
-	p.Apps = append(p.Apps, app)
 }

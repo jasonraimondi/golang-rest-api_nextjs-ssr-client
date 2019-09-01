@@ -9,9 +9,9 @@ import (
 func Migrate(db *gorm.DB) {
 	var tables = []interface{}{
 		&models.Photo{},
+		&models.App{},
 		&models.Tag{},
 		&models.PhotoTag{},
-		&models.PhotoApp{},
 		&models.User{},
 		&models.SignUpConfirmation{},
 	}
@@ -22,7 +22,5 @@ func Migrate(db *gorm.DB) {
 	db.Model(&models.PhotoTag{}).AddForeignKey("photo_id", "photos(id)", "CASCADE", "CASCADE")
 	db.Model(&models.PhotoTag{}).AddForeignKey("tag_id", "tags(id)", "CASCADE", "CASCADE")
 
-	db.Model(&models.PhotoApp{}).AddForeignKey("photo_id", "photos(id)", "CASCADE", "CASCADE")
-	db.Model(&models.PhotoApp{}).AddForeignKey("tag_id", "tags(id)", "CASCADE", "CASCADE")
 	db.Model(&models.SignUpConfirmation{}).AddForeignKey("user_id", "users(id)", "CASCADE", "CASCADE")
 }

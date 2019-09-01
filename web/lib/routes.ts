@@ -16,6 +16,11 @@ const route = (path: string) => {
 export const APP_ROUTES = {
   home: route("/"),
   signUp: route("/sign_up"),
+  photos: {
+    index: route("/admin/photos"),
+    listForTags: route("/photos/upload"),
+    show: route("/:appId/:photoId"),
+  },
   admin: {
     dashboard: route("/admin/dashboard"),
     photos: {

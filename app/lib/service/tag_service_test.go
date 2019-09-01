@@ -48,37 +48,33 @@ func TestTagService_AddTagsToPhoto(t *testing.T) {
 	}
 }
 
-func TestTagService_AddAppsToPhoto(t *testing.T) {
+func TestTagService_UpdatePhoto(t *testing.T) {
 	tables := []interface{}{
 		&models.Photo{},
+		&models.App{},
 		&models.Tag{},
 	}
 	a := utils.NewTestApplication(tables)
 
 	user := models.NewUser("jason@raimondi.us")
-	photo := models.NewPhoto(uuid.NewV4(), user, "myfilename.png", "mysha256", "image/png", 42)
-	photo.AddApp(models.Tag{Name: "Reddit"})
+	photo := models.NewPhoto(uuid.NewV4(), user,"myfilename.png", "mysha256", "image/png", 42)
+	//photo.App = &models.App{Name: "Reddit"}
 
 	if err := a.RepositoryFactory.PhotoRepository().Create(photo); err != nil {
 		t.Fatalf("error creating photo")
 	}
 
-	newTags := []string{"Hacker News", "Y Combinator"}
-	if err := a.ServiceFactory.PhotoAppService().AddAppsToPhoto(photo.GetID(), newTags); err != nil {
+	if err := a.ServiceFactory.PhotoAppService().UpdatePhoto(photo.GetID(), "here is my new description", "jsonsapp"); err != nil {
 		t.Fatalf("error adding tags to photo")
 	}
 
 	photo, err := a.RepositoryFactory.PhotoRepository().GetById(photo.GetID())
 	if err != nil {
 		t.Fatalf("error fetching photo")
-	} else if len(photo.Apps) != 3 {
-		t.Fatalf("should have 4 apps (%d)", len(photo.Apps))
-	} else if app := photo.Apps[0].Name; app != "Reddit" {
-		t.Fatalf("expected: %s actual: %s", "Reddit", app)
-	} else if app := photo.Apps[1].Name; app != "Hacker News" {
-		t.Fatalf("expected: %s actual: %s", "Hacker Newsie", app)
-	} else if app := photo.Apps[2].Name; app != "Y Combinator" {
-		t.Fatalf("expected: %s actual: %s", "Y Combinator", app)
+	}
+
+	if appName := photo.App.Name; appName != "jsonsapp" {
+		t.Fatalf("app name should be jsonsapp, got (%s)", appName)
 	}
 }
 

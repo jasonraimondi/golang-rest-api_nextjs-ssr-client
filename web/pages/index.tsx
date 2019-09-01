@@ -1,16 +1,19 @@
 import React from "react";
 import { defaultLayout } from "../components/layouts/default";
-// import { listPhotos } from "../lib/services/api/photos";
+import { PhotoList } from "../components/photo/photo_list";
+import { listPhotosForTags, Photo } from "../lib/services/api/photos";
 
-function Page() {
+function Page({ photos }: { photos: Photo[] }) {
   return <div className="w-full h-full flex items-center justify-center">
-    <p className="text-red-500">Home</p>
+    <PhotoList photos={photos}/>
   </div>;
 }
 
 Page.getInitialProps = async () => {
-  // const photos = await listPhotos();
-  return {};
+  const photos = await listPhotosForTags(["jason"], 1, 250);
+  return {
+    photos,
+  };
 };
 
 export default defaultLayout(Page);

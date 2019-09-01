@@ -8,6 +8,14 @@ export async function getPhoto(photoId: string) {
   return ToPhoto(res.data);
 }
 
+export async function listPhotosForTags(tags: string[], page: number, itemsPerPage: number) {
+  const inputs = { page, itemsPerPage, tags };
+  const res: any = await get(`/photos/tags`, inputs);
+  if (res.error) {
+    return res.error;
+  }
+  return res.data.records.map((photo: any) => ToPhoto(photo));
+}
 
 export async function listPhotosForUser(userId: string, page: number, itemsPerPage: number) {
   const inputs = { page, itemsPerPage };
@@ -91,12 +99,19 @@ export const ToPhoto = (data: any) => {
 
 function formatSizeUnits(bytes: number): string {
   let result: string;
-  if      (bytes >= 1073741824) { result = (bytes / 1073741824).toFixed(2) + " GB"; }
-  else if (bytes >= 1048576)    { result = (bytes / 1048576).toFixed(2) + " MB"; }
-  else if (bytes >= 1024)       { result = (bytes / 1024).toFixed(2) + " KB"; }
-  else if (bytes > 1)           { result = bytes + " bytes"; }
-  else if (bytes == 1)          { result = bytes + " byte"; }
-  else                          { result = "0 bytes"; }
+  if (bytes >= 1073741824) {
+    result = (bytes / 1073741824).toFixed(2) + " GB";
+  } else if (bytes >= 1048576) {
+    result = (bytes / 1048576).toFixed(2) + " MB";
+  } else if (bytes >= 1024) {
+    result = (bytes / 1024).toFixed(2) + " KB";
+  } else if (bytes > 1) {
+    result = bytes + " bytes";
+  } else if (bytes == 1) {
+    result = bytes + " byte";
+  } else {
+    result = "0 bytes";
+  }
   return result;
 }
 

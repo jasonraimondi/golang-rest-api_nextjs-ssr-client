@@ -17,13 +17,13 @@ func (r *PhotoRepository) GetById(id string) (photo *models.Photo, err error) {
 	photo = &models.Photo{}
 	err = r.db.
 		Preload("Tags").
-		Preload("Apps").
+		Preload("App").
 		First(&photo, "id = ?", uuid.FromStringOrNil(id)).Error
 	return photo, err
 }
 
 func (r *PhotoRepository) Update(u *models.Photo) (err error) {
-	return r.db.Update(u).Error
+	return r.db.Save(u).Error
 }
 
 func (r *PhotoRepository) Create(u *models.Photo) (err error) {
@@ -40,7 +40,7 @@ func (r *PhotoRepository) UnlinkTag(photoId string, tagId uint) error {
 
 func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var photos []models.Photo
-	db := r.db.Preload("Tags").Preload("Apps").Where("user_id = ?", userId)
+	db := r.db.Preload("Tags").Preload("App").Where("user_id = ?", userId)
 	return pagination.Paging(&pagination.Param{
 		DB:      db,
 		Page:    int(currentPage),
