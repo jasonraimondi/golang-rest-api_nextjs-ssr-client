@@ -37,7 +37,7 @@ func init() {
 	}
 	jwtSecureKey = config.JWTSecureKey(env("JWT_SECURE_KEY", "my-secret-key"))
 	dbCredentials = config.DBCred{
-		Driver:      env("DB_DRIVER", "postgres"),
+		Driver:     env("DB_DRIVER", "postgres"),
 		Connection: env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable"),
 	}
 	s3Cred = config.S3Cred{
@@ -101,8 +101,7 @@ func main() {
 	admin.POST("/photos/:photoId/tags", h.AdminPhoto().AttachTags)
 	admin.POST("/photos/:photoId/tags/:tagId", h.AdminPhoto().RemoveTag)
 
-	admin.POST("/photos/:photoId/apps", h.AdminPhoto().UpdatePhoto)
-	admin.POST("/photos/:photoId/apps/:appId", h.AdminPhoto().RemoveApp)
+	admin.POST("/photos/:photoId", h.AdminPhoto().UpdatePhoto)
 
 	// @todo remove this
 	fake := e.Group("/fake")

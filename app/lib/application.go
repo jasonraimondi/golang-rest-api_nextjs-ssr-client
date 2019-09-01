@@ -24,4 +24,3 @@ func NewApplication(db *gorm.DB, s3Config *config.S3Config, jwtSecureKey config.
 		ServiceFactory:    serviceFactory,
 	}
 }
-

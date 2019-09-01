@@ -10,7 +10,6 @@ type SignUpConfirmation struct {
 	User   *User
 }
 
-
 func NewSignUpConfirmation(u *User) (c *SignUpConfirmation) {
 	return &SignUpConfirmation{
 		Token: uuid.NewV4(),

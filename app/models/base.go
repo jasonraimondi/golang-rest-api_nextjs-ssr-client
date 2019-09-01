@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Entity interface{
+type Entity interface {
 	GetID() string
 }
 

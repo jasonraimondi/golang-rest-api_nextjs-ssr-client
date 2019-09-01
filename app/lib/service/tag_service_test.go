@@ -56,25 +56,25 @@ func TestTagService_UpdatePhoto(t *testing.T) {
 	}
 	a := utils.NewTestApplication(tables)
 
+	appName := "jsonsapp"
+
 	user := models.NewUser("jason@raimondi.us")
-	photo := models.NewPhoto(uuid.NewV4(), user,"myfilename.png", "mysha256", "image/png", 42)
-	//photo.App = &models.App{Name: "Reddit"}
+	photo := models.NewPhoto(uuid.NewV4(), user, "myfilename.png", "mysha256", "image/png", 42)
+	photo.App = &models.App{Name: "Reddit"}
 
 	if err := a.RepositoryFactory.PhotoRepository().Create(photo); err != nil {
 		t.Fatalf("error creating photo")
 	}
-
-	if err := a.ServiceFactory.PhotoAppService().UpdatePhoto(photo.GetID(), "here is my new description", "jsonsapp"); err != nil {
+	if err := a.ServiceFactory.PhotoAppService().UpdatePhoto(photo.GetID(), "here is my new description", appName); err != nil {
 		t.Fatalf("error adding tags to photo")
 	}
 
-	photo, err := a.RepositoryFactory.PhotoRepository().GetById(photo.GetID())
+	photo1, err := a.RepositoryFactory.PhotoRepository().GetById(photo.GetID())
 	if err != nil {
 		t.Fatalf("error fetching photo")
 	}
-
-	if appName := photo.App.Name; appName != "jsonsapp" {
-		t.Fatalf("app name should be jsonsapp, got (%s)", appName)
+	if sut := photo1.App.Name; sut != appName {
+		t.Fatalf("app name should be %s, got (%s)", appName, sut)
 	}
 }
 

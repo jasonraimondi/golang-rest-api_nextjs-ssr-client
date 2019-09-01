@@ -14,6 +14,7 @@ func TestPhotoRepository_ForUser(t *testing.T) {
 		&models.Photo{},
 		&models.User{},
 		&models.Tag{},
+		&models.App{},
 	}
 	a := utils.NewTestApplication(tables)
 	pr := a.RepositoryFactory.PhotoRepository()

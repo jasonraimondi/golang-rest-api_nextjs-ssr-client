@@ -18,7 +18,7 @@ type AdminPhotoHandler struct {
 func (h *AdminPhotoHandler) UpdatePhoto(c echo.Context) error {
 	photoId := c.Param("photoId")
 	app := c.FormValue("app")
-	description := c.Param("description")
+	description := c.FormValue("description")
 	if err := h.photoAppService.UpdatePhoto(photoId, description, app); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}

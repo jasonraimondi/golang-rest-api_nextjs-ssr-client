@@ -7,7 +7,7 @@ import (
 )
 
 type Handler struct {
-	App      *lib.Application
+	App *lib.Application
 }
 
 func NewHandler(a *lib.Application) *Handler {
@@ -37,7 +37,7 @@ func (h *Handler) AdminPhoto() *AdminPhotoHandler {
 
 func (h *Handler) Photo() *PhotoHandler {
 	return &PhotoHandler{
-		photoRepository:    h.App.RepositoryFactory.PhotoRepository(),
+		photoRepository: h.App.RepositoryFactory.PhotoRepository(),
 	}
 }
 
