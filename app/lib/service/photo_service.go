@@ -24,7 +24,7 @@ func (s *PhotoService) UpdatePhoto(photoId string, description string, app strin
 		if err := s.db.FirstOrCreate(&a, models.App{Name: app}).Error; err != nil {
 			return err
 		}
-		photo.App = &a
+		photo.SetApp(&a)
 	}
 	if len(tags) > 0 {
 		if err := s.TagService.AddTagsToPhoto(photo, tags); err != nil {

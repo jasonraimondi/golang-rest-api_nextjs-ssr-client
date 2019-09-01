@@ -63,3 +63,11 @@ func (p *Photo) AddTags(tags []Tag) {
 func (p *Photo) AddTag(tag Tag) {
 	p.Tags = append(p.Tags, tag)
 }
+
+func (p *Photo) SetApp(app *App) {
+	p.AppID = nil
+	if app != nil {
+		p.AppID = &app.ID
+	}
+	p.App = app
+}

@@ -32,6 +32,7 @@ func (s *TagService) AddTagsToPhoto(photo *models.Photo, tags []string) error {
 }
 
 func (s *TagService) createMissingTags(tags []string) error {
+	// @todo crashing here
 	newNames, err := s.GetAllTagNamesToCreate(tags)
 	if err != nil {
 		return err
