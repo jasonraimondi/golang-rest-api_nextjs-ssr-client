@@ -29,15 +29,15 @@ services:
       - "traefik.port=9000"
       - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /media"
 
-  createbuckets:
+  minio-mc:
     image: minio/mc
     depends_on:
       - minio
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc config host add myminio http://minio:9000 miniominiominio miniominiominio;
-      /usr/bin/mc mb myminio/originals;
-      /usr/bin/mc policy set public myminio/originals;
+      /usr/bin/mc config host add myconnection http://minio:9000 miniominiominio miniominiominio;
+      /usr/bin/mc mb myconnection/originals;
+      /usr/bin/mc policy set public myconnection/originals;
       exit 0;
       "
 

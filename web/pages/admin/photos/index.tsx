@@ -4,6 +4,7 @@ import React from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { PhotoList } from "../../../components/photo/photo_list";
 import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
+import { APP_ROUTES } from "../../../lib/routes";
 import { listPhotosForUser, Photo } from "../../../lib/services/api/photos";
 import { AuthToken } from "../../../lib/services/auth_token";
 
@@ -16,7 +17,7 @@ function Page({ photos }: Props & AuthProps) {
     <Head>
       <title>My Photos</title>
     </Head>
-    <PhotoList photos={photos}/>
+    <PhotoList photos={photos} href={APP_ROUTES.admin.photos.show.create}/>
   </>;
 }
 

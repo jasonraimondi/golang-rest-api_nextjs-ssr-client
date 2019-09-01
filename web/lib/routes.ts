@@ -16,10 +16,14 @@ const route = (path: string) => {
 export const APP_ROUTES = {
   home: route("/"),
   signUp: route("/sign_up"),
+  app: {
+    index: route("/a/:appId-:appSlug"),
+    show: route("/a/:appId-:appSlug/:photoId"),
+  },
   photos: {
     index: route("/admin/photos"),
     listForTags: route("/photos/upload"),
-    show: route("/:appId/:photoId"),
+
   },
   admin: {
     dashboard: route("/admin/dashboard"),
@@ -40,10 +44,9 @@ export const API_ROUTES = {
   photos: {
     index: route("/photos/index"),
     create: route("/photos/create"),
+    update: route("/admin/photos/:photoId"),
     add_tags: route("/admin/photos/:photoId/tags"),
-    add_apps: route("/admin/photos/:photoId/apps"),
     remove_tag: route("/admin/photos/:photoId/tags/:tagId"),
-    remove_app: route("/admin/photos/:photoId/apps/:appId"),
     upload_photo: route("/admin/photos/user/:userId"),
   },
   login: route("/login"),

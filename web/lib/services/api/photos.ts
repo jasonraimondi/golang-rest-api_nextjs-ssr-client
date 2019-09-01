@@ -8,6 +8,15 @@ export async function getPhoto(photoId: string) {
   return ToPhoto(res.data);
 }
 
+export async function listPhotosForApp(app: string, page: number, itemsPerPage: number) {
+  const inputs = { page, itemsPerPage, app };
+  const res: any = await get(`/photos/app`, inputs);
+  if (res.error) {
+    return res.error;
+  }
+  return res.data.records.map((photo: any) => ToPhoto(photo));
+}
+
 export async function listPhotosForTags(tags: string[], page: number, itemsPerPage: number) {
   const inputs = { page, itemsPerPage, tags };
   const res: any = await get(`/photos/tags`, inputs);
@@ -30,26 +39,10 @@ export async function removeTagFromPhoto(photoId: string, tagId: number) {
   return await post(API_ROUTES.photos.remove_tag.create({ photoId, tagId: tagId.toString() }));
 }
 
-export async function removeAppFromPhoto(photoId: string, appId: number) {
-  return await post(API_ROUTES.photos.remove_app.create({ photoId, appId: appId.toString() }));
-}
-
-export async function addTagsToPhoto(photoId: string, tags: string[]) {
-  const data = new URLSearchParams();
+export async function updatePhoto(photoId: string, tags: string[], description: string, app: string) {
+  const data = new URLSearchParams({ description, app });
   tags.forEach(tag => data.append("tags[]", tag));
-  const res: any = await post(API_ROUTES.photos.add_tags.create({ photoId }), data);
-  if (res.error) {
-    return res.error;
-  }
-  if (!res.data || res.status !== 202) {
-    return "Something went wrong!";
-  }
-}
-
-export async function addAppsToPhoto(photoId: string, apps: string[]) {
-  const data = new URLSearchParams();
-  apps.forEach(tag => data.append("apps[]", tag));
-  const res: any = await post(API_ROUTES.photos.add_apps.create({ photoId }), data);
+  const res: any = await post(API_ROUTES.photos.update.create({ photoId }), data);
   if (res.error) {
     return res.error;
   }
@@ -64,8 +57,7 @@ export interface Photo {
   RelativeURL: string;
   SHA256: string;
   MimeType: string;
-  Apps: Tags[];
-  AppList: string;
+  App?: App;
   Tags: Tags[];
   TagList: string;
   FileSize: number;
@@ -78,6 +70,11 @@ export interface Photo {
   ModifiedAt: NullInt;
 }
 
+export interface App {
+  ID: number;
+  Name: string;
+}
+
 export interface Tags {
   ID: number;
   Name: string;
@@ -85,15 +82,15 @@ export interface Tags {
 
 export const ToPhoto = (data: any) => {
   const photo: Photo = data;
-  photo.Apps = photo.Apps ? photo.Apps : [];
-  photo.Apps = photo.Apps.sort(sortTagByName);
-  photo.AppList = photo.Apps.map(tag => tag.Name).join(", ");
+  photo.App = photo.App ? photo.App : undefined;
 
   photo.Tags = photo.Tags ? photo.Tags : [];
   photo.Tags = photo.Tags.sort(sortTagByName);
   photo.TagList = photo.Tags.map(tag => tag.Name).join(", ");
 
   photo.FileSizeHuman = formatSizeUnits(photo.FileSize);
+
+  console.log(photo.Description);
   return photo;
 };
 
@@ -116,13 +113,13 @@ function formatSizeUnits(bytes: number): string {
 }
 
 export interface NullString {
-  string: string;
-  valid: boolean;
+  String: string;
+  Valid: boolean;
 }
 
 export interface NullInt {
-  int64: number;
-  valid: boolean;
+  Int64: number;
+  Valid: boolean;
 }
 
 export const sortTagByName = (a: any, b: any) => {
