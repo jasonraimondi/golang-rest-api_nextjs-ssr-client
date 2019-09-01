@@ -98,7 +98,6 @@ func main() {
 	admin := e.Group("/admin")
 	//admin.Use(authRoute)
 	admin.POST("/photos/user/:userId", h.AdminPhoto().Create)
-	admin.POST("/photos/:photoId/tags", h.AdminPhoto().AttachTags)
 	admin.POST("/photos/:photoId/tags/:tagId", h.AdminPhoto().RemoveTag)
 
 	admin.POST("/photos/:photoId", h.AdminPhoto().UpdatePhoto)

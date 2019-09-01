@@ -26,7 +26,7 @@ func (s *Factory) SignUpService() *SignUpService {
 	}
 }
 
-func (s *Factory) FileUploadService() *PhotoUploadService {
+func (s *Factory) PhotoUploadService() *PhotoUploadService {
 	return &PhotoUploadService{
 		originals:      BucketName("originals"),
 		repository:     s.repository,
@@ -42,15 +42,16 @@ func (s *Factory) AuthService() *AuthService {
 	}
 }
 
-func (s *Factory) PhotoAppService() *TagService {
-	return &TagService{
+func (s *Factory) PhotoService() *PhotoService {
+	return &PhotoService{
 		db:              s.repository.DB(),
 		photoRepository: s.repository.PhotoRepository(),
 	}
 }
 
-//func (s *Factory) PhotoTagService() *PhotoTagService {
-//	return &PhotoTagService{
-//		repository: s.repository,
-//	}
-//}
+func (s *Factory) TagService() *TagService {
+	return &TagService{
+		db:              s.repository.DB(),
+		photoRepository: s.repository.PhotoRepository(),
+	}
+}

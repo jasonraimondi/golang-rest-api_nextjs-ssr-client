@@ -26,55 +26,26 @@ func TestTagService_AddTagsToPhoto(t *testing.T) {
 		t.Fatalf("error creating photo")
 	}
 
+	sut, _ := a.RepositoryFactory.PhotoRepository().GetById(photo.GetID())
 	newTags := []string{"alpha", "beta", "zeta"}
-	if err := a.ServiceFactory.PhotoAppService().AddTagsToPhoto(photo.GetID(), newTags); err != nil {
+	if err := a.ServiceFactory.TagService().AddTagsToPhoto(sut, newTags); err != nil {
 		t.Fatalf("error adding tags to photo")
 	}
 
-	photo, err := a.RepositoryFactory.PhotoRepository().GetById(photo.GetID())
+	sut, err := a.RepositoryFactory.PhotoRepository().GetById(sut.GetID())
 	if err != nil {
 		t.Fatalf("error fetching photo")
 	}
-	if len(photo.Tags) != 4 {
-		t.Fatalf("should have 4 tags (%d)", len(photo.Tags))
-	} else if tag := photo.Tags[0].Name; tag != "og-tag" {
+	if len(sut.Tags) != 4 {
+		t.Fatalf("should have 4 tags (%d)", len(sut.Tags))
+	} else if tag := sut.Tags[0].Name; tag != "og-tag" {
 		t.Fatalf("expected: %s actual: %s", "og-tag", tag)
-	} else if tag := photo.Tags[1].Name; tag != "alpha" {
+	} else if tag := sut.Tags[1].Name; tag != "alpha" {
 		t.Fatalf("expected: %s actual: %s", "alpha", tag)
-	} else if tag := photo.Tags[2].Name; tag != "beta" {
+	} else if tag := sut.Tags[2].Name; tag != "beta" {
 		t.Fatalf("expected: %s actual: %s", "beta", tag)
-	} else if tag := photo.Tags[3].Name; tag != "zeta" {
+	} else if tag := sut.Tags[3].Name; tag != "zeta" {
 		t.Fatalf("expected: %s actual: %s", "zeta", tag)
-	}
-}
-
-func TestTagService_UpdatePhoto(t *testing.T) {
-	tables := []interface{}{
-		&models.Photo{},
-		&models.App{},
-		&models.Tag{},
-	}
-	a := utils.NewTestApplication(tables)
-
-	appName := "jsonsapp"
-
-	user := models.NewUser("jason@raimondi.us")
-	photo := models.NewPhoto(uuid.NewV4(), user, "myfilename.png", "mysha256", "image/png", 42)
-	photo.App = &models.App{Name: "Reddit"}
-
-	if err := a.RepositoryFactory.PhotoRepository().Create(photo); err != nil {
-		t.Fatalf("error creating photo")
-	}
-	if err := a.ServiceFactory.PhotoAppService().UpdatePhoto(photo.GetID(), "here is my new description", appName); err != nil {
-		t.Fatalf("error adding tags to photo")
-	}
-
-	photo1, err := a.RepositoryFactory.PhotoRepository().GetById(photo.GetID())
-	if err != nil {
-		t.Fatalf("error fetching photo")
-	}
-	if sut := photo1.App.Name; sut != appName {
-		t.Fatalf("app name should be %s, got (%s)", appName, sut)
 	}
 }
 

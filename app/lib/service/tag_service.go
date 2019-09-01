@@ -12,34 +12,16 @@ type TagService struct {
 	photoRepository *repository.PhotoRepository
 }
 
-func (s *TagService) UpdatePhoto(photoId string, description string, app string) error {
-	photo, err := s.photoRepository.GetById(photoId)
-	if err != nil {
-		return err
-	}
-	if app != "" {
-		photo.App = &models.App{Name: app}
-	}
-	if description != "" {
-		photo.Description = models.ToNullString(description)
-	}
-	return s.photoRepository.Update(photo)
-}
-
-func (s *TagService) AddTagsToPhoto(photoId string, tags []string) error {
+func (s *TagService) AddTagsToPhoto(photo *models.Photo, tags []string) error {
 	if err := s.createMissingTags(tags); err != nil {
 		return err
 	}
-	tagsToLink, err := s.GetAllNewTagNamesToCreate(tags, photoId)
+	tagsToLink, err := s.GetAllNewTagNamesToCreate(tags, photo.GetID())
 	if err != nil {
 		return err
 	}
 	if len(tagsToLink) > 0 {
 		tagsToLink, err := s.GetAllTagsByName(tagsToLink)
-		if err != nil {
-			return err
-		}
-		photo, err := s.photoRepository.GetById(photoId)
 		if err != nil {
 			return err
 		}
@@ -56,12 +38,6 @@ func (s *TagService) createMissingTags(tags []string) error {
 	}
 	s.CreateTagsForNames(newNames)
 	return nil
-}
-
-func (s *TagService) RemoveAppFromPhoto(photoId string, tagId uint) error {
-	return nil
-	// @TODO HERE HERE WIP
-	//return s.photoRepository.UnlinkApp(photoId, tagId)
 }
 
 func (s *TagService) RemoveTagFromPhoto(photoId string, tagId uint) error {

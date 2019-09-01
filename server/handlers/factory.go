@@ -30,8 +30,9 @@ func (h *Handler) AuthHandler() *AuthHandler {
 
 func (h *Handler) AdminPhoto() *AdminPhotoHandler {
 	return &AdminPhotoHandler{
-		photoAppService:    h.App.ServiceFactory.PhotoAppService(),
-		photoUploadService: h.App.ServiceFactory.FileUploadService(),
+		tagService:         h.App.ServiceFactory.TagService(),
+		photoService:       h.App.ServiceFactory.PhotoService(),
+		photoUploadService: h.App.ServiceFactory.PhotoUploadService(),
 	}
 }
 
