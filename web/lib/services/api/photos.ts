@@ -8,9 +8,18 @@ export async function getPhoto(photoId: string) {
   return ToPhoto(res.data);
 }
 
-export async function listPhotosForApp(app: string, page: number, itemsPerPage: number) {
-  const inputs = { page, itemsPerPage, app };
-  const res: any = await get(`/photos/app`, inputs);
+export async function listPhotosForApp(appId: string, page: number, itemsPerPage: number) {
+  const inputs = { page, itemsPerPage };
+  const res: any = await get(API_ROUTES.photos.app.create({ appId }), inputs);
+  if (res.error) {
+    return res.error;
+  }
+  return res.data.records.map((photo: any) => ToPhoto(photo));
+}
+
+export async function listPhotos(page: number, itemsPerPage: number) {
+  const inputs = { page, itemsPerPage };
+  const res: any = await get(`/photos`, inputs);
   if (res.error) {
     return res.error;
   }

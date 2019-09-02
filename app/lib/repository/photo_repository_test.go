@@ -49,7 +49,7 @@ func TestPhotoRepository_ForUser(t *testing.T) {
 
 //func TestPhotoRepository_ForTags(t *testing.T) {
 //	tables := []interface{}{
-//		&models.Photo{},
+//		&models.PhotoHandler{},
 //		&models.Tag{},
 //	}
 //	a := utils.NewTestApplication(tables)

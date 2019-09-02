@@ -50,6 +50,21 @@ func (r *PhotoRepository) ForUser(userId string, currentPage int64, itemsPerPage
 	}, &photos)
 }
 
+func (r *PhotoRepository) ForApp(appId string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
+	var photos []models.Photo
+	db := r.db.
+		Preload("Tags").
+		Preload("App").
+		Where("app_id = ?", appId)
+	return pagination.Paging(&pagination.Param{
+		DB:      db,
+		Page:    int(currentPage),
+		Limit:   int(itemsPerPage),
+		OrderBy: []string{"photos.created_at desc"},
+		ShowSQL: r.debug,
+	}, &photos)
+}
+
 func (r *PhotoRepository) ForTags(tags []string, currentPage int64, itemsPerPage int64) *pagination.Paginator {
 	var photos []models.Photo
 	db := r.db.

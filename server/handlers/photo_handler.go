@@ -23,6 +23,16 @@ func (h *PhotoHandler) ListForUser(c echo.Context) error {
 	return responses.SendPaginator(c, http.StatusOK, paginator)
 }
 
+func (h *PhotoHandler) ListForApp(c echo.Context) error {
+	appId := c.Param("appId")
+
+	page := strToInt(c.QueryParam("page"), 1)
+	itemsPerPage := strToInt(c.QueryParam("itemsPerPage"), 25)
+
+	paginator := h.photoRepository.ForApp(appId, page, itemsPerPage)
+	return responses.SendPaginator(c, http.StatusOK, paginator)
+}
+
 func (h *PhotoHandler) ListForTags(c echo.Context) error {
 	tags := c.QueryParams()["tags[]"]
 	if tags == nil {

@@ -17,6 +17,10 @@ func (r *Factory) DB() *gorm.DB {
 	return r.db
 }
 
+func (r *Factory) AppRepository() *AppRepository {
+	return &AppRepository{r.debug, r.db}
+}
+
 func (r *Factory) UserRepository() *UserRepository {
 	return &UserRepository{r.db}
 }

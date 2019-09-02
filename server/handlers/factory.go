@@ -36,7 +36,13 @@ func (h *Handler) AdminPhoto() *AdminPhotoHandler {
 	}
 }
 
-func (h *Handler) Photo() *PhotoHandler {
+func (h *Handler) AppHandler() *AppHandler {
+	return &AppHandler{
+		appRepository: h.App.RepositoryFactory.AppRepository(),
+	}
+}
+
+func (h *Handler) PhotoHandler() *PhotoHandler {
 	return &PhotoHandler{
 		photoRepository: h.App.RepositoryFactory.PhotoRepository(),
 	}

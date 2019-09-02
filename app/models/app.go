@@ -7,7 +7,7 @@ import (
 type App struct {
 	ID   uint   `gorm:"primary_key"`
 	Name string `gorm:"size:255"`
-	//Photos []Photo `json:"-"`
+	//Photos []PhotoHandler `json:"-"`
 }
 
 func (p *App) GetID() string {
