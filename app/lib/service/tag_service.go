@@ -62,12 +62,13 @@ func (s *TagService) CreateTagsForNames(names []string) {
 }
 
 func (s *TagService) GetAllTagNamesToCreate(names []string) (result []string, err error) {
-	var tags []models.Tag
+	tags := &[]models.Tag{}
+	// what the fuck happened here
 	if err = s.db.Where("name IN (?)", names).Find(&tags).Error; err != nil {
 		return nil, err
 	}
 	var existingTagString []string
-	for _, t := range tags {
+	for _, t := range *tags {
 		existingTagString = append(existingTagString, t.Name)
 	}
 	result = ArrayDiff(names, existingTagString)

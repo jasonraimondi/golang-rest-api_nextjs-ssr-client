@@ -46,6 +46,7 @@ func (s *Factory) PhotoService() *PhotoService {
 	return &PhotoService{
 		db:              s.repository.DB(),
 		photoRepository: s.repository.PhotoRepository(),
+		tagService:      s.TagService(),
 	}
 }
 

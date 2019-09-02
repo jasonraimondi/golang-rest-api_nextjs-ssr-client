@@ -10,8 +10,7 @@ import (
 type PhotoService struct {
 	db              *gorm.DB
 	photoRepository *repository.PhotoRepository
-	appService      *AppService
-	TagService      *TagService
+	tagService      *TagService
 }
 
 func (s *PhotoService) UpdatePhoto(photoId string, description string, app string, tags []string) error {
@@ -21,13 +20,13 @@ func (s *PhotoService) UpdatePhoto(photoId string, description string, app strin
 	}
 	if app != "" {
 		var a models.App
-		if err := s.db.FirstOrCreate(&a, models.App{Name: app}).Error; err != nil {
+		if err = s.db.FirstOrCreate(&a, models.App{Name: app}).Error; err != nil {
 			return err
 		}
 		photo.SetApp(&a)
 	}
 	if len(tags) > 0 {
-		if err := s.TagService.AddTagsToPhoto(photo, tags); err != nil {
+		if err = s.tagService.AddTagsToPhoto(photo, tags); err != nil {
 			return err
 		}
 	}

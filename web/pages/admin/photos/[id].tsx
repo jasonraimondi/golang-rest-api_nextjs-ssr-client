@@ -35,7 +35,7 @@ function Page({ photo }: Props) {
     <p><strong>Tags:</strong> {tagList}</p>
     <EditPhoto photoId={photo.ID}
                app={photo.App ? photo.App.Name : ""}
-               tags={photo.TagList}
+               tags={""}
                description={photo.Description ? photo.Description.String : ""}
                afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}
     />
