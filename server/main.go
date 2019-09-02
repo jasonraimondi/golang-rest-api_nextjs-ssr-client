@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -28,6 +29,7 @@ var (
 	jwtSecureKey  config.JWTSecureKey
 	dbCredentials config.DBCred
 	s3Cred        config.S3Cred
+	allowedOrigin []string
 )
 
 // initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
@@ -46,6 +48,8 @@ func init() {
 		Identifier: env("S3_IDENTIFIER_KEY", "miniominiominio"),
 		Secret:     env("S3_SECRET_KEY", "miniominiominio"),
 	}
+	o := env("ALLOWED_ORIGINS", "http://localhost:3000")
+	allowedOrigin = strings.Split(o, ",")
 }
 
 func main() {
@@ -76,17 +80,18 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000"},
+		AllowOrigins: allowedOrigin,
 		AllowHeaders: []string{echo.HeaderAuthorization, echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodOptions},
 	}))
 
-	config := middleware.JWTConfig{
-		Claims:       &service.JwtCustomClaims{},
-		SigningKey:   []byte(jwtSecureKey),
-		ErrorHandler: func(err error) error { return err },
-	}
-	authRoute := middleware.JWTWithConfig(config)
+	authRoute := middleware.JWTWithConfig(middleware.JWTConfig{
+		Claims:     &service.JwtCustomClaims{},
+		SigningKey: []byte(jwtSecureKey),
+		ErrorHandler: func(err error) error {
+			return err
+		},
+	})
 
 	e.POST("/login", h.AuthHandler().Login)
 	e.POST("/sign_up", h.SignUpHandler().SignUp)
