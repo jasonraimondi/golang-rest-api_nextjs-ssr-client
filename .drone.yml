@@ -5,10 +5,23 @@ steps:
   - name: test backend
     image: golang:1.12-stretch
     commands:
-      - export DB_MIGRATIONS_DIR=/drone/src/db/migrations
-      - apt-get update && apt-get install -y git gcc
+      - apt-get update && apt-get install -y git
       - go test ./...
-
+  - name: publish-latest
+    image: plugins/docker
+    when:
+      event: push
+      branch: master
+    settings:
+      repo: containers.jasonraimondi.com/kim/ux-image-archive-api
+      registry: containers.jasonraimondi.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: [ "latest" ]
+      force_tag: true
+      custom_dns: [ 10.0.0.1, 1.1.1.1 ]
 ---
 kind: pipeline
 name: frontend
@@ -20,3 +33,18 @@ steps:
       - cd web
       - npm install
       - npm run build
+  - name: publish-latest
+    image: plugins/docker
+    when:
+      event: push
+      branch: master
+    settings:
+      repo: containers.jasonraimondi.com/kim/ux-image-archive-ssr
+      registry: containers.jasonraimondi.com
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: [ "latest" ]
+      force_tag: true
+      custom_dns: [ 10.0.0.1, 1.1.1.1 ]
