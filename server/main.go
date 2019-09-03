@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -19,8 +20,6 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 )
 
@@ -50,6 +49,8 @@ func init() {
 	}
 	o := env("ALLOWED_ORIGINS", "http://localhost:3000")
 	allowedOrigin = strings.Split(o, ",")
+
+	fmt.Sprintf("%s %s", dbCredentials.Driver, dbCredentials.Connection)
 }
 
 func main() {
@@ -71,9 +72,10 @@ func main() {
 	var e = echo.New()
 	e.Debug = debug
 
+	repository.Migrate(db)
+
 	if debug {
 		db.SetLogger(log.New(os.Stdout, "\r\n", 0))
-		repository.Migrate(db)
 	}
 
 	e.Use(middleware.Logger())

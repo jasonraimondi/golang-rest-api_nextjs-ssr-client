@@ -35,6 +35,6 @@ function mergeHeaders(headers: StringProps) {
 function mergeConfig(config: AxiosRequestConfig): AxiosRequestConfig {
   return {
     ...config,
-    baseURL: "http://localhost:1323",
+    baseURL: process.env.API_URL,
   };
 }
