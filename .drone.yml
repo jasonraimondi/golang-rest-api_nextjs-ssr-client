@@ -39,6 +39,8 @@ steps:
       branch: master
     settings:
       repo: jasonraimondi/kim-ssr
+      dockerfile: ./web/Dockerfile
+      context: ./web/
       username:
         from_secret: docker_username
       password:
