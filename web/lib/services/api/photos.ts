@@ -1,5 +1,6 @@
 import { get, post } from "../../rest_client";
 import { API_ROUTES } from "../../routes";
+import { ApiResponse } from "./api_response";
 
 export const PHOTO_BASE_PATH = "http://localhost:9000/originals/";
 
@@ -8,13 +9,28 @@ export async function getPhoto(photoId: string) {
   return ToPhoto(res.data);
 }
 
-export async function listPhotosForApp(appId: string, page: number, itemsPerPage: number) {
+export async function listPhotosForApp(appId: string, page: number, itemsPerPage: number): Promise<ApiResponse<Photo[]>> {
   const inputs = { page, itemsPerPage };
   const res: any = await get(API_ROUTES.photos.app.create({ appId }), inputs);
-  if (res.error) {
-    return res.error;
+
+  if (res.data && res.data.records) {
+    return [
+      res.data.records.map((photo: any) => ToPhoto(photo)),
+      undefined,
+    ];
   }
-  return res.data.records.map((photo: any) => ToPhoto(photo));
+
+  if (res.error) {
+    return [
+      [],
+      res.error,
+    ];
+  }
+
+  return [
+    [],
+    "something went wrong!",
+  ];
 }
 
 export async function listPhotos(page: number, itemsPerPage: number) {
@@ -99,7 +115,6 @@ export const ToPhoto = (data: any) => {
 
   photo.FileSizeHuman = formatSizeUnits(photo.FileSize);
 
-  console.log(photo.Description);
   return photo;
 };
 

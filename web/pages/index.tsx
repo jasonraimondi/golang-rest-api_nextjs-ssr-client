@@ -2,11 +2,17 @@ import React from "react";
 import { AppList } from "../components/apps/app_list";
 
 import { defaultLayout } from "../components/layouts/default";
+import { ApiResponse } from "../lib/services/api/api_response";
 import { listApps } from "../lib/services/api/apps";
 import { App } from "../lib/services/api/photos";
 
-function Page({ apps }: { apps: App[] }) {
-  return <AppList apps={apps ? apps : []}/>;
+type Props = {
+  apps: ApiResponse<App[]>
+};
+
+function Page({ apps }: Props) {
+  const [list, error] = apps;
+  return <AppList apps={list} error={error}/>;
 }
 
 Page.getInitialProps = async () => {

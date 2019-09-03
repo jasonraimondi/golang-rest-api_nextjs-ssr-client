@@ -12,10 +12,11 @@ export async function login(inputs: LoginInputs): Promise<string | void> {
     return res.error;
   }
 
-  if (!res.data || !res.data.token) {
-    return "Something went wrong!";
+  if (res.data && res.data.token) {
+    Cookie.set(COOKIES.authToken, res.data.token);
+    await Router.push(APP_ROUTES.admin.dashboard.create());
+    return;
   }
 
-  Cookie.set(COOKIES.authToken, res.data.token);
-  await Router.push(APP_ROUTES.admin.dashboard.create());
+  return "Something went wrong!";
 }

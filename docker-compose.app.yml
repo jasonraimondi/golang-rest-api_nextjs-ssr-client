@@ -15,8 +15,6 @@ services:
 
   web:
     build: ./web
-    env_file:
-      -
     labels:
       - "traefik.enable=true"
       - "traefik.port=3000"

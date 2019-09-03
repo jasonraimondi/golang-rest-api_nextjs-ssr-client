@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -49,8 +48,6 @@ func init() {
 	}
 	o := env("ALLOWED_ORIGINS", "http://localhost:3000")
 	allowedOrigin = strings.Split(o, ",")
-
-	fmt.Sprintf("%s %s", dbCredentials.Driver, dbCredentials.Connection)
 }
 
 func main() {
