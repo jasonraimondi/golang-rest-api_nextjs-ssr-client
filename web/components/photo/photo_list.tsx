@@ -17,6 +17,10 @@ export function PhotoList({ photos, href, error }: Props) {
     return <p>{error}</p>
   }
 
+  if (photos.length === 0) {
+    return <p>No photos.</p>
+  }
+
   return <ul id="photo-list">
     {photos.map((photo: Photo) => <SinglePhoto photo={photo} href={href}/>)}
   </ul>;

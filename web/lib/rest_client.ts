@@ -34,8 +34,10 @@ function mergeHeaders(headers: StringProps) {
 }
 
 function mergeConfig(config: AxiosRequestConfig): AxiosRequestConfig {
+  const baseURL = ENV.api_url;
+  console.log({baseURL});
   return {
     ...config,
-    baseURL: ENV.api_url,
+    baseURL,
   };
 }

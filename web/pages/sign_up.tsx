@@ -1,12 +1,13 @@
 import { Formik, FormikProps } from "formik";
 import { NextPageContext } from "next";
 import React, { CSSProperties } from "react";
+
+import { emailRegex } from "../components/auth/login_form";
 import { SubmitButton } from "../components/forms/button";
 import { TextInput } from "../components/forms/text";
 import { APP_ROUTES } from "../lib/routes";
 import { signUp } from "../lib/services/api/sign_up";
 import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";
-import { emailRegex } from "./login";
 
 export type SignUpInputs = {
   email: string

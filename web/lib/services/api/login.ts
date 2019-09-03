@@ -1,6 +1,6 @@
 import Cookie from "js-cookie";
 import Router from "next/router";
-import { LoginInputs } from "../../../pages/login";
+import { LoginInputs } from "../../../components/auth/login_form";
 import { COOKIES } from "../../cookie";
 import { post } from "../../rest_client";
 import { API_ROUTES, APP_ROUTES } from "../../routes";

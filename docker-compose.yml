@@ -16,7 +16,7 @@ services:
     image: minio/minio
     command: ["server", "/data"]
     ports:
-      - 9000:9000
+      - 9001:9000
     volumes:
       - minio-config:/root/.minio
       - minio-data:/data
@@ -40,12 +40,12 @@ services:
       /usr/bin/mc policy set public myconnection/originals;
       exit 0;
       "
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - 1025:1025 # smtp server
-      - 8025:8025 # web ui
+#
+#  mailhog:
+#    image: mailhog/mailhog
+#    ports:
+#      - 1025:1025 # smtp server
+#      - 8025:8025 # web ui
 
 volumes:
   pg-data:

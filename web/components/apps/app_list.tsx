@@ -12,6 +12,10 @@ export function AppList({ apps, error }: Props) {
     return <p>{error}</p>;
   }
 
+  if (apps.length === 0) {
+    return <p>No apps.</p>
+  }
+
   return <ul>
     {apps.map(app => <li key={app.ID}>
       <a href={APP_ROUTES.app.index.create({ appId: app.ID, appSlug: app.Name })}>{app.Name}</a>

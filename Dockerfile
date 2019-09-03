@@ -1,4 +1,4 @@
-FROM golang:1.13-rc-alpine as builder
+FROM golang:1.13-alpine as builder
 RUN apk add --update git
 ENV GO111MODULE on
 ENV API_PATH /go/src/git.jasonraimondi.com/jason/jasontest
@@ -7,7 +7,7 @@ COPY ./go.* $API_PATH/
 RUN go mod download
 COPY ./app/ $API_PATH/app/
 COPY ./server/ $API_PATH/server/
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./dist/app ./server/main.go
+RUN go build -o ./dist/app ./server/main.go
 RUN chmod +x app
 
 FROM alpine

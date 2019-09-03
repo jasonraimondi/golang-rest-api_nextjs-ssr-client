@@ -12,7 +12,6 @@ type Props = {
 
 function Page({ apps }: Props) {
   const [list, error] = apps;
-  console.log(list, error);
   return <AppList apps={list} error={error}/>;
 }
 
