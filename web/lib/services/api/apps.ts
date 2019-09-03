@@ -20,6 +20,7 @@ export async function listApps(page: number, itemsPerPage: number): Promise<ApiR
   }
 
   if (res.error) {
+    console.log("res error here");
     return [
       [],
       res.error,

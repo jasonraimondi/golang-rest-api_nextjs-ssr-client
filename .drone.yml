@@ -13,8 +13,7 @@ steps:
       event: push
       branch: master
     settings:
-      repo: containers.jasonraimondi.com/kim/ux-image-archive-api
-      registry: containers.jasonraimondi.com
+      repo: jasonraimondi/kim-api
       username:
         from_secret: docker_username
       password:
@@ -39,8 +38,7 @@ steps:
       event: push
       branch: master
     settings:
-      repo: containers.jasonraimondi.com/kim/ux-image-archive-ssr
-      registry: containers.jasonraimondi.com
+      repo: jasonraimondi/kim-ssr
       username:
         from_secret: docker_username
       password:
