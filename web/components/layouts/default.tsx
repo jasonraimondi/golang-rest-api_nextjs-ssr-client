@@ -1,6 +1,5 @@
 import { NextPageContext } from "next";
-import React, { Component } from "react";
-import { AuthProps } from "../../lib/auth/private_route";
+import React from "react";
 import { AuthToken } from "../../lib/services/auth_token";
 import { Head } from "./parts/head";
 import Header from "./parts/header";
@@ -8,19 +7,19 @@ import Header from "./parts/header";
 type Props = { auth?: AuthToken }
 
 export function defaultLayout(Page: any) {
-  return class extends Component<Props> {
-    static async getInitialProps(ctx: NextPageContext & AuthProps) {
-      return {
-        ...(Page.getInitialProps ? await Page.getInitialProps(ctx) : {}),
-      };
-    }
+  const DefaultLayout = (props: Props) => (
+    <>
+      <Head/>
+      <Header auth={props.auth}/>
+      <Page {...props}/>
+    </>
+  );
 
-    render() {
-      return <>
-        <Head/>
-        <Header auth={this.props.auth}/>
-        <Page {...this.props}/>
-      </>;
-    }
+  DefaultLayout.getInitialProps = async (ctx: NextPageContext) => {
+    return {
+      ...(Page.getInitialProps ? await Page.getInitialProps(ctx) : {}),
+    };
   };
+
+  return DefaultLayout;
 }

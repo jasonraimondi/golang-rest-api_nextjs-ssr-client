@@ -1,12 +1,12 @@
 import React from "react";
 import { defaultLayout } from "../../components/layouts/default";
-import { AuthProps, privateRoute } from "../../lib/auth/private_route";
+import { AuthProps, privateRoute } from "../../components/auth/private_route";
 
 type Props = {}
 
-function Page({ auth }: Props & AuthProps) {
+function Page({ token }: Props & AuthProps) {
   return <>
-    <pre>{JSON.stringify(auth)}</pre>
+    <pre>{JSON.stringify(token)}</pre>
   </>;
 }
 

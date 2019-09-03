@@ -1,6 +1,6 @@
 module git.jasonraimondi.com/jason/jasontest
 
-go 1.12
+go 1.13
 
 require (
 	github.com/aws/aws-sdk-go v1.23.13
@@ -11,7 +11,8 @@ require (
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/leodido/go-urn v1.1.0 // indirect
-	github.com/lib/pq v1.2.0 // indirect
+	github.com/lib/pq v1.2.0
+	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/satori/go.uuid v1.2.0
 	golang.org/x/crypto v0.0.0-20190829043050-9756ffdc2472
 	gopkg.in/go-playground/validator.v9 v9.29.1

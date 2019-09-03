@@ -22,4 +22,10 @@ migration-down:
 migration-down-all:
 	migrate -source file://${MIGRATION_DIR} -database ${DB_CONN} down
 
+build:
+	docker build -t jasonraimondi/kim-ssr ./web/
+	docker push jasonraimondi/kim-ssr
+	docker build -t jasonraimondi/kim-api ./
+	docker push jasonraimondi/kim-api
+
 .PHONY: dev stage

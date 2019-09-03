@@ -15,7 +15,7 @@ func TestValidatorsPass(t *testing.T) {
 		t.Fatalf("error registering password strength validator")
 	}
 	weakPass := "hi"
-	strongPass := "12345678" // to us, strong is > 7 characters, nothing else nothing less
+	strongPass := "12345678" // to us, strong is > 7 characters, nothing else
 
 	if err = validate.Var(weakPass, "required,password-strength"); err == nil {
 		t.Fatalf("weak password is not failing password-strength validator")

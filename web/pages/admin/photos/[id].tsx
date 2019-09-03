@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { EditPhoto } from "../../../components/photo/photo_edit";
 import { Tag } from "../../../components/tag";
-import { AuthProps, privateRoute } from "../../../lib/auth/private_route";
+import { privateRoute } from "../../../components/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
 import { getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
 
 type Props = {
-  photo: Photo;
-} & AuthProps
+  photo: Photo,
+};
 
 function Page({ photo }: Props) {
   const [tags, setTags] = useState(photo.Tags);

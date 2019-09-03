@@ -30,7 +30,6 @@ var (
 	allowedOrigin []string
 )
 
-// initialize over init because kingpin.Parse() was causing issues running tests WITH coverage when in the init function
 func init() {
 	if env("ENABLE_DEBUGGING", "true") == "true" {
 		debug = true
@@ -38,7 +37,7 @@ func init() {
 	jwtSecureKey = config.JWTSecureKey(env("JWT_SECURE_KEY", "my-secret-key"))
 	dbCredentials = config.DBCred{
 		Driver:     env("DB_DRIVER", "postgres"),
-		Connection: env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable"),
+		Connection: env("DB_CONNECTION", "host=localhost port=5433 user=print password=print dbname=print sslmode=disable"),
 	}
 	s3Cred = config.S3Cred{
 		Host:       env("S3_HOST", "http://localhost:9000"),

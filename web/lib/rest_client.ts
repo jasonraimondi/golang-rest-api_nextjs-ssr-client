@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { ENV } from "./constants";
 import { catchAxiosError } from "./services/error";
 
 export interface StringProps {
@@ -35,6 +36,6 @@ function mergeHeaders(headers: StringProps) {
 function mergeConfig(config: AxiosRequestConfig): AxiosRequestConfig {
   return {
     ...config,
-    baseURL: process.env.API_URL,
+    baseURL: ENV.api_url,
   };
 }

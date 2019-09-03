@@ -21,7 +21,7 @@ export class AuthToken {
   readonly decodedToken: DecodedToken;
   public logout = AuthToken.logout;
 
-  constructor(readonly token?: string) {
+  private constructor(readonly token?: string) {
     this.decodedToken = { userId: "anonymous", email: "anonymous", exp: 0, isValid: false, isConfirmed: false };
     try {
       if (token) this.decodedToken = jwtDecode(token);
@@ -63,5 +63,9 @@ export class AuthToken {
   static async storeToken(token: string) {
     Cookie.set(COOKIES.authToken, token);
     await Router.push(APP_ROUTES.admin.dashboard.create());
+  }
+
+  static fromToken(token?: string) {
+    return new AuthToken(token)
   }
 }
