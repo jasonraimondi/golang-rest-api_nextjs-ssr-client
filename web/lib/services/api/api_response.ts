@@ -1,1 +1,1 @@
-export type ApiResponse<DATA = any, ERROR = string> = [DATA, ERROR]
+export type ApiResponse<DATA = any, ERROR = string> = [DATA, ERROR?]
