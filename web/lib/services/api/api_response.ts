@@ -1,1 +1,1 @@
-export type ApiResponse<T = any> = [T, string | undefined]
+export type ApiResponse<DATA = any, ERROR = string> = [DATA, ERROR]
