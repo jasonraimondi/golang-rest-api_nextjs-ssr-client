@@ -3,10 +3,16 @@ import React from "react";
 import { defaultLayout } from "../../components/layouts/default";
 import { PhotoList } from "../../components/photo/photo_list";
 import { APP_ROUTES } from "../../lib/routes";
-import { listPhotosForApp } from "../../lib/services/api/photos";
+import { ApiResponse } from "../../lib/services/api/api_response";
+import { listPhotosForApp, Photo } from "../../lib/services/api/photos";
 
-function Page({ photos }: any) {
-  return <PhotoList photos={photos} href={APP_ROUTES.photos.index.create} />;
+type Props = {
+  photos: ApiResponse<Photo[]>
+};
+
+function Page({ photos }: Props) {
+  const [list, error] = photos;
+  return <PhotoList photos={list} error={error} href={APP_ROUTES.photos.index.create}/>;
 }
 
 Page.getInitialProps = async ({ query }: NextPageContext) => {

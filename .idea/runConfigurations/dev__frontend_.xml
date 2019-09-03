@@ -6,7 +6,9 @@
       <script value="dev" />
     </scripts>
     <node-interpreter value="project" />
-    <envs />
+    <envs>
+      <env name="API_URL" value="http://localhost:1323" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>

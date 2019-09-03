@@ -9,11 +9,11 @@ type Props = {
 
 export function AppList({ apps, error }: Props) {
   if (error) {
-    return <p>error</p>;
+    return <p>{error}</p>;
   }
 
   return <ul>
-    {apps.map(app => <li>
+    {apps.map(app => <li key={app.ID}>
       <a href={APP_ROUTES.app.index.create({ appId: app.ID, appSlug: app.Name })}>{app.Name}</a>
     </li>)}
   </ul>;

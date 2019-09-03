@@ -6,11 +6,16 @@ import "./photo_list.css";
 
 interface Props {
   photos: Photo[];
+  error?: string;
   href: (obj: any) => string,
 }
 
-export function PhotoList({ photos, href }: Props) {
+export function PhotoList({ photos, href, error }: Props) {
   if (!photos) return <>No Photos</>;
+
+  if (error) {
+    return <p>{error}</p>
+  }
 
   return <ul id="photo-list">
     {photos.map((photo: Photo) => <SinglePhoto photo={photo} href={href}/>)}
