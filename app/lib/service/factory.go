@@ -28,7 +28,7 @@ func (s *Factory) SignUpService() *SignUpService {
 
 func (s *Factory) PhotoUploadService() *PhotoUploadService {
 	return &PhotoUploadService{
-		originals:      BucketName("originals"),
+		bucketName:     s.s3,
 		repository:     s.repository,
 		userRepository: s.repository.UserRepository(),
 		s3:             s.s3,

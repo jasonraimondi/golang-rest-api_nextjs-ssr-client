@@ -22,10 +22,9 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type BucketName string
 
 type PhotoUploadService struct {
-	originals      BucketName
+	bucketName     string
 	repository     *repository.Factory
 	userRepository *repository.UserRepository
 	s3             *config.S3Config
@@ -62,7 +61,7 @@ func (s *PhotoUploadService) FileUpload(form *multipart.Form, userId string) *ec
 			ContentLength:      aws.Int64(int64(photo.FileSize)),
 			ContentType:        aws.String(http.DetectContentType(buffer)),
 			Body:               bytes.NewReader(buffer),
-			Bucket:             aws.String(string(s.originals)),
+			Bucket:             aws.String(string(s.bucketName)),
 			Key:                aws.String(photo.RelativeURL),
 		}
 		if _, err = s3Client.PutObject(put); err != nil {

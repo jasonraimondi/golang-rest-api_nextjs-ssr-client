@@ -3,6 +3,7 @@ package config
 type JWTSecureKey string
 
 type S3Cred struct {
+	Bucket       string
 	Host         string
 	Region       string
 	Identifier   string

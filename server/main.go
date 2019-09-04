@@ -44,6 +44,7 @@ func init() {
 		Region:     env("S3_REGION", "us-east-1"),
 		Identifier: env("S3_IDENTIFIER_KEY", "miniominiominio"),
 		Secret:     env("S3_SECRET_KEY", "miniominiominio"),
+		Bucket:     env("S3_BUCKET", "originals"),
 	}
 	o := env("ALLOWED_ORIGINS", "http://localhost:3000")
 	allowedOrigin = strings.Split(o, ",")
@@ -56,7 +57,7 @@ func main() {
 	}
 	defer db.Close()
 
-	var s3Config = config.NewS3Config("originals", &aws.Config{
+	var s3Config = config.NewS3Config(s3Cred.Bucket, &aws.Config{
 		Credentials:      credentials.NewStaticCredentials(s3Cred.Identifier, s3Cred.Secret, s3Cred.SessionToken),
 		Endpoint:         aws.String(s3Cred.Host),
 		Region:           aws.String(s3Cred.Region),
