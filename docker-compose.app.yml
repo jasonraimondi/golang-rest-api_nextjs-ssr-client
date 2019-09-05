@@ -4,27 +4,47 @@ services:
   traefik:
     image: traefik
     command:
+      - --api
+      - --docker
+      - --docker.watch
+      - --logLevel=INFO
       - --configfile=/etc/traefik/config/traefik.toml
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/traefik.toml:/etc/traefik/traefik.toml:ro
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      - "8089:8080"
 
   web:
     build: ./web
+    environment:
+      API_URL: "http://localhost/api"
     labels:
       - "traefik.enable=true"
       - "traefik.port=3000"
       - "traefik.frontend.rule=Host: localhost"
 
   app:
-    build: ./server
+    build: ./
     environment:
-      DB_CONNECTION: host=postgres port=5432 user=print password=print dbname=print sslmode=disable
+      ENABLE_DEBUGGING: "true"
+      JWT_SECURE_KEY: "secret"
+      DB_DRIVER: "postgres"
+      DB_CONNECTION: "host=localhost port=5432 user=print password=print dbname=print sslmode=disable"
+      S3_HOST: "http://localhost/media"
+      S3_REGION: "us-est-1"
+      S3_IDENTIFIER_KEY: "miniominiominio"
+      S3_SECRET_KEY: "miniominiominio"
+      S3_BUCKET: "uximgs"
+      ALLOWED_ORIGINS: "http://localhost"
     labels:
       - "traefik.enable=true"
       - "traefik.port=1323"
       - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /api"
+
+  minio:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9000"
+      - "traefik.frontend.rule=Host: localhost; PathPrefixStrip: /media"
