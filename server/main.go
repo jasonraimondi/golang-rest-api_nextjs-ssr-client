@@ -15,6 +15,7 @@ import (
 	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	"git.jasonraimondi.com/jason/jasontest/server/handlers"
+	"git.jasonraimondi.com/jason/jasontest/server/responses"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -90,6 +91,10 @@ func main() {
 		ErrorHandler: func(err error) error {
 			return err
 		},
+	})
+
+	e.GET("/", func(c echo.Context) error {
+		return responses.SendMessage(c, http.StatusOK, "IT WORKS IT WORKS")
 	})
 
 	e.POST("/login", h.AuthHandler().Login)
