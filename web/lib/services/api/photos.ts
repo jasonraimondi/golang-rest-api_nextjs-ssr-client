@@ -1,8 +1,9 @@
+import { ENVIRONMENT } from "../../constants";
 import { get, post } from "../../rest_client";
 import { API_ROUTES } from "../../routes";
 import { ApiResponse } from "./api_response";
 
-export const PHOTO_BASE_PATH = "http://localhost:9000/originals/";
+export const PHOTO_BASE_PATH = ENVIRONMENT.s3_url;
 
 export async function getPhoto(photoId: string) {
   const res: any = await get(`/photos/${photoId}`);

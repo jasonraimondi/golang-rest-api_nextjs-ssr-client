@@ -7,7 +7,6 @@ import { defaultLayout } from "../../../components/layouts/default";
 import { AuthProps, privateRoute } from "../../../components/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
 import { uploadFiles } from "../../../lib/services/api/upload_file";
-import { AuthToken } from "../../../lib/services/auth_token";
 
 export type PhotoUpload = {
   files: File[];
@@ -15,8 +14,7 @@ export type PhotoUpload = {
 
 type Props = AuthProps;
 
-function Page({ token }: Props) {
-  const auth = AuthToken.fromToken(token);
+function Page({ auth }: Props) {
   const initialValues: PhotoUpload = { files: [] };
 
   const validate = (values: PhotoUpload) => {

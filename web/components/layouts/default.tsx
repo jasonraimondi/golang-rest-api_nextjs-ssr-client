@@ -7,13 +7,13 @@ import Header from "./parts/header";
 type Props = { auth?: AuthToken }
 
 export function defaultLayout(Page: any) {
-  const DefaultLayout = (props: Props) => (
-    <>
+  const DefaultLayout = (props: Props) => {
+    return <>
       <Head/>
       <Header auth={props.auth}/>
-      <Page {...props}/>
-    </>
-  );
+      <Page auth={props.auth} {...props}/>
+    </>;
+  };
 
   DefaultLayout.getInitialProps = async (ctx: NextPageContext) => {
     return {
