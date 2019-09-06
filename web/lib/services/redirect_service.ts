@@ -5,6 +5,7 @@ import { APP_ROUTES } from "../routes";
 import { AuthToken } from "./auth_token";
 
 export const redirectToLogin = async (server?: ServerResponse) => {
+  if (server) console.log("toLogin", server.getHeaders());
   await redirectTo(`${APP_ROUTES.auth.login.create()}?redirected=true`, server);
 };
 
