@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { NextPageContext } from "next";
+// import { NextPageContext } from "next";
 import Router from "next/router";
 import { APP_ROUTES } from "../routes";
 import { AuthToken } from "./auth_token";
@@ -9,11 +9,11 @@ export const redirectToLogin = async (server?: ServerResponse) => {
   await redirectTo(`${APP_ROUTES.auth.login.create()}#/redirected`, server);
 };
 
-export const redirectIfAuthenticated = async (ctx: NextPageContext) => {
+export const redirectIfAuthenticated = async (token: string) => {
   try {
-    const auth = AuthToken.fromNext(ctx);
+    const auth = AuthToken.fromToken(token);
     if (auth.isValid) {
-      await redirectTo(`${APP_ROUTES.admin.dashboard.create()}#/redirected`, ctx.res);
+      await redirectTo(`${APP_ROUTES.admin.dashboard.create()}#/redirected`);
     }
   } catch (e) {
   }
