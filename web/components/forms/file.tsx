@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import "./file.css";
 
 interface FileInputFields {
   label: string;
@@ -24,7 +24,7 @@ export function FileInput({
   handleBlur,
   handleChange,
 }: FileInputFields) {
-  return <Label className="block mt-3">
+  return <label className="file-label block mt-3">
     <span className="block">
       {label}:
     </span>
@@ -40,11 +40,5 @@ export function FileInput({
     <span className="block text-sm">
           {error && touched && error}
     </span>
-  </Label>;
+  </label>;
 }
-
-const Label = styled.label`
-  &:first-child {
-    margin-top: 0;
-  }
-`;
