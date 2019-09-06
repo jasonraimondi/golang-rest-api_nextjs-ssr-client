@@ -27,8 +27,8 @@ export const EditPhoto = ({ photoId, afterSave, tags, description, app }: Props)
     let errors: Partial<PhotoInputs> = {};
     if (!values.tags) {
       errors.tags = "Required";
-    } else if (values.tags.split(", ").length === 0) {
-      errors.tags = `Add a tag`;
+    } else if (!values.description) {
+      errors.description = `Required`;
     }
 
     return errors;

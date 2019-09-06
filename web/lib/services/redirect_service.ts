@@ -6,14 +6,14 @@ import { AuthToken } from "./auth_token";
 
 export const redirectToLogin = async (server?: ServerResponse) => {
   if (server) console.log("toLogin", server.getHeaders());
-  await redirectTo(`${APP_ROUTES.auth.login.create()}?redirected=true`, server);
+  await redirectTo(`${APP_ROUTES.auth.login.create()}#/redirected`, server);
 };
 
 export const redirectIfAuthenticated = async (ctx: NextPageContext) => {
   try {
     const auth = AuthToken.fromNext(ctx);
     if (auth.isValid) {
-      await redirectTo(`${APP_ROUTES.admin.dashboard.create()}?redirected=true`, ctx.res);
+      await redirectTo(`${APP_ROUTES.admin.dashboard.create()}#/redirected`, ctx.res);
     }
   } catch (e) {
   }
