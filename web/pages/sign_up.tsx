@@ -1,5 +1,5 @@
 import { Formik, FormikProps } from "formik";
-import { NextPageContext } from "next";
+import { NextPage } from "next";
 import React, { CSSProperties } from "react";
 
 import { emailRegex } from "../components/auth/login_form";
@@ -7,7 +7,7 @@ import { SubmitButton } from "../components/forms/button";
 import { TextInput } from "../components/forms/text";
 import { APP_ROUTES } from "../lib/routes";
 import { signUp } from "../lib/services/api/sign_up";
-import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";
+import { redirectToLogin } from "../lib/services/redirect_service";
 
 export type SignUpInputs = {
   email: string
@@ -16,7 +16,7 @@ export type SignUpInputs = {
   last: string
 }
 
-function Page() {
+const Page: NextPage<any> = () => {
   const initialValues: SignUpInputs = { email: "", password: "", first: "", last: "" };
 
   const validate = (values: SignUpInputs) => {
@@ -114,11 +114,11 @@ function Page() {
       </Formik>
     </div>
   </>;
-}
-
-Page.getInitialProps = async (ctx: NextPageContext) => {
-  await redirectIfAuthenticated(ctx);
-  return {};
 };
+
+// Page.getInitialProps = async (ctx) => {
+//   await redirectIfAuthenticated(ctx);
+//   return {};
+// };
 
 export default Page;

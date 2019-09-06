@@ -1,4 +1,4 @@
-import { NextPageContext } from "next";
+import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import { AuthToken } from "../../lib/services/auth_token";
 import { redirectToLogin } from "../../lib/services/redirect_service";
@@ -10,7 +10,7 @@ export type AuthProps = {
 
 export function privateRoute(Page: any) {
 
-  const PrivateRoute = (props: any) => {
+  const PrivateRoute: NextPage<any> = (props: any) => {
     const [auth, setAuth] = useState(AuthToken.fromToken(props.token));
 
     // componentDidMount
@@ -21,7 +21,7 @@ export function privateRoute(Page: any) {
     return <Page auth={auth} {...props} />;
   };
 
-  PrivateRoute.getInitialProps = async (ctx: NextPageContext) => {
+  PrivateRoute.getInitialProps = async (ctx) => {
     const auth = AuthToken.fromNext(ctx);
     if (auth.isExpired) await redirectToLogin(ctx.res);
     return {

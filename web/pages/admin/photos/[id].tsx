@@ -1,10 +1,10 @@
-import { NextPageContext } from "next";
+import { NextPage } from "next";
 import Router from "next/router";
 import React, { useState } from "react";
+import { privateRoute } from "../../../components/auth/private_route";
 import { defaultLayout } from "../../../components/layouts/default";
 import { EditPhoto } from "../../../components/photo/photo_edit";
 import { Tag } from "../../../components/tag";
-import { privateRoute } from "../../../components/auth/private_route";
 import { APP_ROUTES } from "../../../lib/routes";
 import { getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
 
@@ -12,7 +12,7 @@ type Props = {
   photo: Photo,
 };
 
-function Page({ photo }: Props) {
+const Page: NextPage<Props> = ({ photo }: Props) => {
   const [tags, setTags] = useState(photo.Tags);
 
   const handleRemoveTag = async (photoId: string, tagId: number) => {
@@ -40,9 +40,9 @@ function Page({ photo }: Props) {
                afterSave={() => Router.push(APP_ROUTES.admin.photos.show.create({ photoId: photo.ID }))}
     />
   </div>;
-}
+};
 
-Page.getInitialProps = async ({ query }: NextPageContext) => {
+Page.getInitialProps = async ({ query }) => {
   const id: any = query["id"];
   const photo = await getPhoto(id);
   return { photo };

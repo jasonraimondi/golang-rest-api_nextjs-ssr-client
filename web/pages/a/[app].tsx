@@ -1,4 +1,4 @@
-import { NextPageContext } from "next";
+import { NextPage } from "next";
 import React from "react";
 import { defaultLayout } from "../../components/layouts/default";
 import { PhotoList } from "../../components/photo/photo_list";
@@ -10,12 +10,12 @@ type Props = {
   photos: ApiResponse<Photo[]>
 };
 
-function Page({ photos }: Props) {
+const Page: NextPage<Props> = ({ photos }: Props) => {
   const [list, error] = photos;
   return <PhotoList photos={list} error={error} href={APP_ROUTES.photos.index.create}/>;
-}
+};
 
-Page.getInitialProps = async ({ query }: NextPageContext) => {
+Page.getInitialProps = async ({ query }) => {
   const { app } = query;
   const slug = splitSlug(app.toString());
   const photos = await listPhotosForApp(slug.id, 1, 250);

@@ -1,11 +1,9 @@
 import React from "react";
+import { privateRoute } from "../../components/auth/private_route";
 import { defaultLayout } from "../../components/layouts/default";
-import { AuthProps, privateRoute } from "../../components/auth/private_route";
 
-type Props = {}
-
-function Page({ token }: Props & AuthProps) {
-  return <p>Hi Dashboard: {token}</p>;
-}
+const Page = () => {
+  return <p>Hi Dashboard</p>;
+};
 
 export default privateRoute(defaultLayout(Page));

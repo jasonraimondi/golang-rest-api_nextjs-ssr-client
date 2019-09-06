@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import React from "react";
 import { AppList } from "../components/apps/app_list";
 
@@ -10,10 +11,10 @@ type Props = {
   apps: ApiResponse<App[]>
 };
 
-function Page({ apps }: Props) {
+const Page: NextPage<Props> = ({ apps }: Props) => {
   const [list, error] = apps;
   return <AppList apps={list} error={error}/>;
-}
+};
 
 Page.getInitialProps = async () => {
   const apps = await listApps(1, 250);
