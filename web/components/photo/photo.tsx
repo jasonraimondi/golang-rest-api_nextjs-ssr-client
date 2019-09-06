@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { Photo, PHOTO_BASE_PATH } from "../../lib/services/api/photos";
 
@@ -13,9 +14,9 @@ export function SinglePhoto({ photo, href }: Props) {
   const appSlug = photo.App ? photo.App.Name : "unknown";
   return (
     <li className="border border-grey-800" key={photo.ID}>
-      <a href={href({ appId, appSlug, photoId })}>
-        <img src={photoSrc} alt={photo.Description.String}/>
-      </a>
+      <Link href={href({ appId, appSlug, photoId })}>
+        <a><img src={photoSrc} alt={photo.Description.String}/></a>
+      </Link>
       <div className="p-1">
         <p>{photo.FileName}</p>
         <p>Tags: {photo.TagList}</p>

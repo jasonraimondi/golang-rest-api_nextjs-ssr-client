@@ -18,7 +18,6 @@ const Page: NextPage<Props> = ({ apps }: Props) => {
 
 Page.getInitialProps = async () => {
   const apps = await listApps(1, 250);
-  console.log(apps);
   return { apps };
 };
 

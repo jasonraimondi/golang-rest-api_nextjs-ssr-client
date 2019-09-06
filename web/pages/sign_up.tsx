@@ -1,5 +1,6 @@
 import { Formik, FormikProps } from "formik";
 import { NextPage } from "next";
+import Link from "next/link";
 import React, { CSSProperties } from "react";
 
 import { emailRegex } from "../components/auth/login_form";
@@ -49,7 +50,9 @@ const Page: NextPage<any> = () => {
   };
 
   return <>
-    <a href={APP_ROUTES.auth.login.create()}>Back to Login</a>
+    <Link href={APP_ROUTES.auth.login.create()}>
+      <a>Back to Login</a>
+    </Link>
     <div className="flex flex-col justify-center h-full">
       <Formik initialValues={initialValues}
               validate={validate}
@@ -116,8 +119,10 @@ const Page: NextPage<any> = () => {
   </>;
 };
 
-// Page.getInitialProps = async (ctx) => {
-//   await redirectIfAuthenticated(ctx);
+// Page.getInitialProps = async ({ query: { name } }) => {
+//   console.log({name});
+//   // await redirectToLogin();
+//   // await redirectIfAuthenticated(ctx);
 //   return {};
 // };
 

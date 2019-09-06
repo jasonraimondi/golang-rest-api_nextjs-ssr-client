@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { APP_ROUTES } from "../../lib/routes";
 import { App } from "../../lib/services/api/photos";
@@ -18,7 +19,9 @@ export function AppList({ apps, error }: Props) {
 
   return <ul>
     {apps.map(app => <li key={app.ID}>
-      <a href={APP_ROUTES.app.index.create({ appId: app.ID, appSlug: app.Name })}>{app.Name}</a>
+      <Link href={APP_ROUTES.app.index.create({ appId: app.ID, appSlug: app.Name })}>
+        <a>{app.Name}</a>
+      </Link>
     </li>)}
   </ul>;
 }

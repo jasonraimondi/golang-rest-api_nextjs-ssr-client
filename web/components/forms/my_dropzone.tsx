@@ -8,14 +8,12 @@ export function FileDropZone({ values, setFiles }: any) {
   };
   const onDrop = useCallback(handleAcceptedFiles, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  let inputMessage = "Drop the files here ...";
+  if (isDragActive) inputMessage = "Drag 'n' drop some files here, or click to select files";
   return (
     <div id="file-upload-dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
-      {
-        isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
-      }
+      <p>{inputMessage}</p>
       {values.files.map((file: any, i: any) => <Thumb key={i} file={file}/>)}
     </div>
   );
