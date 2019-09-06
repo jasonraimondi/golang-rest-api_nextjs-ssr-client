@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { defaultLayout } from "../components/layouts/default";
 import { APP_ROUTES } from "../lib/routes";
 import { signUpConfirmation } from "../lib/services/api/sign_up";
-import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";
+import { redirectToLogin } from "../lib/services/redirect_service";
 
 type State = { isValid: boolean, isLoading: boolean };
 type Props = { userId: string, token: string };
@@ -20,10 +20,10 @@ class Page extends Component<Props, State> {
   }
 
   static async getInitialProps(ctx: NextPageContext) {
-    await redirectIfAuthenticated(ctx);
+    // await redirectIfAuthenticated(ctx);
 
     const { t, u } = ctx.query;
-    if (!t || !u) redirectToLogin(ctx.res);
+    if (!t || !u) await redirectToLogin(ctx.res);
     return { token: t, userId: u };
   };
 
