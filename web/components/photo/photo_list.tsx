@@ -1,6 +1,6 @@
 import React from "react";
+import { Photo } from "../../lib/entity/photo";
 
-import { Photo } from "../../lib/services/api/photos";
 import { SinglePhoto } from "./photo";
 import "./photo_list.css";
 

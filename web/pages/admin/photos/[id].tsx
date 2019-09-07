@@ -6,8 +6,9 @@ import { TextInput } from "../../../components/forms/text";
 import { defaultLayout } from "../../../components/layouts/default";
 import { EditPhoto } from "../../../components/photo/photo_edit";
 import { Tag } from "../../../components/tag";
+import { Photo } from "../../../lib/entity/photo";
 import { APP_ROUTES } from "../../../lib/routes";
-import { getPhoto, Photo, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
+import { getPhoto, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
 
 type Props = {
   photo: Photo,

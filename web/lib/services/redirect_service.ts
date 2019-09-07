@@ -1,7 +1,7 @@
 import { ServerResponse } from "http";
 import { NextPageContext } from "next";
-// import { NextPageContext } from "next";
 import Router from "next/router";
+
 import { APP_ROUTES } from "../routes";
 import { AuthToken } from "./auth_token";
 

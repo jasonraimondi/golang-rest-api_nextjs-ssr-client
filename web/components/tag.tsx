@@ -1,7 +1,7 @@
 import React from "react";
-import { Tags } from "../lib/services/api/photos";
+import { Tag } from "../lib/entity/tag";
 
-export type TagProps = { tag: Tags, handleRemoveTag(): void };
+export type TagProps = { tag: Tag, handleRemoveTag(): void };
 
 export function Tag({ tag, handleRemoveTag }: TagProps) {
   return <span className="rounded p-1 m-1 bg-blue-300 ">

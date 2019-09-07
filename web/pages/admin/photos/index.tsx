@@ -4,8 +4,9 @@ import React from "react";
 import { defaultLayout } from "../../../components/layouts/default";
 import { PhotoList } from "../../../components/photo/photo_list";
 import { privateRoute } from "../../../components/auth/private_route";
+import { Photo } from "../../../lib/entity/photo";
 import { APP_ROUTES } from "../../../lib/routes";
-import { listPhotosForUser, Photo } from "../../../lib/services/api/photos";
+import { listPhotosForUser} from "../../../lib/services/api/photos";
 import { AuthToken } from "../../../lib/services/auth_token";
 
 type Props = {
