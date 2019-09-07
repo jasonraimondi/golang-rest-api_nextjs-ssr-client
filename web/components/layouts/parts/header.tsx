@@ -16,11 +16,6 @@ const Header = (props: Props) => {
   return <header>
     <nav>
       <ul className="flex justify-around">
-        <li>
-          <Link href={APP_ROUTES.home.create()}>
-            <a>Home</a>
-          </Link>
-        </li>
         {isAuthenticated ? <PrivateRoutes/> : <PublicRoutes/>}
       </ul>
     </nav>
@@ -54,6 +49,11 @@ function PrivateRoutes() {
 
 function PublicRoutes() {
   return <>
+    <li>
+      <Link href={APP_ROUTES.home.create()}>
+        <a>Home</a>
+      </Link>
+    </li>
     <li>
       <Link href={APP_ROUTES.auth.login.create()}>
         <a>Login</a>

@@ -8,7 +8,7 @@ import { SubmitButton } from "../components/forms/button";
 import { TextInput } from "../components/forms/text";
 import { APP_ROUTES } from "../lib/routes";
 import { signUp } from "../lib/services/api/sign_up";
-import { redirectToLogin } from "../lib/services/redirect_service";
+import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";
 
 export type SignUpInputs = {
   email: string
@@ -119,11 +119,11 @@ const Page: NextPage<any> = () => {
   </>;
 };
 
-// Page.getInitialProps = async ({ query: { name } }) => {
-//   console.log({name});
-//   // await redirectToLogin();
-//   // await redirectIfAuthenticated(ctx);
-//   return {};
-// };
+Page.getInitialProps = async (ctx) => {
+  await redirectIfAuthenticated(ctx);
+  return {
+    message: "including this fluff disables next warning"
+  };
+};
 
 export default Page;

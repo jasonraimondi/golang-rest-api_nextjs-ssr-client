@@ -1,15 +1,16 @@
 {
-  "name": "web",
+  "name": "kim-ssr",
   "version": "1.0.0",
-  "description": "",
+  "description": "The SSR Client",
   "main": "index.js",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jason Raimondi <jason@raimondi.us>",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
