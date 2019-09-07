@@ -1,9 +1,8 @@
 import React from "react";
-import { privateRoute } from "../../components/auth/private_route";
-import { defaultLayout } from "../../components/layouts/default";
+import { adminLayout } from "../../components/layouts/admin/admin_layout";
 
 const Page = () => {
   return <p>Hi Dashboard</p>;
 };
 
-export default privateRoute(defaultLayout(Page));
+export default adminLayout(Page);

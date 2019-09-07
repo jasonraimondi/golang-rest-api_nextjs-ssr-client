@@ -1,9 +1,8 @@
 import Head from "next/head";
 import React from "react";
 
-import { defaultLayout } from "../../../components/layouts/default";
+import { adminLayout } from "../../../components/layouts/admin/admin_layout";
 import { PhotoList } from "../../../components/photo/photo_list";
-import { privateRoute } from "../../../components/auth/private_route";
 import { Photo } from "../../../lib/entity/photo";
 import { APP_ROUTES } from "../../../lib/routes";
 import { listPhotosForUser} from "../../../lib/services/api/photos";
@@ -28,4 +27,4 @@ Page.getInitialProps = async (ctx: any) => {
   return { photos: res };
 };
 
-export default privateRoute(defaultLayout(Page));
+export default adminLayout(Page);

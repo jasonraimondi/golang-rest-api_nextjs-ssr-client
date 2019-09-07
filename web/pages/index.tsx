@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import React from "react";
 import { AppList } from "../components/apps/app_list";
+import { defaultLayout } from "../components/layouts/default_layout";
 
-import { defaultLayout } from "../components/layouts/default";
 import { App } from "../lib/entity/app";
 import { ApiResponse } from "../lib/services/api/api_response";
 import { listApps } from "../lib/services/api/apps";
