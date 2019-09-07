@@ -11,9 +11,9 @@ interface TextInputFields {
   required?: boolean;
   touched?: boolean;
 
-  handleBlur(e: React.FocusEvent<any>): void;
+  handleBlur?(e: React.FocusEvent<any>): void;
 
-  handleChange(e: React.ChangeEvent<any>): void;
+  handleChange?(e: React.ChangeEvent<any>): void;
 }
 
 export function TextInput({

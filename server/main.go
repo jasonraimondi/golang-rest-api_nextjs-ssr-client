@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -38,7 +39,7 @@ func init() {
 	jwtSecureKey = config.JWTSecureKey(env("JWT_SECURE_KEY", "my-secret-key"))
 	dbCredentials = config.DBCred{
 		Driver:     env("DB_DRIVER", "postgres"),
-		Connection: env("DB_CONNECTION", "host=localhost port=5433 user=print password=print dbname=print sslmode=disable"),
+		Connection: env("DB_CONNECTION", "host=localhost port=5432 user=print password=print dbname=print sslmode=disable"),
 	}
 	s3Cred = config.S3Cred{
 		Host:       env("S3_HOST", "http://localhost:9000"),
@@ -54,7 +55,7 @@ func init() {
 func main() {
 	db, err := gorm.Open(dbCredentials.Driver, dbCredentials.Connection)
 	if err != nil {
-		panic("failed to connect to database")
+		panic(fmt.Sprintf("failed to connect to database (%s %s)", dbCredentials.Driver, dbCredentials.Connection))
 	}
 	defer db.Close()
 
