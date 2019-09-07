@@ -31,10 +31,10 @@ const Page: NextPage<Props> = ({ photo }: Props) => {
   return <div className="container mx-auto max-w-sm">
     <img width={420} src={PHOTO_BASE_PATH + photo.RelativeURL} alt={photo.Description.String}
          title={photo.Description.String}/>
-    <TextInput type="text" label="File Size" name="file-size" value={photo.FileSizeHuman}/>
-    <TextInput type="text" label="Mime Type" name="mine-type" value={photo.MimeType}/>
-    <TextInput type="text" label="File Name" name="file-size" value={photo.FileName}/>
-    <p><strong>Tags:</strong> {tagList}</p>
+    <TextInput type="text" label="File Size" name="file-size" value={photo.FileSizeHuman} disabled={true}/>
+    <TextInput type="text" label="Mime Type" name="mine-type" value={photo.MimeType} disabled={true}/>
+    <TextInput type="text" label="File Name" name="file-size" value={photo.FileName} disabled={true}/>
+    <p className="pt-4"><strong>Tags:</strong><br /> {tagList}</p>
     <EditPhoto photoId={photo.ID}
                app={photo.App ? photo.App.Name : ""}
                tags={""}

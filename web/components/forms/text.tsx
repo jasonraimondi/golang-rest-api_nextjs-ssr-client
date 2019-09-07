@@ -10,6 +10,7 @@ interface TextInputFields {
   submitting?: boolean
   required?: boolean;
   touched?: boolean;
+  disabled?: boolean;
 
   handleBlur?(e: React.FocusEvent<any>): void;
 
@@ -23,6 +24,7 @@ export function TextInput({
   value,
   error,
   touched,
+  disabled,
   validating,
   submitting,
   required,
@@ -35,7 +37,7 @@ export function TextInput({
            type={type}
            name={name}
            id={name}
-           disabled={submitting || validating}
+           disabled={submitting || validating || disabled}
            onBlur={handleBlur}
            onChange={handleChange}
            value={value}
