@@ -1,14 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { APP_ROUTES } from "../../../../lib/routes";
-import { AuthToken } from "../../../../lib/services/auth_token";
+import { APP_ROUTES } from "../../../lib/routes";
 
-interface Props {
-  auth?: AuthToken,
-}
-
-export const AdminHeader = (props: Props) => {
-  console.log("header props", props);
+export const AdminHeader = () => {
   return <header>
     <nav>
       <ul className="flex justify-around">

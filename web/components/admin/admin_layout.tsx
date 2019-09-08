@@ -1,12 +1,11 @@
 import { NextPage } from "next";
 import React from "react";
 
-import { AuthToken } from "../../../lib/services/auth_token";
-import { privateRoute } from "../../auth/private_route";
+import { AuthProps, privateRoute } from "../auth/private_route";
 import { AdminHead } from "./parts/admin_head";
 import { AdminHeader } from "./parts/admin_header";
 
-type Props = { auth?: AuthToken }
+type Props = AuthProps
 
 export function adminLayout(Page: any) {
   const DefaultLayout: NextPage<any> = (props: Props) => {

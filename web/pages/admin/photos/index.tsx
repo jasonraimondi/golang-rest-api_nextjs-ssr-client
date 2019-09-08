@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-import { adminLayout } from "../../../components/layouts/admin/admin_layout";
+import { adminLayout } from "../../../components/admin/admin_layout";
 import { PhotoList } from "../../../components/photo/photo_list";
 import { Photo } from "../../../lib/entity/photo";
 import { APP_ROUTES } from "../../../lib/routes";

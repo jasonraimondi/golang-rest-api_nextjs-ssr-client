@@ -1,9 +1,8 @@
 import NextHead from "next/head";
-import "../../../../styles/style.css";
+import "../../../styles/style.css";
 
-export const AdminHead = (props: any) => {
-  const {children} = props;
-  console.log(children);
+export const AdminHead = ({children}: any) => {
+  console.log({children});
   return <>
     <NextHead>
       <title>Admin Pages</title>

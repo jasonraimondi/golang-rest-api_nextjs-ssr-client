@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Router from "next/router";
 import React, { useState } from "react";
 import { TextInput } from "../../../components/forms/text";
-import { adminLayout } from "../../../components/layouts/admin/admin_layout";
+import { adminLayout } from "../../../components/admin/admin_layout";
 import { EditPhoto } from "../../../components/photo/photo_edit";
 import { Tag } from "../../../components/tag";
 import { Photo } from "../../../lib/entity/photo";

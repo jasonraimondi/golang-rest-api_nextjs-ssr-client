@@ -4,7 +4,7 @@ import Router from "next/router";
 import { SubmitButton } from "../../../components/forms/button";
 import { FileDropZone } from "../../../components/forms/my_dropzone";
 import { AuthProps } from "../../../components/auth/private_route";
-import { adminLayout } from "../../../components/layouts/admin/admin_layout";
+import { adminLayout } from "../../../components/admin/admin_layout";
 import { APP_ROUTES } from "../../../lib/routes";
 import { uploadFiles } from "../../../lib/services/api/upload_file";
 
