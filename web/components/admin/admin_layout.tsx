@@ -11,7 +11,7 @@ export function adminLayout(Page: any) {
   const DefaultLayout: NextPage<any> = (props: Props) => {
     return <>
       <AdminHead/>
-      <AdminHeader auth={props.auth}/>
+      <AdminHeader/>
       <Page auth={props.auth} {...props}/>
     </>;
   };

@@ -1,5 +1,5 @@
 import NextHead from "next/head";
-import "../../../styles/style.css";
+// import "../../../styles/style.css";
 
 export const Head = () => {
   return <>

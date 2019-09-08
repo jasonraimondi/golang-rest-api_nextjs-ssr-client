@@ -1,8 +1,8 @@
 import React from "react";
-import { Photo } from "../../lib/entity/photo";
 
+import { Photo } from "../../lib/entity/photo";
 import { SinglePhoto } from "./photo";
-import "./photo_list.css";
+// import "./photo_list.css";
 
 interface Props {
   photos: Photo[];
