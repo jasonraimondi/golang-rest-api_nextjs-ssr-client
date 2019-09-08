@@ -1,23 +1,25 @@
-import { NextPage } from "next";
+import { NextPage, NextPageContext } from "next";
 import Router from "next/router";
 import React, { useState } from "react";
+import { AuthProps } from "../../../components/auth/private_route";
 import { TextInput } from "../../../components/forms/text";
 import { adminLayout } from "../../../components/admin/admin_layout";
 import { EditPhoto } from "../../../components/photo/photo_edit";
 import { Tag } from "../../../components/tag";
 import { Photo } from "../../../lib/entity/photo";
 import { APP_ROUTES } from "../../../lib/routes";
-import { getPhoto, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/services/api/photos";
+import { getPhoto, PHOTO_BASE_PATH, removeTagFromPhoto } from "../../../lib/api/photos";
 
-type Props = {
+type Props = AuthProps & {
   photo: Photo,
 };
 
-const Page: NextPage<Props> = ({ photo }: Props) => {
+const Page: NextPage<Props> = ({ photo, auth }) => {
   const [tags, setTags] = useState(photo.Tags);
 
   const handleRemoveTag = async (photoId: string, tagId: number) => {
-    const res: any = await removeTagFromPhoto(photoId, tagId);
+    console.log(auth, photoId, tagId);
+    const res: any = await removeTagFromPhoto("auth.authorizationString", photoId, tagId);
     if (res.status == 202) {
       setTags(tags.filter(tag => tag.ID !== tagId));
     }
@@ -43,10 +45,10 @@ const Page: NextPage<Props> = ({ photo }: Props) => {
   </div>;
 };
 
-Page.getInitialProps = async ({ query }) => {
+Page.getInitialProps = async ({ query, auth, token }: NextPageContext & AuthProps) => {
   const id: any = query["id"];
   const photo = await getPhoto(id);
-  return { photo };
+  return { photo, auth, token };
 };
 
 export default adminLayout(Page);

@@ -5,7 +5,7 @@ import { adminLayout } from "../../../components/admin/admin_layout";
 import { PhotoList } from "../../../components/photo/photo_list";
 import { Photo } from "../../../lib/entity/photo";
 import { APP_ROUTES } from "../../../lib/routes";
-import { listPhotosForUser} from "../../../lib/services/api/photos";
+import { listPhotosForUser} from "../../../lib/api/photos";
 import { AuthToken } from "../../../lib/services/auth_token";
 
 type Props = {

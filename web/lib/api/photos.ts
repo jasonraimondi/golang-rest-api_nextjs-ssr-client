@@ -1,7 +1,7 @@
-import { ENVIRONMENT } from "../../constants";
-import { Photo, ToPhoto } from "../../entity/photo";
-import { get, post } from "../../rest_client";
-import { API_ROUTES } from "../../routes";
+import { ENVIRONMENT } from "../constants";
+import { Photo, ToPhoto } from "../entity/photo";
+import { get, post } from "../rest_client";
+import { API_ROUTES } from "../routes";
 import { ApiResponse } from "./api_response";
 
 export const PHOTO_BASE_PATH = ENVIRONMENT.s3_url;
@@ -62,14 +62,27 @@ export async function listPhotosForUser(userId: string, page: number, itemsPerPa
   return res.data.records.map((photo: any) => ToPhoto(photo));
 }
 
-export async function removeTagFromPhoto(photoId: string, tagId: number) {
-  return await post(API_ROUTES.photos.remove_tag.create({ photoId, tagId: tagId.toString() }));
+// export async function removePhoto(photoId: string): Promise<ApiResponse<boolean>> {
+//   return await post(API_ROUTES.photos.remove_tag.create({ photoId }));
+// }
+
+export async function removeTagFromPhoto(authString: string, photoId: string, tagId: number) {
+  return await post(
+    API_ROUTES.photos.remove_tag.create({ photoId, tagId: tagId.toString() }),
+    undefined,
+    {
+      Authorization: authString,
+    }
+  );
 }
 
-export async function updatePhoto(photoId: string, tags: string[], description: string, app: string) {
+export async function updatePhoto(authString: string, photoId: string, tags: string[], description: string, app: string) {
   const data = new URLSearchParams({ description, app });
   tags.forEach(tag => data.append("tags[]", tag));
-  const res: any = await post(API_ROUTES.photos.update.create({ photoId }), data);
+  const res: any = await post(API_ROUTES.photos.update.create({ photoId }), data,
+    {
+      Authorization: authString,
+    });
   if (res.error) {
     return res.error;
   }

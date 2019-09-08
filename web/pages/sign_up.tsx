@@ -7,7 +7,7 @@ import { emailRegex } from "../components/auth/login_form";
 import { SubmitButton } from "../components/forms/button";
 import { TextInput } from "../components/forms/text";
 import { APP_ROUTES } from "../lib/routes";
-import { signUp } from "../lib/services/api/sign_up";
+import { signUp } from "../lib/api/sign_up";
 import { redirectIfAuthenticated, redirectToLogin } from "../lib/services/redirect_service";
 
 export type SignUpInputs = {

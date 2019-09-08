@@ -1,6 +1,6 @@
-import { App } from "../../entity/app";
-import { get } from "../../rest_client";
-import { API_ROUTES } from "../../routes";
+import { App } from "../entity/app";
+import { get } from "../rest_client";
+import { API_ROUTES } from "../routes";
 import { ApiResponse } from "./api_response";
 
 function ToApp(data: any) {

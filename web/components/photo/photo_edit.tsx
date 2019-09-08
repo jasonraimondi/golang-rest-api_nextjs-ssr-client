@@ -1,6 +1,6 @@
 import { Formik, FormikActions, FormikProps } from "formik";
 import React from "react";
-import { updatePhoto } from "../../lib/services/api/photos";
+import { updatePhoto } from "../../lib/api/photos";
 
 import { SubmitButton } from "../forms/button";
 import { TextInput } from "../forms/text";
@@ -35,10 +35,9 @@ export const EditPhoto = ({ photoId, afterSave, tags, description, app }: Props)
   };
 
   const onSubmit = async (values: PhotoInputs, { setSubmitting, setStatus }: FormikActions<PhotoInputs>) => {
-
-
     const tags = values.tags.split(", ");
-    const errorMessage: string | null = await updatePhoto(photoId, tags, values.description, values.app);
+    // @TODO fix auth string...
+    const errorMessage: string | null = await updatePhoto("authstring", photoId, tags, values.description, values.app);
     if (errorMessage) setStatus(errorMessage);
     setSubmitting(false);
     afterSave();

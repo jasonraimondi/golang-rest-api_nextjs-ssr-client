@@ -22,6 +22,6 @@ export function PhotoList({ photos, href, error }: Props) {
   }
 
   return <ul id="photo-list">
-    {photos.map((photo: Photo) => <SinglePhoto photo={photo} href={href}/>)}
+    {photos.map((photo: Photo) => <SinglePhoto photo={photo} href={href} key={photo.ID}/>)}
   </ul>;
 }

@@ -55,7 +55,11 @@ func init() {
 func main() {
 	db, err := gorm.Open(dbCredentials.Driver, dbCredentials.Connection)
 	if err != nil {
-		panic(fmt.Sprintf("failed to connect to database (%s %s)", dbCredentials.Driver, dbCredentials.Connection))
+		var msg = "failed to connect to database"
+		if debug {
+			msg = fmt.Sprintf("%s (%s %s)", msg, dbCredentials.Driver, dbCredentials.Connection)
+		}
+		panic(msg)
 	}
 	defer db.Close()
 
@@ -108,15 +112,11 @@ func main() {
 	e.GET("/photos/:photoId", h.PhotoHandler().Show)
 
 	admin := e.Group("/admin")
-	//admin.Use(authRoute)
+	admin.Use(authRoute)
 	admin.POST("/photos/user/:userId", h.AdminPhoto().Create)
 	admin.POST("/photos/:photoId/tags/:tagId", h.AdminPhoto().RemoveTag)
-
 	admin.POST("/photos/:photoId", h.AdminPhoto().UpdatePhoto)
-
-	// @todo remove this
-	fake := e.Group("/fake")
-	fake.Use(authRoute)
+	admin.POST("/photos/:photoId/delete", h.AdminPhoto().RemovePhoto)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

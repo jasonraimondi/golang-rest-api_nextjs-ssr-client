@@ -41,6 +41,11 @@ func (s *TagService) createMissingTags(tags []string) error {
 	return nil
 }
 
+func (s *TagService) RemovePhoto(photo *models.Photo) error {
+	// @TODO remove photo from aws before deleting from the database
+	return s.photoRepository.Delete(photo)
+}
+
 func (s *TagService) RemoveTagFromPhoto(photoId string, tagId uint) error {
 	return s.photoRepository.UnlinkTag(photoId, tagId)
 }

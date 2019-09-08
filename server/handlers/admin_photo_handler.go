@@ -6,6 +6,7 @@ import (
 
 	"github.com/labstack/echo"
 
+	"git.jasonraimondi.com/jason/jasontest/app/lib/repository"
 	"git.jasonraimondi.com/jason/jasontest/app/lib/service"
 	"git.jasonraimondi.com/jason/jasontest/server/responses"
 )
@@ -13,6 +14,7 @@ import (
 type AdminPhotoHandler struct {
 	photoUploadService *service.PhotoUploadService
 	photoService       *service.PhotoService
+	photoRepository    *repository.PhotoRepository
 	tagService         *service.TagService
 }
 
@@ -47,6 +49,15 @@ func (h *AdminPhotoHandler) UpdatePhoto(c echo.Context) error {
 //	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
 //}
 
+func (h *AdminPhotoHandler) RemovePhoto(c echo.Context) error {
+	photoId := c.Param("photoId")
+	if photo, err := h.photoRepository.GetById(photoId); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	} else if err = h.tagService.RemovePhoto(photo); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
+	}
+	return responses.SendMessage(c, http.StatusAccepted, http.StatusText(http.StatusAccepted))
+}
 func (h *AdminPhotoHandler) RemoveTag(c echo.Context) error {
 	photoId := c.Param("photoId")
 	if tagId, err := strconv.Atoi(c.Param("tagId")); err != nil {

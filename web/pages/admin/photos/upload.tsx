@@ -1,4 +1,5 @@
 import { Formik, FormikActions, FormikProps } from "formik";
+import { NextPage } from "next";
 import Router from "next/router";
 
 import { SubmitButton } from "../../../components/forms/button";
@@ -6,7 +7,7 @@ import { FileDropZone } from "../../../components/forms/my_dropzone";
 import { AuthProps } from "../../../components/auth/private_route";
 import { adminLayout } from "../../../components/admin/admin_layout";
 import { APP_ROUTES } from "../../../lib/routes";
-import { uploadFiles } from "../../../lib/services/api/upload_file";
+import { uploadFiles } from "../../../lib/api/upload_file";
 
 export type PhotoUpload = {
   files: File[];
@@ -14,7 +15,7 @@ export type PhotoUpload = {
 
 type Props = AuthProps;
 
-function Page({ auth }: Props) {
+const Page: NextPage<Props> = ({ auth }: Props) => {
   const initialValues: PhotoUpload = { files: [] };
 
   const validate = (values: PhotoUpload) => {
@@ -59,8 +60,7 @@ function Page({ auth }: Props) {
       <SubmitButton label="Upload" type="submit" disabled={isSubmitting}/>
     </form>}
   </Formik>;
-
-}
+};
 
 
 export default adminLayout(Page);

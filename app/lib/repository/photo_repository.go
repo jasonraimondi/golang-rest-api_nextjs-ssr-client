@@ -30,6 +30,10 @@ func (r *PhotoRepository) Create(u *models.Photo) (err error) {
 	return r.db.Create(u).Error
 }
 
+func (r *PhotoRepository) Delete(u *models.Photo) (err error) {
+	return r.db.Delete(u, "id = ?", u.ID).Error
+}
+
 func (r *PhotoRepository) UnlinkTag(photoId string, tagId uint) error {
 	var tag models.Tag
 	var photo models.Photo

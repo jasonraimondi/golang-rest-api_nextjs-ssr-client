@@ -43,11 +43,12 @@ export const APP_ROUTES = {
 export const API_ROUTES = {
   photos: {
     // index: route("/photos/index"),
-    create: route("/photos/create"),
+    // create: route("/photos/create"),
+    upload_photo: route("/admin/photos/user/:userId"),
+    remove_tag: route("/admin/photos/:photoId/tags/:tagId"),
     update: route("/admin/photos/:photoId"),
     add_tags: route("/admin/photos/:photoId/tags"),
-    remove_tag: route("/admin/photos/:photoId/tags/:tagId"),
-    upload_photo: route("/admin/photos/user/:userId"),
+    remove_photo: route("/admin/photos/:photoId/delete"),
     app: route("/photos/app/:appId"),
   },
   login: route("/login"),

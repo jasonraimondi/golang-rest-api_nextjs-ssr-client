@@ -4,8 +4,8 @@ import { defaultLayout } from "../../components/layouts/default_layout";
 import { PhotoList } from "../../components/photo/photo_list";
 import { Photo } from "../../lib/entity/photo";
 import { APP_ROUTES } from "../../lib/routes";
-import { ApiResponse } from "../../lib/services/api/api_response";
-import { listPhotosForApp} from "../../lib/services/api/photos";
+import { ApiResponse } from "../../lib/api/api_response";
+import { listPhotosForApp} from "../../lib/api/photos";
 import { splitSlug } from "../../lib/services/slug_service";
 
 type Props = {
