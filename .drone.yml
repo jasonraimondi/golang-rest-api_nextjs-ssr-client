@@ -31,8 +31,6 @@ steps:
     commands:
       - cd web
       - echo "TODO TEST FRONTEND"
-#      - npm install
-#      - npm run build
   - name: publish-latest
     image: plugins/docker
     when:

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-// import "./my_dropzone.css";
+import "./my_dropzone.css";
 
 export function FileDropZone({ values, setFiles }: any) {
   const handleAcceptedFiles = (acceptedFiles: File[]) => {

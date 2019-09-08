@@ -1,8 +1,6 @@
 import React from "react";
 import NextHead from "next/head";
 
-// import "../../../styles/style.css";
-
 export const AdminHead = () => {
   return <>
     <NextHead>
