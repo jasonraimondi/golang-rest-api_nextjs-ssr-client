@@ -9,6 +9,8 @@ import { adminLayout } from "../../../components/admin/admin_layout";
 import { APP_ROUTES } from "../../../lib/routes";
 import { uploadFiles } from "../../../lib/api/upload_file";
 
+import "./upload.css";
+
 export type PhotoUpload = {
   files: File[];
 }
@@ -49,7 +51,7 @@ const Page: NextPage<Props> = ({ auth }: Props) => {
       // handleBlur,
       handleSubmit,
       isSubmitting,
-    }: FormikProps<PhotoUpload>) => <form className="container mx-auto" onSubmit={handleSubmit}>
+    }: FormikProps<PhotoUpload>) => <form id="upload-photo-form" className="container mx-auto" onSubmit={handleSubmit}>
       <p>{status ? status : null}</p>
 
       <FileDropZone values={values} setFiles={(acceptedFiles: File[]) => {

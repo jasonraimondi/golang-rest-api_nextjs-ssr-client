@@ -10,7 +10,7 @@ COPY ./server/ $API_PATH/server/
 RUN go build -o ./dist/app ./server/main.go
 RUN chmod +x app
 
-FROM alpine
+FROM scratch
 LABEL maintainer="Jason Raimondi <jason@raimondi.us>"
 COPY --from=builder /go/src/git.jasonraimondi.com/jason/jasontest/dist/app /bin/app
 CMD ["/bin/app"]

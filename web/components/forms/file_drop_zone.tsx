@@ -13,11 +13,7 @@ export function FileDropZone({ values, setFiles }: any) {
     })));
   };
   const onDrop = useCallback(handleAcceptedFiles, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: 'image/*' });
-  let inputMessage = "Drop the files here ...";
-  if (isDragActive) {
-    inputMessage = "Drag 'n' drop some files here, or click to select files";
-  }
+  const { getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject } = useDropzone({ onDrop, accept: 'image/*' });
 
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -26,9 +22,15 @@ export function FileDropZone({ values, setFiles }: any) {
 
   return (
     <div id="file-upload-dropzone" {...getRootProps()}>
-      <input {...getInputProps()} />
-      <p>{inputMessage}</p>
-      <div>
+      <div className="inputs">
+        <input {...getInputProps()} />
+        <p>
+          {isDragAccept && ("All files will be accepted")}
+          {isDragReject && ("Some files will be rejected")}
+          {!isDragActive && ("Drop some files here ...")}
+        </p>
+      </div>
+      <div className="previews">
         {values.files.map((file: MyFile) => <Thumb key={file.name} file={file}/>)}
       </div>
     </div>
