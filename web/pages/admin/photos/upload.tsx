@@ -49,7 +49,7 @@ const Page: NextPage<Props> = ({ auth }: Props) => {
       // handleBlur,
       handleSubmit,
       isSubmitting,
-    }: FormikProps<PhotoUpload>) => <form className="container mx-auto max-w-sm" onSubmit={handleSubmit}>
+    }: FormikProps<PhotoUpload>) => <form className="container mx-auto" onSubmit={handleSubmit}>
       <p>{status ? status : null}</p>
 
       <FileDropZone values={values} setFiles={(acceptedFiles: File[]) => {
