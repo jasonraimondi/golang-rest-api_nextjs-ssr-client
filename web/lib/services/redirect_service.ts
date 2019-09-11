@@ -2,8 +2,8 @@ import { ServerResponse } from "http";
 import { NextPageContext } from "next";
 import Router from "next/router";
 
-import { APP_ROUTES } from "../routes";
-import { AuthToken } from "./auth_token";
+import { APP_ROUTES } from "@/lib/routes";
+import { AuthToken } from "@/lib/services/auth_token";
 
 export const redirectToLogin = async (server?: ServerResponse) => {
   if (server) console.log("toLogin", server.getHeaders());

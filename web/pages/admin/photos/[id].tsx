@@ -2,13 +2,13 @@ import { NextPage, NextPageContext } from "next";
 import Router from "next/router";
 import React from "react";
 
-import { adminLayout } from "../../../components/admin/admin_layout";
-import { AuthProps } from "../../../components/auth/private_route";
-import { TextInput } from "../../../components/forms/text";
-import { EditPhoto } from "../../../components/photo/photo_edit";
-import { getPhoto, PHOTO_BASE_PATH } from "../../../lib/api/photos";
-import { Photo } from "../../../lib/entity/photo";
-import { APP_ROUTES } from "../../../lib/routes";
+import { adminLayout } from "@/components/admin/admin_layout";
+import { AuthProps } from "@/components/auth/private_route";
+import { TextInput } from "@/components/forms/text";
+import { EditPhoto } from "@/components/photo/photo_edit";
+import { getPhoto, PHOTO_BASE_PATH } from "@/lib/api/photos";
+import { Photo } from "@/lib/entity/photo";
+import { APP_ROUTES } from "@/lib/routes";
 
 type Props = AuthProps & {
   photo: Photo,

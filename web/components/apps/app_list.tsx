@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { App } from "../../lib/entity/app";
-import { APP_ROUTES } from "../../lib/routes";
+
+import { App } from "@/lib/entity/app";
+import { APP_ROUTES } from "@/lib/routes";
 
 type Props = {
   apps: App[],

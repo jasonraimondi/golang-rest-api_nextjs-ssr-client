@@ -2,12 +2,12 @@ import { Formik, FormikActions, FormikProps } from "formik";
 import { NextPage } from "next";
 import Router from "next/router";
 
-import { SubmitButton } from "../../../components/forms/button";
-import { FileDropZone } from "../../../components/forms/file_drop_zone";
-import { AuthProps } from "../../../components/auth/private_route";
-import { adminLayout } from "../../../components/admin/admin_layout";
-import { APP_ROUTES } from "../../../lib/routes";
-import { uploadFiles } from "../../../lib/api/upload_file";
+import { SubmitButton } from "@/components/forms/button";
+import { FileDropZone } from "@/components/forms/file_drop_zone";
+import { AuthProps } from "@/components/auth/private_route";
+import { adminLayout } from "@/components/admin/admin_layout";
+import { APP_ROUTES } from "@/lib/routes";
+import { uploadFiles } from "@/lib/api/upload_file";
 
 import "./upload.css";
 

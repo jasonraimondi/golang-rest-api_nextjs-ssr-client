@@ -1,6 +1,6 @@
-import { App } from "./app";
-import { NullInt, NullString } from "./base";
-import { Tag } from "./tag";
+import { App } from "@/lib/entity/app";
+import { NullInt, NullString } from "@/lib/entity/base";
+import { Tag } from "@/lib/entity/tag";
 
 export interface Photo {
   ID: string;

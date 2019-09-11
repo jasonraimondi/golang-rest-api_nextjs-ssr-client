@@ -1,5 +1,5 @@
-import { postMultipart } from "../rest_client";
-import { API_ROUTES } from "../routes";
+import { postMultipart } from "@/lib/rest_client";
+import { API_ROUTES } from "@/lib/routes";
 
 interface UploadFileFields {
   userId: string;

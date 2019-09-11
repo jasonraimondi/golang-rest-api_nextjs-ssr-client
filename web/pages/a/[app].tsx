@@ -1,12 +1,12 @@
 import { NextPage } from "next";
 import React from "react";
-import { defaultLayout } from "../../components/layouts/default_layout";
-import { PhotoList } from "../../components/photo/photo_list";
-import { Photo } from "../../lib/entity/photo";
-import { APP_ROUTES } from "../../lib/routes";
-import { ApiResponse } from "../../lib/api/api_response";
-import { listPhotosForApp} from "../../lib/api/photos";
-import { splitSlug } from "../../lib/services/slug_service";
+import { defaultLayout } from "@/components/layouts/default_layout";
+import { PhotoList } from "@/components/photo/photo_list";
+import { Photo } from "@/lib/entity/photo";
+import { APP_ROUTES } from "@/lib/routes";
+import { ApiResponse } from "@/lib/api/api_response";
+import { listPhotosForApp} from "@/lib/api/photos";
+import { splitSlug } from "@/lib/services/slug_service";
 
 type Props = {
   photos: ApiResponse<Photo[]>

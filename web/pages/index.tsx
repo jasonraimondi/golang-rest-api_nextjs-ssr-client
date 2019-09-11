@@ -1,11 +1,11 @@
 import { NextPage } from "next";
 import React from "react";
-import { AppList } from "../components/apps/app_list";
-import { defaultLayout } from "../components/layouts/default_layout";
+import { AppList } from "@/components/apps/app_list";
+import { defaultLayout } from "@/components/layouts/default_layout";
 
-import { App } from "../lib/entity/app";
-import { ApiResponse } from "../lib/api/api_response";
-import { listApps } from "../lib/api/apps";
+import { App } from "@/lib/entity/app";
+import { ApiResponse } from "@/lib/api/api_response";
+import { listApps } from "@/lib/api/apps";
 
 type Props = {
   apps: ApiResponse<App[]>

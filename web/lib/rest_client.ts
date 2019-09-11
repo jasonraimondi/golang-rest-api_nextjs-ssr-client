@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { ENVIRONMENT } from "./constants";
-import { catchAxiosError } from "./services/error";
+
+import { ENVIRONMENT } from "@/lib/constants";
+import { catchAxiosError } from "@/lib/services/error";
 
 export interface StringProps {
   [id: string]: string | number | string[] | number[]

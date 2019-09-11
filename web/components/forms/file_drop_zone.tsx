@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import "./file_drop_zone.css";
+
+import "@/components/forms/file_drop_zone.css";
 
 type MyFile = File & {
   preview?: string;

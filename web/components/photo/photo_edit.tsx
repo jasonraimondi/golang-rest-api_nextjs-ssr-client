@@ -1,8 +1,8 @@
 import { Formik, FormikActions, FormikProps } from "formik";
 import React, { useState } from "react";
-import { removeTagFromPhoto, updatePhoto } from "../../lib/api/photos";
-import { Photo } from "../../lib/entity/photo";
-import { AuthToken } from "../../lib/services/auth_token";
+import { removeTagFromPhoto, updatePhoto } from "@/lib/api/photos";
+import { Photo } from "@/lib/entity/photo";
+import { AuthToken } from "@/lib/services/auth_token";
 
 import { SubmitButton } from "../forms/button";
 import { TextInput } from "../forms/text";

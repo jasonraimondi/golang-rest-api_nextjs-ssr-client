@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag as TagEntity } from "../lib/entity/tag";
+import { Tag as TagEntity } from "@/lib/entity/tag";
 
 export type TagProps = { tag: TagEntity, handleRemoveTag(): void };
 

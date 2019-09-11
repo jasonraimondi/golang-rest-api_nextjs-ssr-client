@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import { Photo } from "../../lib/entity/photo";
-import { PHOTO_BASE_PATH } from "../../lib/api/photos";
+
+import { Photo } from "@/lib/entity/photo";
+import { PHOTO_BASE_PATH } from "@/lib/api/photos";
 
 type Props = {
   photo: Photo,

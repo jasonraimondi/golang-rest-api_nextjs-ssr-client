@@ -12,5 +12,13 @@ module.exports = withCSS({
         API_URL: process.env.API_URL,
         S3_HOST: process.env.S3_HOST,
         S3_BUCKET: process.env.S3_BUCKET,
-    }
+    },
+    webpack(config, options) {
+        // Further custom configuration here
+        config.resolve.alias = {
+            ...(config.resolve.alias ? config.resolve.alias : {}),
+            '@': __dirname,
+        };
+        return config
+    },
 });

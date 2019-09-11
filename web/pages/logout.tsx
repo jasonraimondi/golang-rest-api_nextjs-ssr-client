@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { AuthToken } from "../lib/services/auth_token";
+import { AuthToken } from "@/lib/services/auth_token";
 
 class Page extends Component {
   componentDidMount(): void {

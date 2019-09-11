@@ -1,10 +1,11 @@
 import { NextPageContext } from "next";
 import Router from "next/router";
 import React, { Component } from "react";
-import { defaultLayout } from "../components/layouts/default_layout";
-import { APP_ROUTES } from "../lib/routes";
-import { signUpConfirmation } from "../lib/api/sign_up";
-import { redirectToLogin } from "../lib/services/redirect_service";
+
+import { defaultLayout } from "@/components/layouts/default_layout";
+import { APP_ROUTES } from "@/lib/routes";
+import { signUpConfirmation } from "@/lib/api/sign_up";
+import { redirectToLogin } from "@/lib/services/redirect_service";
 
 type State = { isValid: boolean, isLoading: boolean };
 type Props = { userId: string, token: string };

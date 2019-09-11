@@ -4,9 +4,10 @@ import jwtDecode from "jwt-decode";
 import { NextPageContext } from "next";
 import ServerCookie from "next-cookies";
 import Router from "next/router";
-import { COOKIES } from "../cookie";
-import { APP_ROUTES } from "../routes";
-import { redirectToLogin } from "./redirect_service";
+
+import { COOKIES } from "@/lib/cookie";
+import { APP_ROUTES } from "@/lib/routes";
+import { redirectToLogin } from "@/lib/services/redirect_service";
 
 
 export interface DecodedToken {
@@ -66,6 +67,6 @@ export class AuthToken {
   }
 
   static fromToken(token?: string) {
-    return new AuthToken(token)
+    return new AuthToken(token);
   }
 }

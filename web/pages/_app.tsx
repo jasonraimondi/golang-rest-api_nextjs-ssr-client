@@ -1,6 +1,6 @@
 import React from "react";
 import NextApp from "next/app";
-import "../styles/style.css";
+import "@/styles/style.css";
 
 export default class App extends NextApp {
   render() {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
-import { APP_ROUTES } from "../../../lib/routes";
+
+import { APP_ROUTES } from "@/lib/routes";
 
 export const AdminHeader = () => {
   return <header>

@@ -1,6 +1,6 @@
 import { Formik, FormikActions, FormikProps } from "formik";
 import React from "react";
-import { login } from "../../lib/api/login";
+import { login } from "@/lib/api/login";
 import { SubmitButton } from "../forms/button";
 import { TextInput } from "../forms/text";
 

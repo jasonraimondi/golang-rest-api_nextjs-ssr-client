@@ -1,8 +1,8 @@
-import { ENVIRONMENT } from "../constants";
-import { Photo, ToPhoto } from "../entity/photo";
-import { get, post } from "../rest_client";
-import { API_ROUTES } from "../routes";
-import { ApiResponse } from "./api_response";
+import { ENVIRONMENT } from "@/lib/constants";
+import { Photo, ToPhoto } from "@/lib/entity/photo";
+import { get, post } from "@/lib/rest_client";
+import { API_ROUTES } from "@/lib/routes";
+import { ApiResponse } from "@/lib/api/api_response";
 
 export const PHOTO_BASE_PATH = ENVIRONMENT.s3_url;
 

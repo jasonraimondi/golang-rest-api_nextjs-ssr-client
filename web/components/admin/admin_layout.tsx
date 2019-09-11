@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import React from "react";
 
-import { AuthProps, privateRoute } from "../auth/private_route";
-import { AdminHead } from "./parts/admin_head";
-import { AdminHeader } from "./parts/admin_header";
+import { AuthProps, privateRoute } from "@/components/auth/private_route";
+import { AdminHead } from "@/components/admin/parts/admin_head";
+import { AdminHeader } from "@/components/admin/parts/admin_header";
 
 type Props = AuthProps
 

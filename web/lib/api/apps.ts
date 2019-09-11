@@ -1,7 +1,7 @@
-import { App } from "../entity/app";
-import { get } from "../rest_client";
-import { API_ROUTES } from "../routes";
-import { ApiResponse } from "./api_response";
+import { App } from "@/lib/entity/app";
+import { get } from "@/lib/rest_client";
+import { API_ROUTES } from "@/lib/routes";
+import { ApiResponse } from "@/lib/api/api_response";
 
 function ToApp(data: any) {
   return data as App;

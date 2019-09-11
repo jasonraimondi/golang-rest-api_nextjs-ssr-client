@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React from "react";
-import { AuthToken } from "../../lib/services/auth_token";
+import { AuthToken } from "@/lib/services/auth_token";
 import { Head } from "./parts/head";
 import { Header } from "./parts/header";
 
