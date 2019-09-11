@@ -64,5 +64,4 @@ const Page: NextPage<Props> = ({ auth }: Props) => {
   </Formik>;
 };
 
-
 export default adminLayout(Page);
