@@ -11,7 +11,7 @@ import { uploadFiles } from "@/lib/api/upload_file";
 
 import "./upload.css";
 
-export type PhotoUpload = {
+type PhotoUpload = {
   files: File[];
 }
 

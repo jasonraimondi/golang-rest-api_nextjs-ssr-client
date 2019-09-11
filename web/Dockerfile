@@ -11,5 +11,5 @@ RUN mkdir -p /app && chown node:node /app
 USER node
 COPY --from=builder --chown=node:node /app/next.config.js /app/package.json /app/package-lock.json /app/
 RUN npm install --production
-COPY --from=builder --chown=node:node /app/.next/ /app/.next/
+COPY --from=builder --chown=node:node /app/dist/ /app/dist/
 CMD ["npm", "run", "start"]

@@ -13,6 +13,7 @@ module.exports = withCSS({
         S3_HOST: process.env.S3_HOST,
         S3_BUCKET: process.env.S3_BUCKET,
     },
+    distDir: "dist",
     webpack(config, options) {
         // Further custom configuration here
         config.resolve.alias = {
