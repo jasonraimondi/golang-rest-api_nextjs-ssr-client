@@ -6,6 +6,7 @@ COPY . /app/
 RUN npm run build
 
 FROM node:12-alpine
+ENV NODE_ENV=production
 WORKDIR /app
 RUN mkdir -p /app && chown node:node /app
 USER node
